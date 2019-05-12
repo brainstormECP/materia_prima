@@ -1,0 +1,34 @@
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+<div class="btn-group-img btn-group">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+            @*<img src="~/layout5/img/avatar1.jpg" alt="">*@
+            <span class="fa fa-4x fa-user "></span>
+        </button>
+        <ul class="dropdown-menu-v2" role="menu">
+            <li>
+                <a asp-area="Identity" asp-page="/Account/Manage/Index">@User.Identity.Name </a>
+            </li>
+            <li class="divider"></li>
+            @*<li>
+                <a href="#">My Inbox <span class="badge badge-info">3</span> </a>
+            </li>
+            <li>
+                <a href="#">My Tasks</a>
+            </li>
+            <li class="divider"></li>*@
+            <li>
+                <a href="#">Lock Screen</a>
+            </li>
+            <li>
+                <a asp-action="LogOut" asp-controller="Seguridad">Logout</a>
+            </li>
+        </ul>
+    }
+</div>
+
+

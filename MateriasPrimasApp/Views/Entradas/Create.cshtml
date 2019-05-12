@@ -1,0 +1,117 @@
+﻿@model MateriasPrimaApp.Models.Entrada
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Backend.cshtml";
+}
+<hr />
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-plus-square"></i>Crear Entrada
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Fecha" class="control-label"></label>
+                        <input asp-for="Fecha" class="form-control" />
+                        <span asp-validation-for="Fecha" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group" id="result">
+                        <a class="btn btn-primary pull-right btn-sm" data-toggle="modal" href="#draggable"><i class="fa fa-plus-square"></i></a>
+                        <label asp-for="ClienteId" class="control-label"></label>
+                        <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId"></select>
+                    </div>
+                    <div class="form-group">
+                        <input asp-for="UnidadOrganizativaId" type="hidden" class="form-control"/>
+                    </div>
+                    <div class="form-group text-center">
+                        <input type="submit" value="Crear" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+<div>
+</div>
+<div class="modal fade draggable-modal" id="draggable" tabindex="-1" role="basic" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Agregar Cliente</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-11">
+                        <div id="error_msg" class="alert alert-danger" style="display:none">
+                            <i class="close icon"></i>
+                            <div class="header">
+                                Hay errores en el formulario
+                            </div>
+                            <ul class="errors"></ul>
+                        </div>
+                        <form asp-controller="Clientes" asp-action="NuevoCliente" class="form form-horizontal" data-ajax="true" dat-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#result" data-ajax-success="onSuccess" data-ajax-failure="onFailed" id="nuevo_cliente_form">
+                            <div class="form-group">
+                                <label for="codigo">Código</label>
+                                <input type="text" name="Codigo" id="codigo" class="form-control" placeholder="Código" />
+                            </div>
+                            <div class="form-group">
+                                <label for="nombre">Nombre</label>
+                                <input type="text" name="Nombre" id="nombre" class="form-control" placeholder="Nombre" />
+                            </div>
+                            <div class="form-group">
+                                <label for="organismo">Organismo</label>
+                                <input type="text" name="organismo" id="organismo" class="form-control" placeholder="Organismo" />
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" id="nuevoClienteSubmit" class="btn btn-success" value="Agregar" />
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+
+
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+
+        var onSuccess = function (context) {
+            $('.modal').modal('hide');
+            $('#nuevo_cliente_form').trigger('reset');
+        };
+        var onFailed = function (context) {
+            var errors = context.responseJSON
+            var s = ""
+            $.each(errors, function (index, value) {
+                s += "<li>" + value + "</li>";
+            });
+            $('#error_msg').show(250);
+            $('.errors').html($.parseHTML(s));
+        };
+        $('.message .close')
+            .on('click', function () {
+                $('#error_msg').hide("350");
+            });
+    </script>
+}
+

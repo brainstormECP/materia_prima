@@ -1,0 +1,53 @@
+﻿@model MateriasPrimaApp.Models.CasaCompra
+
+        @{
+        ViewData["Title"] = "Delete";
+            Layout = "~/Views/Shared/_Backend.cshtml";
+        }
+        
+        
+<hr />
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="portlet box red">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-trash-o"></i>Eliminar CasaCompra
+                </div>
+            </div>
+            <div class="portlet-body">
+                <h3 class="text-center">Desea eliminar este elemento?</h3>
+                    <div class="row">
+                                <div class="col-md-6 text-right">
+                                    <dt>
+                                        @Html.DisplayNameFor(model => model.Ueb)
+                                    </dt>
+                                </div>
+                                <div class="col-md-6 text-left">
+                                    <dd>
+                                        @Html.DisplayFor(model => model.Ueb.Nombre)
+                                    </dd>
+                                </div>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="text-center">
+                        <form asp-action="Delete">
+                                    <input type="hidden" asp-for="Id" />
+                            <div class="form-group">
+                                <a asp-action="Index" class="btn btn-info">Atrás</a>
+                                <input type="submit" value="Eliminar" class="btn btn-danger" />
+                            </div>
+                        </form>
+                    </div>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
+
+<div>
+
+    </div>
+    

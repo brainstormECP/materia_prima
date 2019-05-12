@@ -1,0 +1,60 @@
+﻿
+<div class="nav-collapse collapse navbar-collapse navbar-responsive-collapse">
+    <ul id="navbar" class="nav navbar-nav text-uppercase">
+
+        @if (User.IsInRole("Usuario"))
+        {
+            <li class="dropdown dropdown-fw">
+                <a asp-action="Index" asp-controller="Home">
+                    <i class="fa fa-dashboard"></i> Cuadro de Mando
+                </a>
+            </li>
+            <li class="dropdown dropdown-fw">
+                <a href="javascript:;">
+                    <span class="fa fa-line-chart fa-3x"></span> Reportes
+                </a>
+                <ul class="dropdown-menu dropdown-menu-fw">
+                    @*<li><a href="inner.html">Marketplace</a></li>*@
+
+                </ul>
+            </li>
+            <li class="dropdown dropdown-fw">
+                <a href="javascript:;">
+                    <span class="fa fa-steam"></span> Operaciones
+                </a>
+                <ul class="dropdown-menu dropdown-menu-fw">
+                    <li><a asp-action="Index" asp-controller="Entradas">Entradas</a></li>
+                    <li><a asp-action="Index" asp-controller="Traslados">Traslados</a></li>
+                    <li><a asp-action="Index" asp-controller="Ventas">Ventas</a></li>
+                    <li><a asp-action="Index" asp-controller="Procesamientos">Procesamientos</a></li>
+                </ul>
+            </li>
+        }
+        @if (User.IsInRole("Administrador"))
+        {
+            <li class="dropdown dropdown-fw">
+                <a href="javascript:;">
+                    <i class="fa fa-gears"></i> Nomencladores
+                </a>
+                <ul class="dropdown-menu dropdown-menu-fw">
+                    <li><a asp-action="Index" asp-controller="UnidadDeMedidas">Unidades de Medidas</a></li>
+                    <li><a asp-action="Index" asp-controller="Clientes">Clientes</a></li>
+                    <li><a asp-action="Index" asp-controller="Categorias">Categorias</a></li>
+                    <li><a asp-action="Index" asp-controller="Productos">Productos</a></li>
+                    <li><a asp-action="Index" asp-controller="TipoDeProducto">Tipos de Productos</a></li>
+                    <li><a asp-action="Index" asp-controller="UEB">UEB</a></li>
+                    <li><a asp-action="Index" asp-controller="CasaCompras">Casas de Compras</a></li>
+                </ul>
+            </li>
+            <li class="dropdown dropdown-fw">
+                <a href="javascript:;">
+                    <span class="fa fa-users"></span> Seguridad
+                </a>
+                <ul class="dropdown-menu dropdown-menu-fw">
+                    <li><a asp-action="Usuarios" asp-controller="Seguridad">Usuarios</a></li>
+                </ul>
+            </li>
+
+        }
+    </ul>
+</div>

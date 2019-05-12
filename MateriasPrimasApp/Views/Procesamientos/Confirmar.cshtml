@@ -1,0 +1,96 @@
+﻿@model MateriasPrimaApp.Models.Procesamiento
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Backend.cshtml";
+}
+
+
+    <hr />
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="portlet box green">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-lock"></i>Confirmar Procesamiento
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <h3 class="text-center">¿Desea confirmar este Procesamiento?</h3>
+                    <div class="row static-info">
+                    </div>
+                    <div class="row static-info">
+                    </div>
+                    <div class="row static-info">
+                        <div class="col-md-6 text-center">
+                            <dt>
+                                @Html.DisplayNameFor(model => model.ProductoOrigen)
+                            </dt>
+                        </div>
+                        <div class="col-md-6 text-left">
+                            <dd>
+                                @Html.DisplayFor(model => model.ProductoOrigen.Nombre)
+                            </dd>
+                        </div>
+                    </div>
+                    <div class="row static-info">
+                        <div class="col-md-6 text-center">
+                            <dt>
+                                @Html.DisplayNameFor(model => model.CantidadOrigen)
+                            </dt>
+                        </div>
+                        <div class="col-md-6 text-left">
+                            <dd>
+                                @Html.DisplayFor(model => model.CantidadOrigen)
+                            </dd>
+                        </div>
+                    </div>
+                    <div class="row static-info">
+                    </div>
+                    <div class="row static-info">
+                        <div class="col-md-6 text-center">
+                            <dt>
+                                @Html.DisplayNameFor(model => model.ProductoSalida)
+                            </dt>
+                        </div>
+                        <div class="col-md-6 text-left">
+                            <dd>
+                                @Html.DisplayFor(model => model.ProductoSalida.Nombre)
+                            </dd>
+                        </div>
+                    </div>
+                    <div class="row static-info">
+                        <div class="col-md-6 text-center">
+                            <dt>
+                                @Html.DisplayNameFor(model => model.CantidadSalida)
+                            </dt>
+                        </div>
+                        <div class="col-md-6 text-left">
+                            <dd>
+                                @Html.DisplayFor(model => model.CantidadSalida)
+                            </dd>
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="text-center">
+                        <form asp-action="Confirmar" method="post">
+                            <input type="hidden" asp-for="Id" value="@Model.Id" />
+                            <div class="form-group">
+                                <input type="submit" value="Confirmar" class="btn btn-success" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+       <div class="col-md-2"></div>
+    </div>
+    <dl class="dl-horizontal">
+  </dl>
+<div class="text-center">
+   <div class="btn-group btn-group-solid">
+        <a asp-action="Index" class="btn btn-info">Atrás</a>
+</div>
+</div>

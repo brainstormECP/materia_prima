@@ -1,0 +1,345 @@
+﻿@model MateriasPrimaApp.Models.Traslado
+
+@{
+    ViewData["Title"] = "DetallesDeTraslados";
+    Layout = "~/Views/Shared/_Backend.cshtml";
+}
+
+@*<div class="col-md-6 col-md-offset-3">
+        <!-- BEGIN PORTLET-->
+        <div class="portlet light ">
+            <div class="portlet-title">
+                <div class="caption caption-md">
+                    <i class="icon-bar-chart theme-font hide"></i>
+                    <span class="caption-subject theme-font bold uppercase">Member Activity</span>
+                    <span class="caption-helper hide">weekly stats...</span>
+                </div>
+                <div class="actions">
+                    <div class="btn-group btn-group-devided" data-toggle="buttons">
+                        <label class="btn btn-transparent grey-salsa btn-circle btn-sm active">
+                            <input type="radio" name="options" class="toggle" id="option1">Today
+                        </label>
+                        <label class="btn btn-transparent grey-salsa btn-circle btn-sm">
+                            <input type="radio" name="options" class="toggle" id="option2">Week
+                        </label>
+                        <label class="btn btn-transparent grey-salsa btn-circle btn-sm">
+                            <input type="radio" name="options" class="toggle" id="option2">Month
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="row number-stats margin-bottom-30">
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <div class="stat-left">
+                            <div class="stat-chart">
+                                <!-- do not line break "sparkline_bar" div. sparkline chart has an issue when the container div has line break -->
+                                <div id="sparkline_bar"><canvas style="display: inline-block; width: 90px; height: 45px; vertical-align: top;" width="90" height="45"></canvas></div>
+                            </div>
+                            <div class="stat-number">
+                                <div class="title">
+                                    Total
+                                </div>
+                                <div class="number">
+                                    2460
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <div class="stat-right">
+                            <div class="stat-chart">
+                                <!-- do not line break "sparkline_bar" div. sparkline chart has an issue when the container div has line break -->
+                                <div id="sparkline_bar2"><canvas style="display: inline-block; width: 90px; height: 45px; vertical-align: top;" width="90" height="45"></canvas></div>
+                            </div>
+                            <div class="stat-number">
+                                <div class="title">
+                                    New
+                                </div>
+                                <div class="number">
+                                    719
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-scrollable table-scrollable-borderless">
+                    <table class="table table-hover table-light">
+                        <thead>
+                            <tr class="uppercase">
+                                <th colspan="2">
+                                    MEMBER
+                                </th>
+                                <th>
+                                    Earnings
+                                </th>
+                                <th>
+                                    CASES
+                                </th>
+                                <th>
+                                    CLOSED
+                                </th>
+                                <th>
+                                    RATE
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="fit">
+                                    <img class="user-pic" src="../../assets/admin/layout3/img/avatar4.jpg">
+                                </td>
+                                <td>
+                                    <a href="javascript:;" class="primary-link">Brain</a>
+                                </td>
+                                <td>
+                                    $345
+                                </td>
+                                <td>
+                                    45
+                                </td>
+                                <td>
+                                    124
+                                </td>
+                                <td>
+                                    <span class="bold theme-font">80%</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fit">
+                                    <img class="user-pic" src="../../assets/admin/layout3/img/avatar5.jpg">
+                                </td>
+                                <td>
+                                    <a href="javascript:;" class="primary-link">Nick</a>
+                                </td>
+                                <td>
+                                    $560
+                                </td>
+                                <td>
+                                    12
+                                </td>
+                                <td>
+                                    24
+                                </td>
+                                <td>
+                                    <span class="bold theme-font">67%</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fit">
+                                    <img class="user-pic" src="../../assets/admin/layout3/img/avatar6.jpg">
+                                </td>
+                                <td>
+                                    <a href="javascript:;" class="primary-link">Tim</a>
+                                </td>
+                                <td>
+                                    $1,345
+                                </td>
+                                <td>
+                                    450
+                                </td>
+                                <td>
+                                    46
+                                </td>
+                                <td>
+                                    <span class="bold theme-font">98%</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fit">
+                                    <img class="user-pic" src="../../assets/admin/layout3/img/avatar7.jpg">
+                                </td>
+                                <td>
+                                    <a href="javascript:;" class="primary-link">Tom</a>
+                                </td>
+                                <td>
+                                    $645
+                                </td>
+                                <td>
+                                    50
+                                </td>
+                                <td>
+                                    89
+                                </td>
+                                <td>
+                                    <span class="bold theme-font">58%</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- END PORTLET-->
+    </div>*@
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-eye"></i>Detalles Traslado
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="row static-info">
+                </div>
+                <div class="row static-info">
+                    <div class="col-md-6 text-center">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Fecha)
+                        </dt>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <dd>
+                            @Html.DisplayFor(model => model.Fecha)
+                        </dd>
+                    </div>
+                </div>
+                <div class="row static-info">
+                </div>
+                <div class="row static-info">
+                    <div class="col-md-6 text-center">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Cliente)
+                        </dt>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <dd>
+                            @Html.DisplayFor(model => model.Cliente.Nombre)
+                        </dd>
+                    </div>
+                </div>
+                <div class="row static-info">
+                </div>
+                <div class="row static-info">
+                    <div class="col-md-6 text-center">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Origen)
+                        </dt>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <dd>
+                            @Html.DisplayFor(model => model.Origen.Nombre)
+                        </dd>
+                    </div>
+                </div>
+                <div class="row static-info">
+                </div>
+                <div class="row static-info">
+                    <div class="col-md-6 text-center">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Destino)
+                        </dt>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <dd>
+                            @Html.DisplayFor(model => model.Destino.Nombre)
+                        </dd>
+                    </div>
+                </div>
+
+                <div class="row static-info">
+                </div>
+                <div class="row static-info">
+                    <div class="col-md-6 text-center">
+                        <dt>
+                            Productos
+                        </dt>
+                    </div>
+                    <div class="col-md-6">
+                        <dd>
+                            <button id="agregar" class="btn btn-default">Agregar productos</button>
+                        </dd>
+                    </div>
+                </div>
+                <div class="row staic info">
+                    <div class="col-md-6 col-md-offset-3 text-center">
+                        <hr />
+                        <div id="result">
+                            @await Component.InvokeAsync("DetallesDeTraslado", new { TrasladoId = Model.Id })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+<dl class="dl-horizontal"></dl>
+<div class="text-center">
+    <div class="btn-group btn-group-solid">
+        <a asp-action="Index" class="btn btn-info">Atrás</a>
+    </div>
+</div>
+<div class="modal fade draggable-modal" id="draggable" tabindex="-1" role="basic" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Agregar producto al traslado</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-11">
+                        <div id="error_msg" class="alert alert-danger" style="display:none">
+                            <i class="close icon"></i>
+                            <div class="header">
+                                Hay errores en el formulario
+                            </div>
+                            <ul class="errors"></ul>
+                        </div>
+                        <form asp-controller="Traslados" asp-action="AddDetalle" class="form form-horizontal" data-ajax="true" dat-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#result" data-ajax-success="onSuccess" data-ajax-failure="onFailed" id="nuevo_detalle_form">
+                            <input type="hidden" name="TrasladoId" value="@Model.Id" />
+                            <div class="form-group">
+                                <label for="codigo">Producto</label>
+                                <select name="ProductoId" asp-items="ViewBag.Productos" class="form-control"></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="organismo">Cantidad</label>
+                                <input type="text" name="Cantidad" class="form-control" /><span></span>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-success" value="Agregar" />
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+
+
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@section Scripts {
+    <script>
+        $('#agregar').on("click", function () {
+            $('.modal').modal();
+        });
+        var onSuccess = function (context) {
+            $('.modal').modal('hide');
+            $('#nuevo_detalle_form').trigger('reset');
+        };
+        var onFailed = function (context) {
+            var errors = context.responseJSON
+            var s = ""
+            $.each(errors, function (index, value) {
+                s += "<li>" + value + "</li>";
+            });
+            $('#error_msg').show(250);
+            $('.errors').html($.parseHTML(s));
+        };
+        $('.message .close')
+            .on('click', function () {
+                $('#error_msg').hide("350");
+            });
+    </script>
+}
+

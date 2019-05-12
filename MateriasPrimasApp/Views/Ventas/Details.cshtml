@@ -1,0 +1,74 @@
+﻿@model MateriasPrimaApp.Models.Venta
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Backend.cshtml";
+}
+
+
+    <hr />
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-eye"></i>Detalles Venta
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="row static-info">
+                    </div>
+                    <div class="row static-info">
+                                <div class="col-md-6 text-center">
+                                    <dt>
+                                        @Html.DisplayNameFor(model => model.Fecha)
+                                    </dt>
+                                </div>
+                                <div class="col-md-6 text-left">
+                                    <dd>
+                                        @Html.DisplayFor(model => model.Fecha)
+                                    </dd>
+                                </div>
+                    </div>
+                    <div class="row static-info">
+                    </div>
+                    <div class="row static-info">
+                                <div class="col-md-6 text-center">
+                                    <dt>
+                                        @Html.DisplayNameFor(model => model.Cliente)
+                                  </dt>
+                                </div>
+                                <div class="col-md-6 text-left">
+                                      <dd>
+                                          @Html.DisplayFor(model => model.Cliente.Codigo)
+                                      </dd>
+                                </div>
+                    </div>
+                    <div class="row static-info">
+                    </div>
+                    <div class="row static-info">
+                                <div class="col-md-6 text-center">
+                                    <dt>
+                                        @Html.DisplayNameFor(model => model.UnidadOrganizativa)
+                                  </dt>
+                                </div>
+                                <div class="col-md-6 text-left">
+                                      <dd>
+                                          @Html.DisplayFor(model => model.UnidadOrganizativa.Nombre)
+                                      </dd>
+                                </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       <div class="col-md-2"></div>
+    </div>
+    <dl class="dl-horizontal">
+  </dl>
+<div class="text-center">
+   <div class="btn-group btn-group-solid">
+        <a asp-action="Index" class="btn btn-info">Atrás</a>
+        <a asp-action="Edit" class="btn yellow" asp-route-id="@Model.Id">Editar</a> 
+</div>
+</div>

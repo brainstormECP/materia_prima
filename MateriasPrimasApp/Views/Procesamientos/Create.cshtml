@@ -1,0 +1,52 @@
+﻿@model MateriasPrimaApp.Models.Procesamiento
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Backend.cshtml";
+}
+<hr />
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-plus-square"></i>Crear Procesamiento
+                </div>
+            </div>
+            <div class="portlet-body">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <div class="form-group">
+                                        <label asp-for="ProductoOrigenId" class="control-label">Producto Original</label>
+                                        <select asp-for="ProductoOrigenId" class="form-control" asp-items="ViewBag.ProductoOrigenId"></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="CantidadOrigen" class="control-label"></label>
+                                        <input asp-for="CantidadOrigen" class="form-control" />
+                                        <span asp-validation-for="CantidadOrigen" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="ProductoSalidaId" class="control-label">Producto Resultante</label>
+                                        <select asp-for="ProductoSalidaId" class="form-control" asp-items="ViewBag.ProductoSalidaId"></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="CantidadSalida" class="control-label"></label>
+                                        <input asp-for="CantidadSalida" class="form-control" />
+                                        <span asp-validation-for="CantidadSalida" class="text-danger"></span>
+                                    </div>
+                        <div class="form-group text-center">
+                            <input type="submit" value="Crear" class="btn btn-primary" />
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+<div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

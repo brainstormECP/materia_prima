@@ -1,0 +1,51 @@
+﻿@model MateriasPrimaApp.Models.UsuarioViewModel
+@{
+    ViewData["Title"] = "CrearUsuario";
+    Layout = "~/Views/Shared/_Backend.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="CrearUsuario">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label">Nombre de usuario</label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" autocomplete="off" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" autocomplete="off" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword" class="control-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Roles" class="control-label"></label>
+                <select asp-for="Roles" asp-items="ViewBag.Roles" class="form-control" multiple></select>
+                <span asp-validation-for="Roles" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="UnidadOrganizativaId" class="control-label"></label>
+                <select asp-for="UnidadOrganizativaId" asp-items="ViewBag.UO" class="form-control"></select>
+                <span asp-validation-for="UnidadOrganizativaId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+

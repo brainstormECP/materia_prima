@@ -1,0 +1,95 @@
+﻿@model IEnumerable<MateriasPrimaApp.Models.Categoria>
+@{
+    Layout = "~/Views/Shared/_Backend.cshtml";
+}
+@section Styles{
+    <link href="~/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/css/buttons.dataTables.min.css" rel="stylesheet" />
+}
+<p>
+    <a asp-action="Create" class="btn blue"><i class="fa fa-plus-square"></i></a>
+</p>
+<div class="portlet box blue-madison">
+    <div class="portlet-title text-center">
+        <div class="caption">
+            <i class="fa fa-list"></i>Lista de  Categoria
+
+        </div>
+        <div class="portlet-body">
+        </div>
+    </div>
+</div>
+<table class="table table-responsive" id="myDatatable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descripcion)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn yellow hidden-print">Editar</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info hidden-print">Detalles</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger hidden-print">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section scripts{
+    <script src="~/js/datatables.min.js"></script>
+    <script src="~/js/dataTables.buttons.min.js"></script>
+    <script src="~/js/jszip.min.js"></script>
+    <script src="~/js/buttons.html5.min.js"></script>
+    <script>
+        $('document').ready(function () {
+            $('#myDatatable').DataTable({
+                "language": {
+                    "paginate": {
+                        "first": "Primera",
+                        "previous": "Anterior",
+                        "next": "Siguiente",
+                        "last": "&Uacute;ltima"
+                    },
+                    "info": "Mostrando resultados del _START_ al _END_ de un total de _TOTAL_",
+                    "lengthMenu": "Mostrando _MENU_ resultados",
+                    "search": "Buscar: ",
+                    "infoEmpty": "Mostrando 0 resultados",
+                    "infoFiltered": "(filtrado de un total de _MAX_ resultados)",
+                    "sZeroRecords": "No se encontraron resultados con este criterio"
+                },
+                "pagingType": "full_numbers",
+                dom: 'Bfrtip',
+                responsive: true,
+                buttons: [
+                    {
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3]
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        exportOptions: {
+                            columns: [0, 1, 2,]
+                        }
+                    },
+                ]
+            });
+        });
+    </script>
+}

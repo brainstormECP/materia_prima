@@ -1,0 +1,46 @@
+﻿@model MateriasPrimaApp.Models.CasaCompra
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Backend.cshtml";
+}
+
+
+<hr />
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="portlet box yellow">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-edit"></i>Editar CasaCompra
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="Id" />
+                                <div class="form-group">
+                                    <label asp-for="UebId" class="control-label"></label>
+                                    <select asp-for="UebId" class="form-control" asp-items="ViewBag.UebId"></select>
+                                    <span asp-validation-for="UebId" class="text-danger"></span>
+                                </div>
+                              <div class="text-center">
+                                  <a asp-action="Index" class="btn btn-info">Atrás</a>
+                                  <input type="submit" value="Editar" class="btn yellow" />
+
+                              </div>
+</form>
+</div>
+</div>
+</div>
+<div class="col-md-2"></div>
+</div>
+
+<div>
+    
+</div>
+
+        @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }

@@ -1,0 +1,50 @@
+﻿@model IEnumerable<MateriasPrimaApp.Models.DetalleDeEntrada>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                Nombre del Producto
+            </th>
+            <th>
+                Cantidad
+            </th>
+            <th>
+                Precio
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var entrada in Model)
+        {
+            <tr>
+                <td>
+                    @entrada.Producto.Nombre
+                </td>
+                <td>
+                    @entrada.Cantidad
+                </td>
+                <td>
+                    @entrada.PrecioMn
+                </td>
+                <td>
+                <form asp-action="EliminarDetalle" asp-controller="Entradas"  data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#result" data-ajax-success="onSuccess" data-ajax-failure="onFailed">
+                       <input type="hidden" value="@entrada.Id" name="id"/>
+                    <button type="submit" class="btn red"><span class="fa fa-trash"></span></button>
+                </form>
+            </tr>
+        }
+            <tr>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>                 
+                </td>
+                <td class="text-left">
+                    <strong>Total:</strong> @ViewBag.Total
+                </td>
+            </tr>
+    </tbody>
+</table>
