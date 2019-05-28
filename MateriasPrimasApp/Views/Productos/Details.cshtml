@@ -6,116 +6,113 @@
 }
 
 
-    <hr />
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            <div class="portlet box blue">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="fa fa-eye"></i>Detalles Producto
-                    </div>
-                </div>
-                <div class="portlet-body">
-                    <div class="row static-info">
-                    </div>
-                    <div class="row static-info">
-                        <div class="col-md-6 text-center">
-                            <dt>
-                                @Html.DisplayNameFor(model => model.Codigo)
-                            </dt>
-                        </div>
-                        <div class="col-md-6 text-left">
-                            <dd>
-                                @Html.DisplayFor(model => model.Codigo)
-                            </dd>
-                        </div>
-                    </div>
-                    <div class="row static-info">
-                        <div class="col-md-6 text-center">
-                            <dt>
-                                @Html.DisplayNameFor(model => model.Nombre)
-                            </dt>
-                        </div>
-                        <div class="col-md-6 text-left">
-                            <dd>
-                                @Html.DisplayFor(model => model.Nombre)
-                            </dd>
-                        </div>
-                    </div>
-                    <div class="row static-info">
-                        <div class="col-md-6 text-center">
-                            <dt>
-                                @Html.DisplayNameFor(model => model.Descripcion)
-                            </dt>
-                        </div>
-                        <div class="col-md-6 text-left">
-                            <dd>
-                                @Html.DisplayFor(model => model.Descripcion)
-                            </dd>
-                        </div>
-                    </div>
-                    <div class="row static-info">
-                    </div>
-                    <div class="row static-info">
-                        <div class="col-md-6 text-center">
-                            <dt>
-                                @Html.DisplayNameFor(model => model.Unidad)
-                            </dt>
-                        </div>
-                        <div class="col-md-6 text-left">
-                            <dd>
-                                @Html.DisplayFor(model => model.Unidad.Unidad)
-                            </dd>
-                        </div>
-                    </div>
-                    <div class="row static-info">
-                    </div>
-                    <div class="row static-info">
-                        <div class="col-md-6 text-center">
-                            <dt>
-                                @Html.DisplayNameFor(model => model.Categoria)
-                            </dt>
-                        </div>
-                        <div class="col-md-6 text-left">
-                            <dd>
-                                @Html.DisplayFor(model => model.Categoria.Nombre)
-                            </dd>
-                        </div>
-                    </div>
-                    <div class="row static-info">
-                    </div>
-                    <div class="row static-info">
-                        <div class="col-md-6 text-center">
-                            <dt>
-                                @Html.DisplayNameFor(model => model.Tipo)
-                            </dt>
-                        </div>
-                        <div class="col-md-6 text-left">
-                            <dd>
-                                @Html.DisplayFor(model => model.Tipo.Nombre)
-                            </dd>
-                        </div>
-                    </div>
-                    <div class="row static-info">
-                        <div class="col-md-6 text-center">
-                            <dt>
-                                Precio de Compra
-                            </dt>
-                        </div>
-                        <div class="col-md-6 text-left">
-                            <dd>
-                                <strong>MN: @Model.PrecioCompraMn</strong> |
-                                <strong>Mlc: @Model.PrecioCompraMlc</strong>
-                            </dd>
-                        </div>
-                    </div>
-
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-eye"></i>Detalles Producto
                 </div>
             </div>
+            <div class="portlet-body">
+                <div class="row static-info">
+                </div>
+                <div class="row static-info">
+                    <div class="col-md-6 text-center">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Codigo)
+                        </dt>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <dd>
+                            @Html.DisplayFor(model => model.Codigo)
+                        </dd>
+                    </div>
+                </div>
+                <div class="row static-info">
+                    <div class="col-md-6 text-center">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Nombre)
+                        </dt>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <dd>
+                            @Html.DisplayFor(model => model.Nombre)
+                        </dd>
+                    </div>
+                </div>
+                <div class="row static-info">
+                    <div class="col-md-6 text-center">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Descripcion)
+                        </dt>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <dd>
+                            @Html.DisplayFor(model => model.Descripcion)
+                        </dd>
+                    </div>
+                </div>
+                <div class="row static-info">
+                </div>
+                <div class="row static-info">
+                    <div class="col-md-6 text-center">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Unidad)
+                        </dt>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <dd>
+                            @Html.DisplayFor(model => model.Unidad.Unidad)
+                        </dd>
+                    </div>
+                </div>
+                <div class="row static-info">
+                </div>
+                <div class="row static-info">
+                    <div class="col-md-6 text-center">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Categoria)
+                        </dt>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <dd>
+                            @Html.DisplayFor(model => model.Categoria.Nombre)
+                        </dd>
+                    </div>
+                </div>
+                <div class="row static-info">
+                </div>
+                <div class="row static-info">
+                    <div class="col-md-6 text-center">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Tipo)
+                        </dt>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <dd>
+                            @Html.DisplayFor(model => model.Tipo.Nombre)
+                        </dd>
+                    </div>
+                </div>
+                <div class="row static-info">
+                    <div class="col-md-6 text-center">
+                        <dt>
+                            Precio de Compra
+                        </dt>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <dd>
+                            <strong>MN: @Model.PrecioCompraMn</strong> |
+                            <strong>Mlc: @Model.PrecioCompraMlc</strong>
+                        </dd>
+                    </div>
+                </div>
+
+            </div>
         </div>
-       <div class="col-md-2"></div>
     </div>
+</div>
     <dl class="dl-horizontal">
   </dl>
 <div class="text-center">

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MateriasPrimaApp.Models;
 using MateriasPrimasApp.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MateriasPrimasApp.Controllers
 {
+    [Authorize(Roles = "Administrador, Consultor")]
     public class CasaComprasController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -19,6 +21,7 @@ namespace MateriasPrimasApp.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Administrador, Consultor")]
         // GET: CasaCompras
         public async Task<IActionResult> Index()
         {
@@ -26,6 +29,7 @@ namespace MateriasPrimasApp.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        [Authorize(Roles = "Administrador, Consultor")]
         // GET: CasaCompras/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -45,6 +49,7 @@ namespace MateriasPrimasApp.Controllers
             return View(casaCompra);
         }
 
+        [Authorize(Roles = "Administrador")]
         // GET: CasaCompras/Create
         public IActionResult Create()
         {
@@ -55,6 +60,7 @@ namespace MateriasPrimasApp.Controllers
         // POST: CasaCompras/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,UebId,Nombre")] CasaCompra casaCompra)
@@ -70,6 +76,7 @@ namespace MateriasPrimasApp.Controllers
         }
 
         // GET: CasaCompras/Edit/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -89,6 +96,7 @@ namespace MateriasPrimasApp.Controllers
         // POST: CasaCompras/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ID,UebId")] CasaCompra casaCompra)
@@ -122,6 +130,7 @@ namespace MateriasPrimasApp.Controllers
             return View(casaCompra);
         }
 
+        [Authorize(Roles = "Administrador")]
         // GET: CasaCompras/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -142,6 +151,7 @@ namespace MateriasPrimasApp.Controllers
         }
 
         // POST: CasaCompras/Delete/5
+        [Authorize(Roles = "Administrador")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

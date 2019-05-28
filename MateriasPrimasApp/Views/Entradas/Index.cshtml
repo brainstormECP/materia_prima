@@ -10,64 +10,78 @@
     <link href="~/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="~/css/buttons.dataTables.min.css" rel="stylesheet" />
 }
-<p>
-    <a asp-action="Create" class="btn blue"><i class="fa fa-plus-square"></i></a>
-</p>
-<div class="portlet box blue-madison">
-    <div class="portlet-title text-center">
-        <div class="caption">
-            <i class="fa fa-list"></i>Lista de  Entrada
-
+<div class="row">
+    <!-- BEGIN Portlet PORTLET-->
+    <div class="portlet light bordered">
+        <div class="portlet-title">
+            <div class="caption font-dark">
+                <span class="caption-subject bold uppercase">Listado de Entradas</span>
+            </div>
+            <div class="actions">
+                <!--<a href="#" class="btn btn-circle btn-default btn-sm">
+                <i class="fa fa-pencil"></i> Edit </a>-->
+                <a asp-action="Create" asp-controller="Entradas" class="btn btn-success">
+                    <i class="fa fa-plus"></i> Añadir Entrada
+                </a>
+                <a class="btn btn-icon-only btn-default fullscreen" href="#">
+                </a>
+            </div>
         </div>
-        <div class="portlet-body">
+        <div class="portlet-body" style="height: auto;">
+            <table class="table table-responsive" id="myDatatable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Fecha)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Cliente)
+                        </th>
+                        <th>
+                            Unidad Organizativa
+                        </th>                     
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Fecha)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Cliente.Nombre)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UnidadOrganizativa.Nombre)
+                            </td>
+                            <td>
+                                @if (!item.Confirmada)
+                                {
+                                    <a asp-action="DetallesDeEntrada" asp-route-id="@item.Id" class="btn  blue"><i class="fa fa-cubes"></i> Productos</a>
+                                    if (item.DetallesDeEntrada.Count > 0)
+                                    {
+                                        <a asp-action="Confirmar" asp-route-id="@item.Id" class="btn  green"><i class="fa fa-check"></i> Confirmar</a>
+                                    }
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn yellow hidden-print"><i class="fa fa-edit"></i> Editar</a>
+                                }
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info hidden-print"><i class="fa fa-eye"></i> Detalles</a>
+                                @if (!item.Confirmada)
+                                {
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn red"><i class="fa fa-trash"></i> Eliminar</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
+    <!-- END PORTLET-->
 </div>
-<table class="table table-responsive" id="myDatatable">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Fecha)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cliente)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UnidadOrganizativa)
-            </th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Fecha)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Cliente.Codigo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UnidadOrganizativa.Nombre)
-                </td>
-                <td>
-                    @if (!item.Confirmada)
-                    {
-                        <a asp-action="Confirmar" asp-route-id="@item.Id" class="btn green hidden-print">Confirmar</a>
-                        <a asp-action="DetallesDeEntrada" asp-route-id="@item.Id" class="btn blue hidden-print">Productos</a>
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn yellow hidden-print">Editar</a>
-                    }
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info hidden-print">Detalles</a>
-                    @if (!item.Confirmada)
-                    {
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger hidden-print">Eliminar</a>
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+
 @section scripts{
     <script src="~/js/datatables.min.js"></script>
     <script src="~/js/dataTables.buttons.min.js"></script>
@@ -97,7 +111,7 @@
                     {
                         extend: 'pdf',
                         exportOptions: {
-                            columns: [0, 1, 2, 3]
+                            columns: [0, 1, 2]
                         }
                     },
                     {

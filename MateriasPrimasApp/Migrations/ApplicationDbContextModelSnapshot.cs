@@ -85,7 +85,7 @@ namespace MateriasPrimasApp.Migrations
                     b.ToTable("DetallesDeEntradas");
                 });
 
-            modelBuilder.Entity("MateriasPrimaApp.Models.DetalleDeTraslado", b =>
+            modelBuilder.Entity("MateriasPrimaApp.Models.DetalleDeTransferencia", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -100,15 +100,45 @@ namespace MateriasPrimasApp.Migrations
 
                     b.Property<int>("ProductoId");
 
-                    b.Property<int>("TrasladoId");
+                    b.Property<int>("TransferenciaId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductoId");
 
-                    b.HasIndex("TrasladoId");
+                    b.HasIndex("TransferenciaId");
 
-                    b.ToTable("DetallesDeTraslado");
+                    b.ToTable("DetallesDeTransferencia");
+                });
+
+            modelBuilder.Entity("MateriasPrimaApp.Models.DetalleDeVenta", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("Cantidad");
+
+                    b.Property<decimal>("PrecioMlc")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal>("PrecioMn")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int>("ProductoId");
+
+                    b.Property<int>("UnidadId");
+
+                    b.Property<int>("VentaId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductoId");
+
+                    b.HasIndex("UnidadId");
+
+                    b.HasIndex("VentaId");
+
+                    b.ToTable("DetallesDeVenta");
                 });
 
             modelBuilder.Entity("MateriasPrimaApp.Models.Entrada", b =>
@@ -206,20 +236,15 @@ namespace MateriasPrimasApp.Migrations
 
             modelBuilder.Entity("MateriasPrimaApp.Models.Submayor", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
                     b.Property<int>("AlmacenId");
-
-                    b.Property<decimal>("Cantidad");
 
                     b.Property<int>("ProductoId");
 
+                    b.Property<decimal>("Cantidad");
+
                     b.Property<int>("UnidadId");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("AlmacenId");
+                    b.HasKey("AlmacenId", "ProductoId");
 
                     b.HasIndex("ProductoId");
 
@@ -228,7 +253,7 @@ namespace MateriasPrimasApp.Migrations
                     b.ToTable("Submayor");
 
                     b.HasData(
-                        new { Id = 1, AlmacenId = 1, Cantidad = 1300m, ProductoId = 1, UnidadId = 1 }
+                        new { AlmacenId = 1, ProductoId = 1, Cantidad = 1300m, UnidadId = 1 }
                     );
                 });
 
@@ -252,12 +277,10 @@ namespace MateriasPrimasApp.Migrations
                     );
                 });
 
-            modelBuilder.Entity("MateriasPrimaApp.Models.Traslado", b =>
+            modelBuilder.Entity("MateriasPrimaApp.Models.Transferencia", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<int>("ClienteId");
 
                     b.Property<bool>("Confirmada");
 
@@ -269,13 +292,11 @@ namespace MateriasPrimasApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClienteId");
-
                     b.HasIndex("DestinoId");
 
                     b.HasIndex("OrigenId");
 
-                    b.ToTable("Traslado");
+                    b.ToTable("Transferencias");
                 });
 
             modelBuilder.Entity("MateriasPrimaApp.Models.UnidadDeMedida", b =>
@@ -314,7 +335,7 @@ namespace MateriasPrimasApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UnidadOrganizativa");
+                    b.ToTable("UnidadesOrganizativas");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("UnidadOrganizativa");
                 });
@@ -398,7 +419,8 @@ namespace MateriasPrimasApp.Migrations
 
                     b.HasData(
                         new { Id = "f42559a2-2776-4e9b-9ba1-268597eff72b", AccessFailedCount = 0, Active = true, ConcurrencyStamp = "36fd2616-8e8a-4cc6-8a5a-52d963207836", Email = "admin@materiaprima.cu", EmailConfirmed = false, LockoutEnabled = false, NormalizedEmail = "ADMIN@MATERIAPRIMA.CU", NormalizedUserName = "ADMIN", PasswordHash = "AQAAAAEAACcQAAAAEP4OedI6m26WUn/2C4AcBkzdT6SnL/6E+xakQ/9mGAkqqp3t9PwyIR6l9obLouKIVg==", PhoneNumberConfirmed = false, SecurityStamp = "43VMKYQKNTENYZVJNU2TII26X23H5PGV", TwoFactorEnabled = false, UserName = "admin" },
-                        new { Id = "e4acfaab-e3c9-42ef-9e21-1902da5374af", AccessFailedCount = 0, Active = true, ConcurrencyStamp = "e3730b4c-284a-48da-ace3-b5f31f5671df", Email = "user1@mp.cu", EmailConfirmed = false, LockoutEnabled = false, NormalizedEmail = "USER1@MP.CU", NormalizedUserName = "USER1", PasswordHash = "AQAAAAEAACcQAAAAECmA0XlVxV7cpw5UFHBIIDAKwZ9RSjLf0g5QOiC9UwYIi8cn0Lw+2QqwOsDdtWkEyw==", PhoneNumberConfirmed = false, SecurityStamp = "4AVYZFGP54QSAT3RJN4KI5R327NN4ID2", TwoFactorEnabled = false, UnidadOrganizativaId = 1, UserName = "user1" }
+                        new { Id = "e4acfaab-e3c9-42ef-9e21-1902da5374af", AccessFailedCount = 0, Active = true, ConcurrencyStamp = "e3730b4c-284a-48da-ace3-b5f31f5671df", Email = "user1@mp.cu", EmailConfirmed = false, LockoutEnabled = false, NormalizedEmail = "USER1@MP.CU", NormalizedUserName = "USER1", PasswordHash = "AQAAAAEAACcQAAAAECmA0XlVxV7cpw5UFHBIIDAKwZ9RSjLf0g5QOiC9UwYIi8cn0Lw+2QqwOsDdtWkEyw==", PhoneNumberConfirmed = false, SecurityStamp = "4AVYZFGP54QSAT3RJN4KI5R327NN4ID2", TwoFactorEnabled = false, UnidadOrganizativaId = 1, UserName = "user1" },
+                        new { Id = "4396dcc4-83c3-4e66-9416-c7df16be8b4a", AccessFailedCount = 0, Active = true, ConcurrencyStamp = "22331850-3299-4df8-b760-4f58cf646be0", Email = "juan@mp.cu", EmailConfirmed = false, LockoutEnabled = false, NormalizedEmail = "JUAN@MP.CU", NormalizedUserName = "JUAN", PasswordHash = "AQAAAAEAACcQAAAAEOXJ8QHXja0i7s0kzcxlgJeT8xXS69ir2aCIkkIRoWjXP+GMHbeQsL/hAnMnfHziPg==", PhoneNumberConfirmed = false, SecurityStamp = "CLPB5NJX34OWXJDQZSTE3NUCQKSHDTI2", TwoFactorEnabled = false, UserName = "Juan" }
                     );
                 });
 
@@ -425,8 +447,9 @@ namespace MateriasPrimasApp.Migrations
                     b.ToTable("AspNetRoles");
 
                     b.HasData(
-                        new { Id = "1", ConcurrencyStamp = "52307b38-f8fb-4b4b-87b9-18b71be7d636", Name = "Administrador", NormalizedName = "ADMINISTRADOR" },
-                        new { Id = "2", ConcurrencyStamp = "054af328-99f0-458a-a3d0-9bf57f5b232e", Name = "Usuario", NormalizedName = "USUARIO" }
+                        new { Id = "1", ConcurrencyStamp = "03425ba7-c050-498a-9c66-bef5b2c9f09f", Name = "Administrador", NormalizedName = "ADMINISTRADOR" },
+                        new { Id = "2", ConcurrencyStamp = "828ec017-261c-4021-bec1-f2198fec1166", Name = "Comercial", NormalizedName = "COMERCIAL" },
+                        new { Id = "3", ConcurrencyStamp = "df0c2be7-0cad-4919-bdc9-a41a36a0f4e3", Name = "Consultor", NormalizedName = "CONSULTOR" }
                     );
                 });
 
@@ -500,7 +523,8 @@ namespace MateriasPrimasApp.Migrations
 
                     b.HasData(
                         new { UserId = "f42559a2-2776-4e9b-9ba1-268597eff72b", RoleId = "1" },
-                        new { UserId = "e4acfaab-e3c9-42ef-9e21-1902da5374af", RoleId = "2" }
+                        new { UserId = "e4acfaab-e3c9-42ef-9e21-1902da5374af", RoleId = "2" },
+                        new { UserId = "4396dcc4-83c3-4e66-9416-c7df16be8b4a", RoleId = "3" }
                     );
                 });
 
@@ -556,7 +580,7 @@ namespace MateriasPrimasApp.Migrations
             modelBuilder.Entity("MateriasPrimaApp.Models.DetalleDeEntrada", b =>
                 {
                     b.HasOne("MateriasPrimaApp.Models.Entrada", "Entrada")
-                        .WithMany()
+                        .WithMany("DetallesDeEntrada")
                         .HasForeignKey("EntradaId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -566,16 +590,34 @@ namespace MateriasPrimasApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MateriasPrimaApp.Models.DetalleDeTraslado", b =>
+            modelBuilder.Entity("MateriasPrimaApp.Models.DetalleDeTransferencia", b =>
                 {
                     b.HasOne("MateriasPrimaApp.Models.Producto", "Producto")
                         .WithMany()
                         .HasForeignKey("ProductoId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MateriasPrimaApp.Models.Traslado", "Traslado")
+                    b.HasOne("MateriasPrimaApp.Models.Transferencia", "Transferencia")
+                        .WithMany("DetallesDeTransferencia")
+                        .HasForeignKey("TransferenciaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MateriasPrimaApp.Models.DetalleDeVenta", b =>
+                {
+                    b.HasOne("MateriasPrimaApp.Models.Producto", "Producto")
                         .WithMany()
-                        .HasForeignKey("TrasladoId")
+                        .HasForeignKey("ProductoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MateriasPrimaApp.Models.UnidadDeMedida", "Unidad")
+                        .WithMany()
+                        .HasForeignKey("UnidadId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MateriasPrimaApp.Models.Venta", "Venta")
+                        .WithMany()
+                        .HasForeignKey("VentaId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -641,13 +683,8 @@ namespace MateriasPrimasApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MateriasPrimaApp.Models.Traslado", b =>
+            modelBuilder.Entity("MateriasPrimaApp.Models.Transferencia", b =>
                 {
-                    b.HasOne("MateriasPrimaApp.Models.Cliente", "Cliente")
-                        .WithMany()
-                        .HasForeignKey("ClienteId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("MateriasPrimaApp.Models.UnidadOrganizativa", "Destino")
                         .WithMany()
                         .HasForeignKey("DestinoId")

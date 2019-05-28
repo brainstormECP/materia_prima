@@ -10,9 +10,15 @@
     <link href="~/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="~/css/buttons.dataTables.min.css" rel="stylesheet" />
 }
-<p>
-    <a asp-action="Create" class="btn blue"><i class="fa fa-plus-square"></i></a>
-</p>
+@if (User.IsInRole("Administrador"))
+{
+    <div class="text-right">
+        <p class="hint--top-left" aria-label="Añadir Casa de Compra">
+            <a asp-action="Create" class="btn blue"><i class="fa fa-plus-square"></i></a>
+        </p>
+    </div>
+}
+
 <div class="portlet box blue-madison">
     <div class="portlet-title text-center">
         <div class="caption">
@@ -43,11 +49,20 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Ueb.Nombre)
                 </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn yellow hidden-print">Editar</a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info hidden-print">Detalles</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger hidden-print">Eliminar</a>
-                </td>
+                @if (User.IsInRole("Consultor"))
+                {
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info hidden-print">Detalles</a>
+                    </td>
+
+                }@if (User.IsInRole("Administrador"))
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn yellow hidden-print">Editar</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info hidden-print">Detalles</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger hidden-print">Eliminar</a>
+                    </td>
+                }
             </tr>
         }
     </tbody>

@@ -37,7 +37,7 @@ namespace MateriasPrimasApp
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite("DataSource=MP.db"));
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<ApplicationUser, IdentityRole>()
              .AddEntityFrameworkStores<ApplicationDbContext>()
              .AddDefaultUI()

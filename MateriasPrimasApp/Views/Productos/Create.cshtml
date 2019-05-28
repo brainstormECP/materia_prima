@@ -4,10 +4,8 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Backend.cshtml";
 }
-<hr />
 <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
+    <div class="col-md-4  col-md-offset-4">
         <div class="portlet box blue">
             <div class="portlet-title">
                 <div class="caption">
@@ -15,45 +13,66 @@
                 </div>
             </div>
             <div class="portlet-body">
-                    <form asp-action="Create">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                    <div class="form-group">
-                                        <label asp-for="Codigo" class="control-label"></label>
-                                        <input asp-for="Codigo" class="form-control" />
-                                        <span asp-validation-for="Codigo" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="Nombre" class="control-label"></label>
-                                        <input asp-for="Nombre" class="form-control" />
-                                        <span asp-validation-for="Nombre" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="Descripcion" class="control-label"></label>
-                                        <textarea asp-for="Descripcion" class="form-control" rows="5"></textarea>
-                                        <span asp-validation-for="Descripcion" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="UnidadId" class="control-label">Unidad de Medida</label>
-                                        <select asp-for="UnidadId" class="form-control" asp-items="ViewBag.UnidadId"></select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="CategoriaId" class="control-label">Categoría</label>
-                                        <select asp-for="CategoriaId" class="form-control" asp-items="ViewBag.CategoriaId"></select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="TipoId" class="control-label">Tipo</label>
-                                        <select asp-for="TipoId" class="form-control" asp-items="ViewBag.TipoId"></select>
-                                    </div>
-                        <div class="form-group text-center">
-                            <input type="submit" value="Crear" class="btn btn-primary" />
-                        </div>
-                    </form>
+                <br />
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Codigo" class="control-label"></label>
+                        <input asp-for="Codigo" class="form-control" />
+                        <span asp-validation-for="Codigo" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Nombre" class="control-label"></label>
+                        <input asp-for="Nombre" class="form-control" />
+                        <span asp-validation-for="Nombre" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Descripcion" class="control-label"></label>
+                        <textarea asp-for="Descripcion" class="form-control" rows="5"></textarea>
+                        <span asp-validation-for="Descripcion" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="UnidadId" class="control-label">Unidad de Medida</label>
+                        <select asp-for="UnidadId" class="form-control" asp-items="ViewBag.UnidadId"></select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CategoriaId" class="control-label">Categoría</label>
+                        <select asp-for="CategoriaId" class="form-control" asp-items="ViewBag.CategoriaId"></select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="TipoId" class="control-label">Tipo</label>
+                        <select asp-for="TipoId" class="form-control" asp-items="ViewBag.TipoId"></select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PrecioCompraMn" class="control-label">Precio de compra MN</label>
+                        <input asp-for="PrecioCompraMn" class="form-control" />
+                        <span asp-validation-for="PrecioCompraMn" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PrecioCompraMlc" class="control-label">Precio de compra MLc</label>
+                        <input asp-for="PrecioCompraMlc" class="form-control" />
+                        <span asp-validation-for="PrecioCompraMlc" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PrecioVentaMn" class="control-label">Precio de venta MN</label>
+                        <input asp-for="PrecioVentaMn" class="form-control" />
+                        <span asp-validation-for="PrecioVentaMn" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PrecioVentaMlc" class="control-label">Precio de venta MLc</label>
+                        <input asp-for="PrecioVentaMlc" class="form-control" />
+                        <span asp-validation-for="PrecioVentaMlc" class="text-danger"></span>
+                    </div>
+
+
+
+                    <div class="form-group text-center">
+                        <input type="submit" value="Crear" class="btn btn-primary" />
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    <div class="col-md-2"></div>
-</div>
-<div>
 </div>
 
 @section Scripts {

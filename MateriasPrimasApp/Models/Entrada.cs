@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace MateriasPrimaApp.Models
@@ -7,13 +8,17 @@ namespace MateriasPrimaApp.Models
     {
         public int Id { get; set; }
         [DataType(DataType.Date)]
-        [Required]
+        [Required(ErrorMessage = "El campo Fecha es obligatorio")]
         public DateTime Fecha { get; set; }
-        [Required]
+        [Display(Name="Cliente")]
+        [Required(ErrorMessage = "El campo Cliente es obligatorio")]
         public int ClienteId { get; set; }
         public virtual Cliente Cliente { get; set; }
+        [Display(Name="Unidad Organizativa")]
         public int UnidadOrganizativaId { get; set; }
         public virtual UnidadOrganizativa UnidadOrganizativa { get; set; }
         public bool Confirmada { get; set; }
+
+        public virtual ICollection<DetalleDeEntrada> DetallesDeEntrada { get; set; }
     }
 }

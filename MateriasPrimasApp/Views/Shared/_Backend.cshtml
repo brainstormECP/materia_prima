@@ -47,6 +47,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <link href="~/global/css/plugins.css" rel="stylesheet" type="text/css" />
     <link href="~/layout5/css/layout.css" rel="stylesheet" type="text/css" />
     <link href="~/layout5/css/custom.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/hint.min.css" rel="stylesheet" />
     @RenderSection("Styles", required: false)
     <!-- END THEME STYLES -->
     <link rel="shortcut icon" href="favicon.ico" />
@@ -75,10 +76,11 @@ License: You must have a valid license purchased only from themeforest(the above
                         </button>
                         <!-- End Toggle Button -->
                         <!-- BEGIN LOGO -->
-                        <a id="index" asp-action="index" class="page-logo">
+                        <a id="index" asp-action="index" asp-controller="Home" class="page-logo">
                             <img src="~/layout5/img/Logo GER.png" alt="Logo">
-                            <img src="~/layout5/img/GER Recuperamos Valores2.png" alt="Logo" style="margin-left:30px;">
                         </a>
+                        <img src="~/layout5/img/GER Recuperamos Valores2.png" alt="Logo" class="page-logo">
+
                         <!-- END LOGO -->
                         <!-- END SEARCH -->
                         <!-- BEGIN TOPBAR ACTIONS -->
@@ -90,10 +92,10 @@ License: You must have a valid license purchased only from themeforest(the above
                             <!-- END USER PROFILE -->
                             
                             <!-- BEGIN QUICK SIDEBAR TOGGLER -->
-                            <button type="button" class="quick-sidebar-toggler" data-toggle="collapse">
+                            @*<button type="button" class="quick-sidebar-toggler">
                                 <span class="sr-only">Toggle Quick Sidebar</span>
                                 <i class="icon-logout"></i>
-                            </button>
+                            </button>*@
                             <!-- END QUICK SIDEBAR TOGGLER -->
                         </div>
                         <!-- END TOPBAR ACTIONS -->
@@ -116,9 +118,7 @@ License: You must have a valid license purchased only from themeforest(the above
             </div>
             <!-- Page Content END -->
             <!-- Copyright BEGIN -->
-            <p class="copyright">
-                2019
-            </p>
+            @await Component.InvokeAsync("Footer")
             <!-- Copyright END -->
         </div>
     </div>
@@ -152,14 +152,16 @@ License: You must have a valid license purchased only from themeforest(the above
     <script src="~/pages/scripts/tasks.js" type="text/javascript"></script>
     <!-- END PAGE LEVEL SCRIPTS -->
     <script>
-        var url = window.location;
-        $('#navbar li').find('.active').removeClass('active');
-        $('#navbar li ul li a').each(function () {
-            if (this.href == url) {
-                $(this).parent().addClass('active');
-                $(this).parent().parent().parent().addClass('open selected')
-            }
-        })
+        $(document).ready(function () {
+            $('.alert .close')
+                .on('click', function () {
+                    $('#error_msg').hide("350");
+                });
+        });
+        var controller = window.location.href.split("/");
+        var url = '#' + controller[3];
+        $(url).addClass('active');
+        $(url).parent().parent().addClass("open");
     </script>
     <script>
         jQuery(document).ready(function () {

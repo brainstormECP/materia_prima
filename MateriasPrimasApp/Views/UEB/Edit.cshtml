@@ -6,10 +6,8 @@
 }
 
 
-<hr />
 <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
+    <div class="col-md-4 col-md-offset-4">
         <div class="portlet box yellow">
             <div class="portlet-title">
                 <div class="caption">
@@ -19,33 +17,27 @@
             <div class="portlet-body">
                 <form asp-action="Edit">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                <div class="form-group">
-                                    <label asp-for="Municipio" class="control-label"></label>
-                                    <input asp-for="Municipio" class="form-control" />
-                                    <span asp-validation-for="Municipio" class="text-danger"></span>
-                                </div>
-                            <input type="hidden" asp-for="Id" />
-                                <div class="form-group">
-                                    <label asp-for="Nombre" class="control-label"></label>
-                                    <input asp-for="Nombre" class="form-control" />
-                                    <span asp-validation-for="Nombre" class="text-danger"></span>
-                                </div>
-                              <div class="text-center">
-                                  <a asp-action="Index" class="btn btn-info">Atrás</a>
-                                  <input type="submit" value="Editar" class="btn yellow" />
+                    <div class="form-group">
+                        <label asp-for="Municipio" class="control-label"></label>
+                        <input asp-for="Municipio" class="form-control" />
+                        <span asp-validation-for="Municipio" class="text-danger"></span>
+                    </div>
+                    <input type="hidden" asp-for="Id" />
+                    <div class="form-group">
+                        <label asp-for="Nombre" class="control-label"></label>
+                        <input asp-for="Nombre" class="form-control" />
+                        <span asp-validation-for="Nombre" class="text-danger"></span>
+                    </div>
+                    <div class="text-center">
+                        <a asp-action="Index" class="btn btn-info">Atrás</a>
+                        <input type="submit" value="Editar" class="btn yellow" />
 
-                              </div>
-</form>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
-</div>
-</div>
-<div class="col-md-2"></div>
-</div>
-
-<div>
-    
-</div>
-
-        @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-        }
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

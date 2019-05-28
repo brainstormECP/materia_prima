@@ -21,8 +21,8 @@ namespace MateriasPrimasApp.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole[] {
                     new IdentityRole {Id = "1", Name = "Administrador", NormalizedName = "ADMINISTRADOR" },
-                    new IdentityRole {Id = "2", Name = "Usuario", NormalizedName = "USUARIO" },
-
+                    new IdentityRole {Id = "2", Name = "Comercial", NormalizedName = "COMERCIAL" },
+                    new IdentityRole {Id = "3", Name = "Consultor", NormalizedName = "CONSULTOR" },
              });
             modelBuilder.Entity<ApplicationUser>().HasData(
                 new ApplicationUser
@@ -49,9 +49,35 @@ namespace MateriasPrimasApp.Data
                     ConcurrencyStamp = "e3730b4c-284a-48da-ace3-b5f31f5671df",
                     Active = true,
                     UnidadOrganizativaId = 1,
+                },
+                new ApplicationUser
+                {
+                    Id = "4396dcc4-83c3-4e66-9416-c7df16be8b4a",
+                    UserName = "Juan",
+                    NormalizedUserName = "JUAN",
+                    Email = "juan@mp.cu",
+                    NormalizedEmail = "JUAN@MP.CU",
+                    PasswordHash = "AQAAAAEAACcQAAAAEOXJ8QHXja0i7s0kzcxlgJeT8xXS69ir2aCIkkIRoWjXP+GMHbeQsL/hAnMnfHziPg==",
+                    SecurityStamp = "CLPB5NJX34OWXJDQZSTE3NUCQKSHDTI2",
+                    ConcurrencyStamp = "22331850-3299-4df8-b760-4f58cf646be0",
+                    Active = true,
                 });
-            modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string> { UserId = "f42559a2-2776-4e9b-9ba1-268597eff72b", RoleId = "1" });
-            modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string> { UserId = "e4acfaab-e3c9-42ef-9e21-1902da5374af", RoleId = "2" });
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+                new IdentityUserRole<string>
+                {
+                    UserId = "f42559a2-2776-4e9b-9ba1-268597eff72b",
+                    RoleId = "1"
+                },
+                new IdentityUserRole<string>
+                {
+                    UserId = "e4acfaab-e3c9-42ef-9e21-1902da5374af",
+                    RoleId = "2"
+                },
+                new IdentityUserRole<string>
+                {
+                    UserId = "4396dcc4-83c3-4e66-9416-c7df16be8b4a",
+                    RoleId = "3"
+                });
 
             modelBuilder.Entity<Categoria>().HasData(
                 new Categoria { Id = 1, Nombre = "Ferroso", Descripcion = "Metales ferrosos tales como Hierro y Acero" },
@@ -82,7 +108,9 @@ namespace MateriasPrimasApp.Data
             );
             modelBuilder.Entity<Cliente>().HasData(
                 new Cliente { Id = 1, Codigo = "C001", Nombre = "CTEAG", Organismo = "UNE" });
-            modelBuilder.Entity<Submayor>().HasData(new Submayor { Id = 1, AlmacenId = 1, ProductoId = 1, Cantidad = 1300, UnidadId = 1 });
+
+            modelBuilder.Entity<Submayor>().HasKey(k => new { k.AlmacenId, k.ProductoId });
+            modelBuilder.Entity<Submayor>().HasData(new Submayor { AlmacenId = 1, ProductoId = 1, Cantidad = 1300, UnidadId = 1 });
         }
 
 
@@ -105,15 +133,19 @@ namespace MateriasPrimasApp.Data
 
         public DbSet<DetalleDeEntrada> DetallesDeEntradas { get; set; }
 
-        public DbSet<Traslado> Traslado { get; set; }
+        public DbSet<DetalleDeTransferencia> DetallesDeTransferencia { get; set; }
+
+        public DbSet<DetalleDeVenta> DetallesDeVenta { get; set; }
+
+        public DbSet<Transferencia> Transferencias { get; set; }
 
         public DbSet<Venta> Venta { get; set; }
 
         public DbSet<Submayor> Submayor { get; set; }
 
-        public DbSet<DetalleDeTraslado> DetallesDeTraslado { get; set; }
-
         public DbSet<Procesamiento> Procesamientos { get; set; }
+
+        public DbSet<UnidadOrganizativa> UnidadesOrganizativas { get; set; }
 
     }
 }

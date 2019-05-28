@@ -12,7 +12,7 @@ namespace MateriasPrimaApp.Models
         [Required]
         public int ProductoId { get; set; }
         public virtual Producto Producto { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Debe ingresar una Cantidad")]
         public decimal Cantidad { get; set; }
         [Required]
         [Column(TypeName = "decimal(18, 2)")]

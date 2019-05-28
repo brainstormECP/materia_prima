@@ -6,15 +6,25 @@
     ViewData["Title"] = "Usuarios";
     Layout = "~/Views/Shared/_Backend.cshtml";
 }
-<div class="row">
-    <a asp-action="CrearUsuario" class="btn btn-default">Crear nuevo Usuario</a>
-    <hr />
-</div>
+@if (User.IsInRole("Administrador"))
+{
+    <div class="row text-right">
+        <a asp-action="CrearUsuario" class="btn btn-success">Añadir Usuario</a>
+        <hr />
+    </div>
+}
 <div class="row">
     <div class="col-md-12">
         <table class="table table-striped">
             <thead>
-                <tr><th>Usuario</th><th>Roles</th><th>Estado</th><th>Acciones</th></tr>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Roles</th>
+                    <th>Estado</th>
+                    @if (User.IsInRole("Administrador"))
+                    {
+                        <th>Acciones</th>}
+                </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
@@ -45,18 +55,20 @@
                         {
                             <td>Activo</td>
                         }
-
-                        <td>
-                            @if (await userManager.IsLockedOutAsync(item))
-                            {
-                                <a asp-action="DesbloquearUsuario" asp-route-id="@item.Id" class="btn btn-success"><i class="fa fa-unlock"></i></a>
-                            }
-                            else
-                            {
-                                <a asp-action="BloquearUsuario" asp-route-id="@item.Id" class="btn btn-warning"><i class="fa fa-lock"></i></a>
-                            }
-                            <a asp-action="EditarUsuario" asp-route-id="@item.Id" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-                        </td>
+                        @if (User.IsInRole("Administrador"))
+                        {
+                            <td>
+                                @if (await userManager.IsLockedOutAsync(item))
+                                {
+                                    <a asp-action="DesbloquearUsuario" asp-route-id="@item.Id" class="btn btn-success"><i class="fa fa-unlock"></i></a>
+                                }
+                                else
+                                {
+                                    <a asp-action="BloquearUsuario" asp-route-id="@item.Id" class="btn btn-warning"><i class="fa fa-lock"></i></a>
+                                }
+                                <a asp-action="EditarUsuario" asp-route-id="@item.Id" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                            </td>
+                        }
                     </tr>
                 }
             </tbody>

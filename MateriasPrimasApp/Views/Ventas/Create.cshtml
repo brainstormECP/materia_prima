@@ -6,8 +6,7 @@
 }
 <hr />
 <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
+    <div class="col-md-4 col-md-offset-4">
         <div class="portlet box blue">
             <div class="portlet-title">
                 <div class="caption">
@@ -15,30 +14,25 @@
                 </div>
             </div>
             <div class="portlet-body">
-                    <form asp-action="Create">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                    <div class="form-group">
-                                        <label asp-for="Fecha" class="control-label"></label>
-                                        <input asp-for="Fecha" class="form-control" />
-                                        <span asp-validation-for="Fecha" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="ClienteId" class="control-label"></label>
-                                        <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId"></select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="UnidadOrganizativaId" class="control-label"></label>
-                                        <select asp-for="UnidadOrganizativaId" class="form-control" asp-items="ViewBag.UnidadOrganizativaId"></select>
-                                    </div>
-                        <div class="form-group text-center">
-                            <input type="submit" value="Crear" class="btn btn-primary" />
-                        </div>
-                    </form>
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Fecha" class="control-label"></label>
+                        <input asp-for="Fecha" class="form-control" />
+                        <span asp-validation-for="Fecha" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ClienteId" class="control-label">Cliente</label>
+                        <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId"></select>
+                    </div>
+                    <div class="form-group">
+                        <input asp-for="UnidadOrganizativaId" type="hidden" />
+                    </div>
+                    <div class="form-group text-center">
+                        <input type="submit" value="Crear" class="btn btn-primary" />
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    <div class="col-md-2"></div>
 </div>
-<div>
-</div>
-

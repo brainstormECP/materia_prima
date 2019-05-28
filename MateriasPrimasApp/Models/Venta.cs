@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace MateriasPrimaApp.Models
@@ -16,5 +17,7 @@ namespace MateriasPrimaApp.Models
         public int UnidadOrganizativaId { get; set; }
         public virtual UnidadOrganizativa UnidadOrganizativa { get; set; }
         public bool Confirmada { get; set; }
+
+        public virtual ICollection<DetalleDeVenta> DetallesDeVenta { get; set; }
     }
 }

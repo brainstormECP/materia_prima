@@ -1,0 +1,109 @@
+﻿@model IEnumerable<MateriasPrimaApp.Models.Entrada>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Backend.cshtml";
+}
+
+
+@section Styles{
+    <link href="~/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/css/buttons.dataTables.min.css" rel="stylesheet" />
+}
+<div class="row">
+    <!-- BEGIN Portlet PORTLET-->
+    <div class="portlet light bordered">
+        <div class="portlet-title">
+            <div class="caption font-dark">
+                <span class="caption-subject bold uppercase">Listado de Entradas</span>
+            </div>
+            <div class="actions">
+                <a class="btn btn-icon-only btn-default fullscreen" href="#">
+                </a>
+            </div>
+        </div>
+        <div class="portlet-body" style="height: auto;">
+            <table class="table table-responsive" id="myDatatable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Fecha)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Cliente)
+                        </th>
+                        <th>
+                            Unidad Organizativa
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Fecha)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Cliente.Nombre)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UnidadOrganizativa.Nombre)
+                            </td>
+                            <td>                    
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info hidden-print"><i class="fa fa-eye"></i> Detalles</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- END PORTLET-->
+</div>
+
+
+@section scripts{
+    <script src="~/js/datatables.min.js"></script>
+    <script src="~/js/dataTables.buttons.min.js"></script>
+    <script src="~/js/jszip.min.js"></script>
+    <script src="~/js/buttons.html5.min.js"></script>
+    <script>
+        $('document').ready(function () {
+            $('#myDatatable').DataTable({
+                "language": {
+                    "paginate": {
+                        "first": "Primera",
+                        "previous": "Anterior",
+                        "next": "Siguiente",
+                        "last": "&Uacute;ltima"
+                    },
+                    "info": "Mostrando resultados del _START_ al _END_ de un total de _TOTAL_",
+                    "lengthMenu": "Mostrando _MENU_ resultados",
+                    "search": "Buscar: ",
+                    "infoEmpty": "Mostrando 0 resultados",
+                    "infoFiltered": "(filtrado de un total de _MAX_ resultados)",
+                    "sZeroRecords": "No se encontraron resultados con este criterio"
+                },
+                "pagingType": "full_numbers",
+                dom: 'Bfrtip',
+                responsive: true,
+                buttons: [
+                    {
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: [0, 1, 2]
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        exportOptions: {
+                            columns: [0, 1, 2,]
+                        }
+                    },
+                ]
+            });
+        });
+    </script>
+}

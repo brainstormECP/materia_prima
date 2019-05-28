@@ -37,10 +37,10 @@ namespace MateriasPrimasApp.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]            
+            [Required(ErrorMessage = "El campo Usuario es requerido")]
             public string UserName { get; set; }
 
-            [Required]
+            [Required(ErrorMessage ="El campo Contraseña es requerido")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 

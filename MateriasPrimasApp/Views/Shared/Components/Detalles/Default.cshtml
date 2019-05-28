@@ -29,22 +29,20 @@
                     @entrada.PrecioMn
                 </td>
                 <td>
-                <form asp-action="EliminarDetalle" asp-controller="Entradas"  data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#result" data-ajax-success="onSuccess" data-ajax-failure="onFailed">
-                       <input type="hidden" value="@entrada.Id" name="id"/>
-                    <button type="submit" class="btn red"><span class="fa fa-trash"></span></button>
-                </form>
+                    <form asp-action="EliminarDetalle" asp-controller="Entradas" data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#result" data-ajax-success="onSuccess" data-ajax-failure="onFailed">
+                        <input type="hidden" value="@entrada.Id" name="id" />
+                        <button type="submit" class="btn red hint--top" aria-label="Eliminar Producto"><span class="fa fa-trash"></span></button>
+                    </form>
             </tr>
         }
-            <tr>
-                <td>
-                </td>
-                <td>
-                </td>
-                <td>                 
-                </td>
-                <td class="text-left">
-                    <strong>Total:</strong> @ViewBag.Total
-                </td>
-            </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td class="text-left">
+                <strong>Total:</strong> @ViewBag.Total
+            </td>
+            <td></td>
+
+        </tr>
     </tbody>
 </table>

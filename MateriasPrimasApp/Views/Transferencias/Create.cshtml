@@ -1,0 +1,54 @@
+﻿@model MateriasPrimaApp.Models.Transferencia
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Backend.cshtml";
+}
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-plus-square"></i>Nueva Transferencia
+                </div>
+            </div>
+            <div class="portlet-body">
+                <br />
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Fecha" class="control-label"></label>
+                        <input asp-for="Fecha" class="form-control" />
+                        <span asp-validation-for="Fecha" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="OrigenId" class="control-label">Origen</label>
+                        <select id="origen" asp-for="OrigenId" class="form-control" asp-items="ViewBag.OrigenId"></select>
+                    </div>
+                    <div class="form-group" id="destino">
+                        <label asp-for="DestinoId" class="control-label">Destino</label>
+                        <select asp-for="DestinoId" class="form-control" asp-items="ViewBag.DestinoId"></select>
+                    </div>
+                    <br />
+                    <div class="form-group text-center">
+                        <input type="submit" value="Crear" class="btn btn-success" />
+                        <a asp-action="index" class="btn btn-default">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#operaciones').addClass("open");
+            $('#transferencias').addClass("active");
+            $('#origen').on("change", function () {
+                var id = $('#origen').val();
+                $('#destino').load("/transferencias/origen/" + id);
+            });
+        });
+    </script>
+}
+

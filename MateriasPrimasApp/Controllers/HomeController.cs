@@ -26,7 +26,7 @@ namespace MateriasPrimasApp.Controllers
         {
            
             ViewData["entradas"] = _context.Entrada.Count(e => !e.Confirmada);
-            ViewData["traslados"] = _context.Traslado.Count();
+            ViewData["transferencias"] = _context.Transferencias.Count(t => !t.Confirmada);
 
             return View();
         }      

@@ -5,13 +5,13 @@
 <div class="btn-group-img btn-group">
     @if (SignInManager.IsSignedIn(User))
     {
-        <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-            @*<img src="~/layout5/img/avatar1.jpg" alt="">*@
-            <span class="fa fa-4x fa-user "></span>
-        </button>
+    <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+        <i class="glyphicon glyphicon-user" style="color:#f9f9f9;"></i>
+        <span style="color:#f9f9f9;">@User.Identity.Name</span>
+    </button>
         <ul class="dropdown-menu-v2" role="menu">
             <li>
-                <a asp-area="Identity" asp-page="/Account/Manage/Index">@User.Identity.Name </a>
+                <a asp-area="Identity" asp-page="/Account/Manage/Index">Administrar cuenta </a>
             </li>
             <li class="divider"></li>
             @*<li>
@@ -20,12 +20,9 @@
             <li>
                 <a href="#">My Tasks</a>
             </li>
-            <li class="divider"></li>*@
+            <li class="divider"></li>*@            
             <li>
-                <a href="#">Lock Screen</a>
-            </li>
-            <li>
-                <a asp-action="LogOut" asp-controller="Seguridad">Logout</a>
+                <a asp-action="LogOut" asp-controller="Seguridad"><i class="fa fa-sign-out"></i>Cerrar Sesi&oacute;n</a>
             </li>
         </ul>
     }

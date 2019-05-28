@@ -6,48 +6,45 @@
 }
 
 
-    <hr />
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            <div class="portlet box blue">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="fa fa-eye"></i>Detalles UEB
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-eye"></i>Detalles UEB
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="row static-info">
+                    <div class="col-md-6 text-center">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Municipio)
+                        </dt>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <dd>
+                            @Html.DisplayFor(model => model.Municipio)
+                        </dd>
                     </div>
                 </div>
-                <div class="portlet-body">
-                    <div class="row static-info">
-                                <div class="col-md-6 text-center">
-                                    <dt>
-                                        @Html.DisplayNameFor(model => model.Municipio)
-                                    </dt>
-                                </div>
-                                <div class="col-md-6 text-left">
-                                    <dd>
-                                        @Html.DisplayFor(model => model.Municipio)
-                                    </dd>
-                                </div>
+                <div class="row static-info">
+                </div>
+                <div class="row static-info">
+                    <div class="col-md-6 text-center">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Nombre)
+                        </dt>
                     </div>
-                    <div class="row static-info">
-                    </div>
-                    <div class="row static-info">
-                                <div class="col-md-6 text-center">
-                                    <dt>
-                                        @Html.DisplayNameFor(model => model.Nombre)
-                                    </dt>
-                                </div>
-                                <div class="col-md-6 text-left">
-                                    <dd>
-                                        @Html.DisplayFor(model => model.Nombre)
-                                    </dd>
-                                </div>
+                    <div class="col-md-6 text-left">
+                        <dd>
+                            @Html.DisplayFor(model => model.Nombre)
+                        </dd>
                     </div>
                 </div>
             </div>
         </div>
-       <div class="col-md-2"></div>
     </div>
+</div>
     <dl class="dl-horizontal">
   </dl>
 <div class="text-center">

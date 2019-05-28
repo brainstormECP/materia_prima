@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace MateriasPrimasApp.Controllers
 {
-    [Authorize(Roles = "Usuario")]
+    [Authorize(Roles = "Comercial, Consultor")]
     public class EntradasController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -25,19 +25,27 @@ namespace MateriasPrimasApp.Controllers
         {
             _userManager = userManager;
             _context = context;
-            controlSubMayor = new ControlSubMayor(context);
+            controlSubMayor = new ControlSubMayor(_context);
         }
 
+        [Authorize(Roles = "Comercial")]
         // GET: Entradas
         public async Task<IActionResult> Index()
         {
             var user = _context.Users.Find(_userManager.GetUserId(User));
             if (user.UnidadOrganizativaId != null)
             {
-                var entradas = await _context.Entrada.Include(e => e.Cliente).Include(e => e.UnidadOrganizativa).Where(e => e.UnidadOrganizativaId == user.UnidadOrganizativaId).ToListAsync();
+                var entradas = await _context.Entrada.Where(e => e.UnidadOrganizativaId == user.UnidadOrganizativaId).Include(e=>e.Cliente).Include(e=>e.UnidadOrganizativa).Include(e=>e.DetallesDeEntrada).ToListAsync();
                 return View(entradas);
             }
-            return NotFound();
+            return RedirectToAction("TodasLasEntradas");
+        }
+
+        [Authorize(Roles = "Consultor, Comercial")]
+        public async Task<IActionResult> TodasLasEntradas()
+        {
+            var entradas = await _context.Entrada.Include(e => e.Cliente).Include(e => e.UnidadOrganizativa).Include(e => e.DetallesDeEntrada).ToListAsync();
+            return View(entradas);
         }
 
         // GET: Entradas/Details/5
@@ -63,17 +71,16 @@ namespace MateriasPrimasApp.Controllers
             return View(entrada);
         }
 
+        [Authorize(Roles = "Comercial")]
         // GET: Entradas/Create
         public IActionResult Create()
         {
-            ViewData["ClienteId"] = new SelectList(_context.Cliente, "Id", "Codigo");
+            ViewData["ClienteId"] = new SelectList(_context.Cliente, "Id", "Nombre");
             //ViewData["UnidadOrganizativaId"] = new SelectList(_context.Set<UnidadOrganizativa>(), "Id", "Nombre");
             return View();
         }
 
-        // POST: Entradas/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Comercial")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Fecha,ClienteId")] Entrada entrada)
@@ -88,11 +95,12 @@ namespace MateriasPrimasApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("DetallesDeEntrada", new { id = entrada.Id });
             }
-            ViewData["ClienteId"] = new SelectList(_context.Cliente, "Id", "Codigo", entrada.ClienteId);
-            ViewData["UnidadOrganizativaId"] = new SelectList(_context.Set<UnidadOrganizativa>(), "Id", "Nombre", entrada.UnidadOrganizativaId);
+            ViewData["ClienteId"] = new SelectList(_context.Cliente, "Id", "Nombre", entrada.ClienteId);
+            //ViewData["UnidadOrganizativaId"] = new SelectList(_context.Set<UnidadOrganizativa>(), "Id", "Nombre", entrada.UnidadOrganizativaId);
             return View(entrada);
         }
 
+        [Authorize(Roles = "Comercial")]
         // GET: Entradas/Create
         public IActionResult DetallesDeEntrada(int id)
         {
@@ -107,6 +115,7 @@ namespace MateriasPrimasApp.Controllers
             return View(entrada);
         }
 
+        [Authorize(Roles = "Comercial")]
         [HttpPost]
         public async Task<IActionResult> AddDetalle(DetalleDeEntrada detalle)
         {
@@ -114,7 +123,14 @@ namespace MateriasPrimasApp.Controllers
             var producto = _context.Producto.Find(detalle.ProductoId);
             detalle.PrecioMn = detalle.Cantidad * producto.PrecioCompraMn;
             detalle.PrecioMlc = detalle.Cantidad * producto.PrecioCompraMlc;
-
+            if(_context.DetallesDeEntradas.Any(d=>d.ProductoId == detalle.ProductoId && d.EntradaId == detalle.EntradaId))
+            {
+                ModelState.AddModelError("ProductoId", "El producto selecionado ya se encuentra en la entrada");
+            }
+            if (detalle.Cantidad == 0)
+            {
+                ModelState.AddModelError("Cantidad", "Debe especificar una cantidad para este Producto");
+            }
             if (ModelState.IsValid)
             {
                 await _context.DetallesDeEntradas.AddAsync(detalle);
@@ -124,6 +140,7 @@ namespace MateriasPrimasApp.Controllers
             return BadRequest(ModelState);
         }
 
+        [Authorize(Roles = "Comercial")]
         [HttpPost]
         public async Task<IActionResult> EliminarDetalle(int? id)
         {
@@ -146,6 +163,7 @@ namespace MateriasPrimasApp.Controllers
 
         }
 
+        [Authorize(Roles = "Comercial")]
         // GET: Entradas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -160,14 +178,12 @@ namespace MateriasPrimasApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["ClienteId"] = new SelectList(_context.Cliente, "Id", "Codigo", entrada.ClienteId);
-            ViewData["UnidadOrganizativaId"] = new SelectList(_context.Set<UnidadOrganizativa>(), "Id", "Nombre", entrada.UnidadOrganizativaId);
+            ViewData["ClienteId"] = new SelectList(_context.Cliente, "Id", "Nombre", entrada.ClienteId);
+            //ViewData["UnidadOrganizativaId"] = new SelectList(_context.Set<UnidadOrganizativa>(), "Id", "Nombre", entrada.UnidadOrganizativaId);
             return View(entrada);
         }
 
-        // POST: Entradas/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Comercial")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Fecha,ClienteId,UnidadOrganizativaId")] Entrada entrada)
@@ -197,11 +213,12 @@ namespace MateriasPrimasApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClienteId"] = new SelectList(_context.Cliente, "Id", "Codigo", entrada.ClienteId);
+            ViewData["ClienteId"] = new SelectList(_context.Cliente, "Id", "Nombre", entrada.ClienteId);
             ViewData["UnidadOrganizativaId"] = new SelectList(_context.Set<UnidadOrganizativa>(), "Id", "Nombre", entrada.UnidadOrganizativaId);
             return View(entrada);
         }
 
+        [Authorize(Roles = "Comercial")]
         // GET: Entradas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -215,6 +232,7 @@ namespace MateriasPrimasApp.Controllers
                 .Include(e => e.Cliente)
                 .Include(e => e.UnidadOrganizativa)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (entrada == null || entrada.UnidadOrganizativaId != user.UnidadOrganizativaId || entrada.Confirmada)
             {
                 return NotFound();
@@ -223,6 +241,7 @@ namespace MateriasPrimasApp.Controllers
             return View(entrada);
         }
 
+        [Authorize(Roles = "Comercial")]
         // GET: Entradas/Confirmar/5
         public async Task<IActionResult> Confirmar(int? id)
         {
@@ -231,23 +250,21 @@ namespace MateriasPrimasApp.Controllers
                 return NotFound();
             }
 
-            var entrada = await _context.Entrada
-                .Include(e => e.Cliente)
-                .Include(e => e.UnidadOrganizativa)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var entrada = await _context.Entrada.Include(e=>e.Cliente).Include(e=>e.UnidadOrganizativa).FirstOrDefaultAsync(e=>e.Id == id);
             if (entrada == null || entrada.Confirmada)
             {
                 return NotFound();
             }
-            List<DetalleDeEntrada> detalles = _context.DetallesDeEntradas
+
+            var detalles = await _context.DetallesDeEntradas
                                                       .Where(d => d.EntradaId == id)
-                                                      .Include(p => p.Producto)
-                                                      .ToList<DetalleDeEntrada>();
+                                                      .Include(p => p.Producto).ThenInclude(p => p.Unidad)
+                                                      .ToListAsync();
             ViewData["Detalles"] = detalles;
             return View(entrada);
         }
 
-        // POST: Entradas/Delete/5
+        [Authorize(Roles = "Comercial")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -257,7 +274,8 @@ namespace MateriasPrimasApp.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        // POST: Entradas/Delete/5
+
+        [Authorize(Roles = "Comercial")]
         [HttpPost, ActionName("Confirmar")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ConfirmarConfirmed(int id)

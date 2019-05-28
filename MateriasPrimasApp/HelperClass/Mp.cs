@@ -52,24 +52,45 @@ namespace MateriasPrimasApp.HelperClass
 
         }
 
-        public bool ProcesarTraslado(Traslado traslado)
+        public void ProcesarVenta(Venta venta)
         {
-            bool Success = true;
-            List<DetalleDeTraslado> detalles = _context.DetallesDeTraslado.Where(d => d.TrasladoId == traslado.Id).Include(p => p.Producto).ToList();
+            var detalles = _context.DetallesDeVenta.Where(d => d.VentaId == venta.Id).Include(p => p.Producto).ToList();
 
             foreach (var item in detalles)
             {
-                Submayor sub = _context.Submayor.FirstOrDefault(s => s.AlmacenId == traslado.OrigenId && s.ProductoId == item.ProductoId);
+                Submayor sub = _context.Submayor.FirstOrDefault(s => s.AlmacenId == venta.UnidadOrganizativaId && s.ProductoId == item.ProductoId);
+                if (sub == null)
+                {
+                    //generar error, no se puede vender algo que no está en almacén
+                }
+                else
+                {
+                    sub.Cantidad -= item.Cantidad;
+                    _context.Update(sub);
+                }
+                _context.SaveChanges();
+            }
+
+        }
+
+        public bool ProcesarTraslado(Transferencia transferencia)
+        {
+            bool Success = true;
+            List<DetalleDeTransferencia> detalles = _context.DetallesDeTransferencia.Where(d => d.TransferenciaId == transferencia.Id).Include(p => p.Producto).ToList();
+
+            foreach (var item in detalles)
+            {
+                Submayor sub = _context.Submayor.FirstOrDefault(s => s.AlmacenId == transferencia.OrigenId && s.ProductoId == item.ProductoId);
                 sub.Cantidad -= item.Cantidad;
                 _context.Update(sub);
 
-                Submayor sub2 = _context.Submayor.FirstOrDefault(s => s.AlmacenId == traslado.DestinoId && s.ProductoId == item.ProductoId);
+                Submayor sub2 = _context.Submayor.FirstOrDefault(s => s.AlmacenId == transferencia.DestinoId && s.ProductoId == item.ProductoId);
 
                 if (sub2 == null)
                 {
                     sub2 = new Submayor
                     {
-                        AlmacenId = traslado.DestinoId,
+                        AlmacenId = transferencia.DestinoId,
                         Cantidad = item.Cantidad,
                         ProductoId = item.ProductoId,
                         UnidadId = item.Producto.UnidadId

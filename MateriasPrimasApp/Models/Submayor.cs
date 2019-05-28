@@ -4,7 +4,6 @@ namespace MateriasPrimaApp.Models
 {
     public class Submayor
     {
-        public int Id { get; set; }
         [Required]
         public int AlmacenId { get; set; }
         public virtual UnidadOrganizativa Almacen { get; set; }

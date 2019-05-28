@@ -8,19 +8,21 @@ using Microsoft.EntityFrameworkCore;
 using MateriasPrimaApp.Models;
 using MateriasPrimasApp.Data;
 using Microsoft.VisualStudio.Web.CodeGeneration;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MateriasPrimasApp.Controllers
 {
+    [Authorize(Roles = "Administrador, Consultor")]
     public class ProductosController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger _logger;
 
         public ProductosController(ApplicationDbContext context)
         {
             _context = context;
         }
 
+        [Authorize(Roles = "Administrador, Consultor")]
         // GET: Productoes
         public async Task<IActionResult> Index()
         {
@@ -28,6 +30,7 @@ namespace MateriasPrimasApp.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        [Authorize(Roles = "Administrador, Consultor")]
         // GET: Productoes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -49,6 +52,7 @@ namespace MateriasPrimasApp.Controllers
             return View(producto);
         }
 
+        [Authorize(Roles = "Administrador")]
         // GET: Productoes/Create
         public IActionResult Create()
         {
@@ -61,9 +65,10 @@ namespace MateriasPrimasApp.Controllers
         // POST: Productoes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Codigo,Nombre,Descripcion,UnidadId,CategoriaId,TipoId")] Producto producto)
+        public async Task<IActionResult> Create([Bind("Id,Codigo,Nombre,Descripcion,UnidadId,CategoriaId,TipoId,PrecioCompraMn,PrecioVentaMn,PrecioCompraMlc,PrecioVentaMlc")] Producto producto)
         {
             if(await _context.Producto.AnyAsync(p=>p.Codigo == producto.Codigo))
             {
@@ -73,16 +78,15 @@ namespace MateriasPrimasApp.Controllers
             {
                 _context.Add(producto);
                 await _context.SaveChangesAsync();
-                _logger.LogMessage("Se guardo el producto:" + producto, LogMessageLevel.Trace);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoriaId"] = new SelectList(_context.Categoria, "Id", "Id", producto.CategoriaId);
-            ViewData["TipoId"] = new SelectList(_context.Set<TipoDeProducto>(), "Id", "Id", producto.TipoId);
-            ViewData["UnidadId"] = new SelectList(_context.UM, "Id", "Id", producto.UnidadId);
+            ViewData["CategoriaId"] = new SelectList(_context.Categoria, "Id", "Nombre", producto.CategoriaId);
+            ViewData["TipoId"] = new SelectList(_context.Set<TipoDeProducto>(), "Id", "Nombre", producto.TipoId);
+            ViewData["UnidadId"] = new SelectList(_context.UM, "Id", "Unidad", producto.UnidadId);
             return View(producto);
         }
 
-        // GET: Productoes/Edit/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -95,18 +99,19 @@ namespace MateriasPrimasApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoriaId"] = new SelectList(_context.Categoria, "Id", "Id", producto.CategoriaId);
-            ViewData["TipoId"] = new SelectList(_context.Set<TipoDeProducto>(), "Id", "Id", producto.TipoId);
-            ViewData["UnidadId"] = new SelectList(_context.UM, "Id", "Id", producto.UnidadId);
+            ViewData["CategoriaId"] = new SelectList(_context.Categoria, "Id", "Nombre", producto.CategoriaId);
+            ViewData["TipoId"] = new SelectList(_context.Set<TipoDeProducto>(), "Id", "Nombre", producto.TipoId);
+            ViewData["UnidadId"] = new SelectList(_context.UM, "Id", "Unidad", producto.UnidadId);
             return View(producto);
         }
 
         // POST: Productoes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Codigo,Nombre,Descripcion,UnidadId,CategoriaId,TipoId")] Producto producto)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Codigo,Nombre,Descripcion,UnidadId,CategoriaId,TipoId,PrecioCompraMn,PrecioVentaMn,PrecioCompraMlc,PrecioVentaMlc")] Producto producto)
         {
             if (id != producto.Id)
             {
@@ -133,13 +138,14 @@ namespace MateriasPrimasApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoriaId"] = new SelectList(_context.Categoria, "Id", "Id", producto.CategoriaId);
-            ViewData["TipoId"] = new SelectList(_context.Set<TipoDeProducto>(), "Id", "Id", producto.TipoId);
-            ViewData["UnidadId"] = new SelectList(_context.UM, "Id", "Id", producto.UnidadId);
+            ViewData["CategoriaId"] = new SelectList(_context.Categoria, "Id", "Nombre", producto.CategoriaId);
+            ViewData["TipoId"] = new SelectList(_context.Set<TipoDeProducto>(), "Id", "Nombre", producto.TipoId);
+            ViewData["UnidadId"] = new SelectList(_context.UM, "Id", "Unidad", producto.UnidadId);
             return View(producto);
         }
 
         // GET: Productoes/Delete/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -161,6 +167,7 @@ namespace MateriasPrimasApp.Controllers
         }
 
         // POST: Productoes/Delete/5
+        [Authorize(Roles = "Administrador")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -169,6 +176,14 @@ namespace MateriasPrimasApp.Controllers
             _context.Producto.Remove(producto);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        [AllowAnonymous]
+        public ActionResult um(int id)
+        {
+            var producto = _context.Producto.Include(p=>p.Unidad).FirstOrDefault(p=>p.Id == id);
+            ViewData["Um"] = producto.Unidad.Unidad;
+            return PartialView("_UMProductoPartial");
         }
 
         private bool ProductoExists(int id)

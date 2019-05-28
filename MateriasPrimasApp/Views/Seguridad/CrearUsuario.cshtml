@@ -6,7 +6,9 @@
 
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-6 col-md-offset-3">
+        <h3>Nuevo Usuario</h3>
+        <hr />
         <form asp-action="CrearUsuario">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -37,7 +39,7 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="UnidadOrganizativaId" class="control-label"></label>
+                <label asp-for="UnidadOrganizativaId" class="control-label">Unidad Organizativa</label>
                 <select asp-for="UnidadOrganizativaId" asp-items="ViewBag.UO" class="form-control"></select>
                 <span asp-validation-for="UnidadOrganizativaId" class="text-danger"></span>
             </div>
