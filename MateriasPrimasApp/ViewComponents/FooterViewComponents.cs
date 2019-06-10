@@ -1,4 +1,4 @@
-﻿using MateriasPrimaApp.Models;
+﻿using MateriasPrimasApp.Models;
 using MateriasPrimasApp.Data;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -20,10 +20,14 @@ namespace MateriasPrimasApp.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
-            if(user.UnidadOrganizativaId != null)
+            if(user != null)
             {
-                var unidad = _context.Set<UnidadOrganizativa>().Find(user.UnidadOrganizativaId);
-                ViewData["Unidad"] = unidad.Nombre;
+                if (user.UnidadOrganizativaId != null)
+                {
+                    var unidad = _context.Set<UnidadOrganizativa>().Find(user.UnidadOrganizativaId);
+                    ViewData["Unidad"] = unidad.Nombre;
+                }
+
             }
             return View();
         }

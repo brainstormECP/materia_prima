@@ -1,52 +1,57 @@
-﻿@model MateriasPrimaApp.Models.Procesamiento
+﻿@model MateriasPrimasApp.Models.Procesamiento
 
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Backend.cshtml";
 }
-<hr />
 <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
+    <div class="col-md-6 col-md-offset-3">
         <div class="portlet box blue">
             <div class="portlet-title">
                 <div class="caption">
-                    <i class="fa fa-plus-square"></i>Crear Procesamiento
+                    <i class="fa fa-plus-square"></i>Procesar Materia Prima
                 </div>
             </div>
-            <div class="portlet-body">
-                    <form asp-action="Create">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                    <div class="form-group">
-                                        <label asp-for="ProductoOrigenId" class="control-label">Producto Original</label>
-                                        <select asp-for="ProductoOrigenId" class="form-control" asp-items="ViewBag.ProductoOrigenId"></select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="CantidadOrigen" class="control-label"></label>
-                                        <input asp-for="CantidadOrigen" class="form-control" />
-                                        <span asp-validation-for="CantidadOrigen" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="ProductoSalidaId" class="control-label">Producto Resultante</label>
-                                        <select asp-for="ProductoSalidaId" class="form-control" asp-items="ViewBag.ProductoSalidaId"></select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="CantidadSalida" class="control-label"></label>
-                                        <input asp-for="CantidadSalida" class="form-control" />
-                                        <span asp-validation-for="CantidadSalida" class="text-danger"></span>
-                                    </div>
-                        <div class="form-group text-center">
-                            <input type="submit" value="Crear" class="btn btn-primary" />
+            <div class="portlet-body" style="height: auto;">
+                <br />
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="ProductoId" class="control-label">Materia Prima</label>
+                        <select name="ProductoId" id="producto" asp-items="ViewBag.Productos" class="form-control"></select>
+                        <span asp-validation-for="Producto" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Cantidad</label>
+                        <div class="input-group">
+                            <input asp-for="Cantidad" class="form-control">
+                            <span class="input-group-addon" id="umresult">
+                                <samp class="hint--top um" aria-label="Unidad de Medida">UM</samp>
+                            </span>
                         </div>
-                    </form>
+                        <span asp-validation-for="Cantidad" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group text-center">
+                        <input type="submit" value="Crear" class="btn btn-primary" />
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    <div class="col-md-2"></div>
 </div>
-<div>
-</div>
+@section Scripts{
+    <script>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        var buscarum = function (id) {
+            $('#umresult').load("/productos/um/" + id);
+        };
+        var id = $('#producto').val()
+        buscarum(id);
+        $('#producto').on("change", function () {
+            var id = $(this).val();
+            buscarum(id);
+        });
+
+    </script>
 }

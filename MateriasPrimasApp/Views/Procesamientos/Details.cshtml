@@ -1,4 +1,4 @@
-﻿@model MateriasPrimaApp.Models.Procesamiento
+﻿@model MateriasPrimasApp.Models.Procesamiento
 
 @{
     ViewData["Title"] = "Details";
@@ -6,81 +6,155 @@
 }
 
 
-    <hr />
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            <div class="portlet box blue">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="fa fa-eye"></i>Detalles Procesamiento
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="portlet box green">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-recycle" style="font-size:20px;"></i>Detalles de Procesamiento
+                </div>
+            </div>
+            <div class="portlet-body">
+                <br />
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="row static-info">
+                    </div>
+                    <div class="row static-info">
+                        <div class="col-md-6 text-center">
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Fecha)
+                            </dt>
+                        </div>
+                        <div class="col-md-6 text-left">
+                            <dd>
+                                @Html.DisplayFor(model => model.Fecha)
+                            </dd>
+                        </div>
+                    </div>
+                    <div class="row static-info">
+                    </div>
+                    <div class="row static-info">
+                        <div class="col-md-6 text-center">
+                            <dt>
+                                Unidad Organizativa
+                            </dt>
+                        </div>
+                        <div class="col-md-6 text-left">
+                            <dd>
+                                @Html.DisplayFor(model => model.UnidadOrganizativa.Nombre)
+                            </dd>
+                        </div>
+                    </div>
+                    <div class="row static-info">
+                    </div>
+                    <div class="row static-info">
+                        <div class="col-md-6 text-center">
+                            <dt>
+                                Materia Prima
+                            </dt>
+                        </div>
+                        <div class="col-md-6 text-left">
+                            <dd>
+                                @Html.DisplayFor(model => model.Producto.Nombre)
+                            </dd>
+                        </div>
+                    </div>
+                    <div class="row static-info">
+                    </div>
+                    <div class="row static-info">
+                        <div class="col-md-6 text-center">
+                            @if (Model.Confirmado == true)
+                            {
+                                <dt>
+                                    Cantidad Procesada
+                                </dt>
+                            }
+                            else
+                            {
+                                <dt>
+                                    Cantidad a procesar
+                                </dt>
+                            }
+                        </div>
+                        <div class="col-md-6 text-left">
+                            <dd>
+                                @Html.DisplayFor(model => model.Cantidad) @Model.Producto.Unidad.Unidad
+                            </dd>
+                        </div>
+                    </div>
+
+                    <div class="row static-info">
+                    </div>
+                    <div class="row static-info">
+                        <div class="col-md-6 text-center">
+                            <dt>
+                                Merma
+                            </dt>
+                        </div>
+                        <div class="col-md-6 text-left">
+                            <dd>
+                                @Html.DisplayFor(model => model.Merma) @Model.Producto.Unidad.Unidad
+                            </dd>
+                        </div>
                     </div>
                 </div>
-                <div class="portlet-body">
-                    <div class="row static-info">
+                <br />
+                <div class="row">
+                    <br />
+                    <div class="col-md-8 col-md-offset-2">
+                        <table class="table table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>Nombre del Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Unidad de Medida</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in @ViewBag.Detalles)
+                                {
+                                    <tr>
+                                        <td>@item.Derivado.Nombre</td>
+                                        <td>@item.Cantidad</td>
+                                        <td>@item.Derivado.Unidad.Unidad</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="row static-info">
-                    </div>
-                    <div class="row static-info">
-                                <div class="col-md-6 text-center">
-                                    <dt>
-                                        @Html.DisplayNameFor(model => model.ProductoOrigen)
-                                  </dt>
-                                </div>
-                                <div class="col-md-6 text-left">
-                                      <dd>
-                                          @Html.DisplayFor(model => model.ProductoOrigen.Nombre)
-                                      </dd>
-                                </div>
-                    </div>
-                    <div class="row static-info">
-                                <div class="col-md-6 text-center">
-                                    <dt>
-                                        @Html.DisplayNameFor(model => model.CantidadOrigen)
-                                    </dt>
-                                </div>
-                                <div class="col-md-6 text-left">
-                                    <dd>
-                                        @Html.DisplayFor(model => model.CantidadOrigen)
-                                    </dd>
-                                </div>
-                    </div>
-                    <div class="row static-info">
-                    </div>
-                    <div class="row static-info">
-                                <div class="col-md-6 text-center">
-                                    <dt>
-                                        @Html.DisplayNameFor(model => model.ProductoSalida)
-                                  </dt>
-                                </div>
-                                <div class="col-md-6 text-left">
-                                      <dd>
-                                          @Html.DisplayFor(model => model.ProductoSalida.Nombre)
-                                      </dd>
-                                </div>
-                    </div>
-                    <div class="row static-info">
-                                <div class="col-md-6 text-center">
-                                    <dt>
-                                        @Html.DisplayNameFor(model => model.CantidadSalida)
-                                    </dt>
-                                </div>
-                                <div class="col-md-6 text-left">
-                                    <dd>
-                                        @Html.DisplayFor(model => model.CantidadSalida)
-                                    </dd>
-                                </div>
-                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="text-center">
+                    <form asp-action="Confirmar" method="post">
+                        <input type="hidden" asp-for="Id" value="@Model.Id" />
+                        <div class="form-group">
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-       <div class="col-md-2"></div>
     </div>
-    <dl class="dl-horizontal">
-  </dl>
+</div>
 <div class="text-center">
-   <div class="btn-group btn-group-solid">
-        <a asp-action="Index" class="btn btn-info">Atrás</a>
-        <a asp-action="Edit" class="btn yellow" asp-route-id="@Model.Id">Editar</a> 
+    <div>
+        @if (User.IsInRole("Consultor"))
+        {
+            <a asp-action="TodosLosProcesamientos" class="btn btn-info">Atrás</a>
+        }
+        @if (User.IsInRole("Comercial"))
+        {
+            <a asp-action="Index" class="btn btn-info">Atrás</a>
+        }
+    </div>
 </div>
-</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#operaciones').addClass("open");
+            $('#entradas').addClass("active");
+        });
+    </script>
+
+}

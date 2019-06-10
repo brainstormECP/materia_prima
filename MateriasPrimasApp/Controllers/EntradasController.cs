@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MateriasPrimasApp.Data;
+using MateriasPrimasApp.HelperClass;
+using MateriasPrimasApp.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MateriasPrimaApp.Models;
-using MateriasPrimasApp.Data;
-using MateriasPrimasApp.Models;
-using Microsoft.AspNetCore.Identity;
-using MateriasPrimasApp.HelperClass;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MateriasPrimasApp.Controllers
 {
@@ -20,11 +19,13 @@ namespace MateriasPrimasApp.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ControlSubMayor controlSubMayor;
+        private readonly ILogger<EntradasController> _logger;
 
-        public EntradasController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public EntradasController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, ILogger<EntradasController> logger)
         {
             _userManager = userManager;
             _context = context;
+            _logger = logger;
             controlSubMayor = new ControlSubMayor(_context);
         }
 
@@ -82,7 +83,6 @@ namespace MateriasPrimasApp.Controllers
 
         [Authorize(Roles = "Comercial")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Fecha,ClienteId")] Entrada entrada)
         {
             var user = _context.Users.Find(_userManager.GetUserId(User));
@@ -93,7 +93,8 @@ namespace MateriasPrimasApp.Controllers
             {
                 _context.Add(entrada);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("DetallesDeEntrada", new { id = entrada.Id });
+                TempData["exito"] = "Entrada creada satisfactoriamente";
+                return RedirectToAction("DetallesDeEntrada", new { id= entrada.Id});
             }
             ViewData["ClienteId"] = new SelectList(_context.Cliente, "Id", "Nombre", entrada.ClienteId);
             //ViewData["UnidadOrganizativaId"] = new SelectList(_context.Set<UnidadOrganizativa>(), "Id", "Nombre", entrada.UnidadOrganizativaId);
@@ -110,7 +111,7 @@ namespace MateriasPrimasApp.Controllers
                 return NotFound();
             }
 
-            ViewData["Productos"] = new SelectList(_context.Producto.ToList(), "Id", "Nombre");
+            ViewData["Productos"] = new SelectList(_context.Producto.Where(p=>!(p is Derivado)).ToList(), "Id", "Nombre");
             ViewData["UnidadesDeMedidas"] = new SelectList(_context.UM.ToList(), "Id", "Unidad");
             return View(entrada);
         }
@@ -135,6 +136,7 @@ namespace MateriasPrimasApp.Controllers
             {
                 await _context.DetallesDeEntradas.AddAsync(detalle);
                 await _context.SaveChangesAsync();
+
                 return ViewComponent("Detalles", new { EntradaId = detalle.EntradaId });
             }
             return BadRequest(ModelState);
@@ -159,7 +161,6 @@ namespace MateriasPrimasApp.Controllers
 
             await _context.SaveChangesAsync();
             return ViewComponent("Detalles", new { EntradaId = detalle.EntradaId });
-
 
         }
 
@@ -198,6 +199,8 @@ namespace MateriasPrimasApp.Controllers
                 try
                 {
                     _context.Update(entrada);
+                    TempData["exito"] = "Entrada editada satisfactoriamente";
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -272,6 +275,8 @@ namespace MateriasPrimasApp.Controllers
             var entrada = await _context.Entrada.FindAsync(id);
             _context.Entrada.Remove(entrada);
             await _context.SaveChangesAsync();
+            TempData["exito"] = "Entrada eliminada satisfactoriamente";
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -286,6 +291,8 @@ namespace MateriasPrimasApp.Controllers
             controlSubMayor.DarEntrada(entrada);
 
             await _context.SaveChangesAsync();
+            TempData["exito"] = "Entrada confirmada. Submayores de productos Actualizados";
+
             return RedirectToAction(nameof(Index));
         }
 

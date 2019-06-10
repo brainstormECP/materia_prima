@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MateriasPrimaApp.Models
+namespace MateriasPrimasApp.Models
 {
     public class Categoria
     {

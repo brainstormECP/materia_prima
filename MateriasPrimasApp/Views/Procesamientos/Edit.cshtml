@@ -1,4 +1,4 @@
-﻿@model MateriasPrimaApp.Models.Procesamiento
+﻿@model MateriasPrimasApp.Models.Procesamiento
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,10 +6,8 @@
 }
 
 
-<hr />
 <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
+    <div class="col-md-4 col-md-offset-4">
         <div class="portlet box yellow">
             <div class="portlet-title">
                 <div class="caption">
@@ -17,45 +15,36 @@
                 </div>
             </div>
             <div class="portlet-body">
+                <br />
                 <form asp-action="Edit">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <input type="hidden" asp-for="Id" />
-                                <div class="form-group">
-                                    <label asp-for="ProductoOrigenId" class="control-label">Producto Original</label>
-                                    <select asp-for="ProductoOrigenId" class="form-control" asp-items="ViewBag.ProductoOrigenId"></select>
-                                    <span asp-validation-for="ProductoOrigenId" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="CantidadOrigen" class="control-label"></label>
-                                    <input asp-for="CantidadOrigen" class="form-control" />
-                                    <span asp-validation-for="CantidadOrigen" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="ProductoSalidaId" class="control-label">Producto Resultante</label>
-                                    <select asp-for="ProductoSalidaId" class="form-control" asp-items="ViewBag.ProductoSalidaId"></select>
-                                    <span asp-validation-for="ProductoSalidaId" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="CantidadSalida" class="control-label"></label>
-                                    <input asp-for="CantidadSalida" class="form-control" />
-                                    <span asp-validation-for="CantidadSalida" class="text-danger"></span>
-                                </div>
-                              <div class="text-center">
-                                  <a asp-action="Index" class="btn btn-info">Atrás</a>
-                                  <input type="submit" value="Editar" class="btn yellow" />
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="UnidadOrganizativaId" />
+                    <div class="form-group">
+                        <label asp-for="ProductoId" class="control-label">Materia Prima</label>
+                        <select name="ProductoId" id="producto" asp-items="ViewBag.Productos" class="form-control"></select>
+                        <span asp-validation-for="ProductoId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Cantidad</label>
+                        <div class="input-group">
+                            <input asp-for="Cantidad" class="form-control">
+                            <span class="input-group-addon" id="umresult">
+                                <samp class="hint--top um" aria-label="Unidad de Medida">UM</samp>
+                            </span>
+                        </div>
+                        <span asp-validation-for="Cantidad" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="text-center form-group">
+                        <a asp-action="Index" class="btn btn-info">Atrás</a>
+                        <input type="submit" value="Editar" class="btn yellow" />
+                    </div>
 
-                              </div>
-</form>
-</div>
-</div>
-</div>
-<div class="col-md-2"></div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div>
-    
-</div>
 
-        @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-        }

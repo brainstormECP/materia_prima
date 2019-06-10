@@ -1,4 +1,4 @@
-﻿@model MateriasPrimaApp.Models.Venta
+﻿@model MateriasPrimasApp.Models.Venta
 
 @{
     ViewData["Title"] = "Detalles De Venta";
@@ -6,8 +6,7 @@
 }
 
 <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
+    <div class="col-md-8 col-md-offset-2">
         <div class="portlet box blue">
             <div class="portlet-title">
                 <div class="caption">
@@ -18,12 +17,12 @@
                 <div class="row static-info">
                 </div>
                 <div class="row static-info">
-                    <div class="col-md-6 text-center">
+                    <div class="col-md-2 col-md-offset-4 text-left">
                         <dt>
                             @Html.DisplayNameFor(model => model.Fecha)
                         </dt>
                     </div>
-                    <div class="col-md-6 text-left">
+                    <div class="col-md-4 text-left">
                         <dd>
                             @Html.DisplayFor(model => model.Fecha)
                         </dd>
@@ -32,12 +31,12 @@
                 <div class="row static-info">
                 </div>
                 <div class="row static-info">
-                    <div class="col-md-6 text-center">
+                    <div class="col-md-2 col-md-offset-4 text-left">
                         <dt>
                             @Html.DisplayNameFor(model => model.Cliente)
                         </dt>
                     </div>
-                    <div class="col-md-6 text-left">
+                    <div class="col-md-4 text-left">
                         <dd>
                             @Html.DisplayFor(model => model.Cliente.Nombre)
                         </dd>
@@ -46,12 +45,12 @@
                 <div class="row static-info">
                 </div>
                 <div class="row static-info">
-                    <div class="col-md-6 text-center">
+                    <div class="col-md-2 col-md-offset-4 text-left">
                         <dt>
-                            Unidad
+                            @Html.DisplayNameFor(model => model.UnidadOrganizativa)
                         </dt>
                     </div>
-                    <div class="col-md-6 text-left">
+                    <div class="col-md-4 text-left">
                         <dd>
                             @Html.DisplayFor(model => model.UnidadOrganizativa.Nombre)
                         </dd>
@@ -60,10 +59,10 @@
                 <div class="row static-info">
                 </div>
                 <div class="row static-info">
-                    <div class="col-md-6 text-center">
+                    <div class="col-md-2 col-md-offset-4 text-left">
                         <dt>
                             Productos
-                        </dt>                        
+                        </dt>
                     </div>
                     <div class="col-md-6">
                         <dd>
@@ -77,59 +76,58 @@
                         <div id="result">
                             @await Component.InvokeAsync("DetallesDeVenta", new { VentaId = Model.Id })
                         </div>
-                    </div>                    
+                    </div>
+                </div>
+                <br />
+                <div class="row staic info">
+                    <div class="col-md-6 col-md-offset-3 text-center">
+                        <a asp-action="Index" class="btn btn-success">Aceptar</a>
+                        <a asp-action="Index" class="btn btn-default">Atrás</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-2"></div>
 </div>
-<dl class="dl-horizontal"></dl>
-<div class="text-center">
-    <div class="btn-group btn-group-solid">
-        <a asp-action="Index" class="btn btn-info">Atrás</a>
-    </div>
-</div>
-<div class="modal fade draggable-modal" id="draggable" tabindex="-1" role="basic" aria-hidden="true">
+<div class="modal fade" id="draggable" tabindex="-1" role="basic" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                <h4 class="modal-title">Agregar producto a la entrada</h4>
+                <h4 class="modal-title text-center">Agregar Productos</h4>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-11">
-                        <div id="error_msg" class="alert alert-danger" style="display:none">
-                            <i class="close icon"></i>
-                            <div class="header">
-                                Hay errores en el formulario
+            <form asp-controller="Ventas" asp-action="AddDetalle" class="form form-horizontal" data-ajax="true" dat-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#result" data-ajax-success="onSuccess" data-ajax-failure="onFailed" id="nuevo_detalle_form">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            <div id="error_msg" class="alert alert-danger" style="display:none">
+                                <i class="close icon error_close"></i>
+                                <h4>Hay errores en el formulario</h4>
+                                <ul class="errors"></ul>
                             </div>
-                            <ul class="errors"></ul>
-                        </div>
-                        <form asp-controller="Ventas" asp-action="AddDetalle" class="form form-horizontal" data-ajax="true" dat-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#result" data-ajax-success="onSuccess" data-ajax-failure="onFailed" id="nuevo_detalle_form">
-                            <input type="hidden" name="EntradaId" value="@Model.Id" />
+                            <input type="hidden" name="VentaId" value="@Model.Id" />
                             <div class="form-group">
                                 <label for="codigo">Producto</label>
-                                <select name="ProductoId" asp-items="ViewBag.Productos" class="form-control"></select>
+                                <select name="ProductoId" id="producto" asp-items="ViewBag.Productos" class="form-control"></select>
                             </div>
                             <div class="form-group">
-                                <label for="organismo">Cantidad</label>
-                                <input type="text" name="Cantidad" class="form-control" /><span></span>
+                                <label>Cantidad</label>
+                                <div class="input-group">
+                                    <input type="text" name="Cantidad" class="form-control">
+                                    <span class="input-group-addon" id="umresult">
+                                        <samp class="hint--top um" aria-label="Unidad de Medida">UM</samp>
+                                    </span>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <input type="submit" class="btn btn-success" value="Agregar" />
-                            </div>
-                        </form>
+                        </div>
                     </div>
-
                 </div>
-
-            </div>
-            <div class="modal-footer">
-
-
-            </div>
+                <div class="modal-footer">
+                    <div class="col-md-10 col-md-offset-1">
+                        <input type="submit" class="btn btn-success" value="Agregar" />
+                    </div>
+                </div>
+            </form>
         </div>
         <!-- /.modal-content -->
     </div>
@@ -137,26 +135,7 @@
 </div>
 
 @section Scripts {
-    <script>
-        $('#agregar').on("click", function () {
-            $('.modal').modal();
-        });
-        var onSuccess = function (context) {
-            $('.modal').modal('hide');
-            $('#nuevo_detalle_form').trigger('reset');
-        };
-        var onFailed = function (context) {
-            var errors = context.responseJSON
-            var s = ""
-            $.each(errors, function (index, value) {
-                s += "<li>" + value + "</li>";
-            });
-            $('#error_msg').show(250);
-            $('.errors').html($.parseHTML(s));
-        };
-        $('.message .close')
-            .on('click', function () {
-                $('#error_msg').hide("350");
-            });
-    </script>
-}
+    <script src="~/js/site.js"></script>
+    }
+
+

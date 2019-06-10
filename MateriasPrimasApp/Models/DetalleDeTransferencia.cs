@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MateriasPrimaApp.Models
+namespace MateriasPrimasApp.Models
 {
     public class DetalleDeTransferencia
     {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace MateriasPrimaApp.Models
+namespace MateriasPrimasApp.Models
 {
     public class Venta
     {

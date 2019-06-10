@@ -1,0 +1,41 @@
+﻿@model IEnumerable<MateriasPrimasApp.Models.DetalleDeProcesamiento>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                Nombre del Producto
+            </th>
+            <th>
+                Cantidad
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var detalle in Model)
+        {
+            <tr>
+                <td class="text left">
+                    @detalle.Derivado.Nombre
+                </td>
+                <td>
+                    @detalle.Cantidad
+                </td>
+                <td class="text left">
+                    <form asp-action="EliminarDetalle" asp-controller="Procesamientos" data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#result" data-ajax-success="DeleteSuccess" data-ajax-failure="DeleteFail">
+                        <input type="hidden" value="@detalle.Id" name="id" />
+                        <button type="submit" class="btn red hint--top" aria-label="Eliminar derivado"><span class="fa fa-trash"></span></button>
+                    </form>
+            </tr>
+        }
+            <tr>
+                <td></td>
+                <td class="text-left">
+                    <p><strong>Merma:</strong> @ViewBag.Merma Ton</p> 
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+    </tbody>
+</table>

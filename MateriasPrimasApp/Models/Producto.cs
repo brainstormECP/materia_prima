@@ -1,10 +1,11 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MateriasPrimaApp.Models
+namespace MateriasPrimasApp.Models
 {
     public class Producto
-    {       
+    {
         public int Id { get; set; }
         [Required]
         public string Codigo { get; set; }
@@ -33,7 +34,7 @@ namespace MateriasPrimaApp.Models
 
         [Required]
         [Column(TypeName = "decimal(18, 2)")]
-        [Display(Name ="Precio de venta MN")]
+        [Display(Name = "Precio de venta MN")]
         public decimal PrecioVentaMn { get; set; }
 
         [Required]
@@ -50,5 +51,7 @@ namespace MateriasPrimaApp.Models
         [Column(TypeName = "decimal(18, 2)")]
         [Display(Name = "Precio de compra Mlc")]
         public decimal PrecioCompraMlc { get; set; }
+
+        public virtual ICollection<Derivado> Derivados { get; set; }
     }
 }

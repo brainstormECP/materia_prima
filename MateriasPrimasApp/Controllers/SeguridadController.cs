@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MateriasPrimaApp.Models;
+using MateriasPrimasApp.Models;
 using MateriasPrimasApp.Data;
 using MateriasPrimasApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace MateriasPrimasApp.Controllers
 {
@@ -28,7 +29,7 @@ namespace MateriasPrimasApp.Controllers
 
         public IActionResult Usuarios()
         {
-            var usuarios = _userManager.Users.ToList();
+            var usuarios = _context.Users.Include(u => u.UnidadOrganizativa).ToList();
             return View(usuarios);
         }
 
@@ -57,6 +58,19 @@ namespace MateriasPrimasApp.Controllers
             var block = await _userManager.IsLockedOutAsync(user);
             return RedirectToAction("Usuarios");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CambiarPassword(ChangePasswordViewModel vewModel)
+        {
+            ApplicationUser user = await _userManager.FindByIdAsync(vewModel.UserId);
+            if (ModelState.IsValid)
+            {
+                await _userManager.RemovePasswordAsync(user);
+                await _userManager.AddPasswordAsync(user, vewModel.Password);
+                return Ok(user);
+            }
+            return BadRequest(ModelState);
+        } 
 
         [HttpGet]
         public async Task<IActionResult> DesbloquearUsuario(string id)

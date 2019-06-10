@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using MateriasPrimaApp.Models;
 using Microsoft.AspNetCore.Identity;
 using MateriasPrimasApp.Models;
 
@@ -14,7 +13,6 @@ namespace MateriasPrimasApp.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -94,8 +92,17 @@ namespace MateriasPrimasApp.Data
                 new TipoDeProducto { Id = 2, Nombre = "No Metálico", Descripcion = "Otros Materiales no metálicos" }
                 );
             modelBuilder.Entity<Producto>().HasData(
-                new Producto { Id = 1, Codigo = "1abcc345", CategoriaId = 1, Nombre = "Hierro", Descripcion = "Hierro Fundido", UnidadId = 1, TipoId = 1, PrecioCompraMn = 100M, PrecioCompraMlc = 4M },
-                new Producto { Id = 2, Codigo = "2def678", CategoriaId = 3, Nombre = "Botella de Ron", Descripcion = "Botella de Ron", UnidadId = 3, TipoId = 2, PrecioCompraMn = 1M, PrecioCompraMlc = 0.05M }
+                new Producto { Id = 1, Codigo = "1abcc345", CategoriaId = 1, Nombre = "Hierro", Descripcion = "Hierro Fundido", UnidadId = 1, TipoId = 1, PrecioCompraMn = 100M, PrecioCompraMlc = 4M, PrecioVentaMn = 150M, PrecioVentaMlc = 6M },
+                new Producto { Id = 2, Codigo = "2def678", CategoriaId = 3, Nombre = "Botella de Ron", Descripcion = "Botella de Ron", UnidadId = 3, TipoId = 2, PrecioCompraMn = 1M, PrecioCompraMlc = 0.05M, PrecioVentaMn = 2M, PrecioVentaMlc = 0.10M },
+                new Producto { Id = 3, Codigo = "aldef678", CategoriaId = 2, Nombre = "Aluminio", Descripcion = "Aluminio", UnidadId = 1, TipoId = 1, PrecioCompraMn = 500M, PrecioCompraMlc = 20M, PrecioVentaMn = 800M, PrecioVentaMlc = 32M }
+
+                );
+            modelBuilder.Entity<Derivado>().HasData(
+                new Derivado { Id = 4, Codigo = "f678", CategoriaId = 2, Nombre = "Aluminio Laminado", Descripcion = "Aluminio Laminado", UnidadId = 1, TipoId = 1, PrecioCompraMn = 500M, PrecioCompraMlc = 20M, PrecioVentaMn = 1200M, PrecioVentaMlc = 48M, ProductoOrigenId = 3 },
+                new Derivado { Id = 5, Codigo = "f679", CategoriaId = 2, Nombre = "Aluminio Perfilado", Descripcion = "Aluminio Perfilado", UnidadId = 1, TipoId = 1, PrecioCompraMn = 500M, PrecioCompraMlc = 20M, PrecioVentaMn = 1200M, PrecioVentaMlc = 48M, ProductoOrigenId = 3 },
+                new Derivado { Id = 6, Codigo = "f680", CategoriaId = 2, Nombre = "Aluminio Fundido", Descripcion = "Aluminio Fundido", UnidadId = 1, TipoId = 1, PrecioCompraMn = 500M, PrecioCompraMlc = 20M, PrecioVentaMn = 1200M, PrecioVentaMlc = 48M, ProductoOrigenId = 3 },
+                new Derivado { Id = 7, Codigo = "f681", CategoriaId = 1, Nombre = "Hierro Fundido", Descripcion = "Hierro Fundido", UnidadId = 1, TipoId = 1, PrecioCompraMn = 100M, PrecioCompraMlc = 4M, PrecioVentaMn = 250M, PrecioVentaMlc = 10M, ProductoOrigenId = 1 }
+
                 );
 
             modelBuilder.Entity<UEB>().HasData(
@@ -110,7 +117,15 @@ namespace MateriasPrimasApp.Data
                 new Cliente { Id = 1, Codigo = "C001", Nombre = "CTEAG", Organismo = "UNE" });
 
             modelBuilder.Entity<Submayor>().HasKey(k => new { k.AlmacenId, k.ProductoId });
-            modelBuilder.Entity<Submayor>().HasData(new Submayor { AlmacenId = 1, ProductoId = 1, Cantidad = 1300, UnidadId = 1 });
+            modelBuilder.Entity<Submayor>().HasData(
+                new Submayor { ProductoId = 1, AlmacenId = 1, Cantidad = 0M, UnidadId = 1 },
+                new Submayor { ProductoId = 1, AlmacenId = 2, Cantidad = 0M, UnidadId = 1 },
+                new Submayor { ProductoId = 1, AlmacenId = 3, Cantidad = 0M, UnidadId = 1 },
+                new Submayor { ProductoId = 1, AlmacenId = 4, Cantidad = 0M, UnidadId = 1 },
+                new Submayor { ProductoId = 2, AlmacenId = 1, Cantidad = 0M, UnidadId = 3 },
+                new Submayor { ProductoId = 2, AlmacenId = 2, Cantidad = 0M, UnidadId = 3 },
+                new Submayor { ProductoId = 2, AlmacenId = 3, Cantidad = 0M, UnidadId = 3 },
+                new Submayor { ProductoId = 2, AlmacenId = 4, Cantidad = 0M, UnidadId = 3 });
         }
 
 
@@ -137,6 +152,8 @@ namespace MateriasPrimasApp.Data
 
         public DbSet<DetalleDeVenta> DetallesDeVenta { get; set; }
 
+        public DbSet<DetalleDeProcesamiento> DetallesDeProcesamiento { get; set; }
+
         public DbSet<Transferencia> Transferencias { get; set; }
 
         public DbSet<Venta> Venta { get; set; }
@@ -146,6 +163,9 @@ namespace MateriasPrimasApp.Data
         public DbSet<Procesamiento> Procesamientos { get; set; }
 
         public DbSet<UnidadOrganizativa> UnidadesOrganizativas { get; set; }
+
+        public DbSet<Derivado> Derivados { get; set; }
+
 
     }
 }

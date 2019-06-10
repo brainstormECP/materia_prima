@@ -1,5 +1,4 @@
-﻿@model IEnumerable<MateriasPrimaApp.Models.DetalleDeEntrada>
-
+﻿@model IEnumerable<MateriasPrimasApp.Models.DetalleDeEntrada>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -29,7 +28,7 @@
                     @entrada.PrecioMn
                 </td>
                 <td>
-                    <form asp-action="EliminarDetalle" asp-controller="Entradas" data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#result" data-ajax-success="onSuccess" data-ajax-failure="onFailed">
+                    <form asp-action="EliminarDetalle" asp-controller="Entradas" data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#result" data-ajax-success="DeleteSuccess" data-ajax-failure="DeleteFailed">
                         <input type="hidden" value="@entrada.Id" name="id" />
                         <button type="submit" class="btn red hint--top" aria-label="Eliminar Producto"><span class="fa fa-trash"></span></button>
                     </form>
@@ -42,7 +41,6 @@
                 <strong>Total:</strong> @ViewBag.Total
             </td>
             <td></td>
-
         </tr>
     </tbody>
 </table>

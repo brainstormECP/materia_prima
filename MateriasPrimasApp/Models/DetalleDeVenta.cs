@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MateriasPrimaApp.Models
+namespace MateriasPrimasApp.Models
 {
     public class DetalleDeVenta
     {
@@ -9,19 +9,17 @@ namespace MateriasPrimaApp.Models
         [Required]
         public int VentaId { get; set; }
         public virtual Venta Venta { get; set; }
-        [Required]
+        [Required(ErrorMessage = "El campo Producto es requerido")]
+        [Display(Name = "Producto")]
         public int ProductoId { get; set; }
         public virtual Producto Producto { get; set; }
-        [Required]
-        public int UnidadId { get; set; }
-        public virtual UnidadDeMedida Unidad { get; set; }
         [Required]
         public decimal Cantidad { get; set; }
         [Required]
         [Column(TypeName = "decimal(18, 2)")]
-        public decimal PrecioMn { get; set; }
+        public decimal PrecioVentaMn { get; set; }
         [Required]
         [Column(TypeName = "decimal(18, 2)")]
-        public decimal PrecioMlc { get; set; }
+        public decimal PrecioVentaMlc { get; set; }
     }
 }

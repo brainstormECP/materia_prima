@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MateriasPrimasApp.HelperClass;
 using MateriasPrimasApp.Models;
+using Microsoft.Extensions.Logging;
 
 namespace MateriasPrimasApp
 {
@@ -35,6 +36,9 @@ namespace MateriasPrimasApp
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+            services.Configure<CookieTempDataProviderOptions>(options => {
+                options.Cookie.IsEssential = true;
+            });
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
@@ -47,8 +51,9 @@ namespace MateriasPrimasApp
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env,ApplicationDbContext context)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,ApplicationDbContext context, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddFile("Log-{Date}.txt");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

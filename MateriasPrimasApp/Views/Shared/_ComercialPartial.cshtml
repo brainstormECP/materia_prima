@@ -1,0 +1,25 @@
+﻿<div class="nav-collapse collapse navbar-collapse navbar-responsive-collapse">
+    <ul id="navbar" class="nav navbar-nav text-uppercase">      
+        <li id="cuadrodemando" class="dropdown dropdown-fw ">
+            <a asp-action="Index" asp-controller="Home">
+                <i class="fa fa-dashboard"></i> Cuadro de Mando
+            </a>
+        </li>
+        <li class="dropdown dropdown-fw">
+            <a href="javascript:;">
+                <span class="fa fa-line-chart fa-3x"></span> Reportes
+            </a>
+        </li>
+        <li id="operaciones" class="dropdown dropdown-fw">
+            <a href="javascript:;">
+                <span class="fa fa-steam"></span> Operaciones
+            </a>
+            <ul class="dropdown-menu dropdown-menu-fw">
+                <li id="Entradas"><a asp-action="Index" asp-controller="Entradas">Entradas</a></li>
+                <li id="Transferencias"><a asp-action="Index" asp-controller="Transferencias">Transferencias</a></li>
+                <li id="Ventas"><a asp-action="Index" asp-controller="Ventas">Ventas</a></li>
+                <li id="Procesamientos"><a asp-action="Index" asp-controller="Procesamientos">Procesamientos</a></li>
+            </ul>
+        </li>   
+    </ul>
+</div>

@@ -1,10 +1,4 @@
-﻿
-@{
-    Layout = null;
-    string title = "Materia Prima";
-}
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--
 Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.4
 Version: 4.0.1
@@ -24,7 +18,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN HEAD -->
 <head>
     <meta charset="utf-8" />
-    <title>@title</title>
+    <title>@ViewData["Title"] - MateriasPrimasApp</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <meta content="" name="description" />
@@ -47,6 +41,8 @@ License: You must have a valid license purchased only from themeforest(the above
     <link href="~/global/css/plugins.css" rel="stylesheet" type="text/css" />
     <link href="~/layout5/css/layout.css" rel="stylesheet" type="text/css" />
     <link href="~/layout5/css/custom.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/chosen.min.css" rel="stylesheet" />
+    <link href="~/css/toastr.min.css" rel="stylesheet" />
     <link href="~/css/hint.min.css" rel="stylesheet" />
     @RenderSection("Styles", required: false)
     <!-- END THEME STYLES -->
@@ -77,32 +73,32 @@ License: You must have a valid license purchased only from themeforest(the above
                         <!-- End Toggle Button -->
                         <!-- BEGIN LOGO -->
                         <a id="index" asp-action="index" asp-controller="Home" class="page-logo">
-                            <img src="~/layout5/img/Logo GER.png" alt="Logo">
+                            <img src="~/layout5/img/logo.png" alt="Logo">
                         </a>
-                        <img src="~/layout5/img/GER Recuperamos Valores2.png" alt="Logo" class="page-logo">
-
+                        <img src="~/layout5/img/banner.png" class="page-logo" />
                         <!-- END LOGO -->
                         <!-- END SEARCH -->
                         <!-- BEGIN TOPBAR ACTIONS -->
                         <div class="topbar-actions">
                             <!-- END GROUP INFORMATION -->
-                            
                             <!-- BEGIN USER PROFILE -->
                             <partial name="_LoginPartial" />
                             <!-- END USER PROFILE -->
-                            
                             <!-- BEGIN QUICK SIDEBAR TOGGLER -->
                             @*<button type="button" class="quick-sidebar-toggler">
-                                <span class="sr-only">Toggle Quick Sidebar</span>
-                                <i class="icon-logout"></i>
-                            </button>*@
+                                    <span class="sr-only">Toggle Quick Sidebar</span>
+                                    <i class="icon-logout"></i>
+                                </button>*@
                             <!-- END QUICK SIDEBAR TOGGLER -->
                         </div>
                         <!-- END TOPBAR ACTIONS -->
                     </div>
 
                     <!-- Collect the nav links, forms, and other content for toggling -->
+
                     <partial name="_Navbar" />
+
+
                     <!-- END NAVBAR COLLAPSE -->
 
                 </div>
@@ -150,6 +146,9 @@ License: You must have a valid license purchased only from themeforest(the above
     <script src="~/layout5/scripts/quick-sidebar.js" type="text/javascript"></script>
     <script src="~/layout5/scripts/index.js" type="text/javascript"></script>
     <script src="~/pages/scripts/tasks.js" type="text/javascript"></script>
+    <script src="~/js/toastr.min.js"></script>
+    <link href="~/css/chosen.min.css" rel="stylesheet" />
+
     <!-- END PAGE LEVEL SCRIPTS -->
     <script>
         $(document).ready(function () {
@@ -163,6 +162,7 @@ License: You must have a valid license purchased only from themeforest(the above
         $(url).addClass('active');
         $(url).parent().parent().addClass("open");
     </script>
+
     <script>
         jQuery(document).ready(function () {
             Metronic.init(); // init metronic core componets
@@ -171,8 +171,44 @@ License: You must have a valid license purchased only from themeforest(the above
             Tasks.initDashboardWidget(); // init tash dashboard widget
         });
     </script>
+    @if (TempData["notice"] != null || TempData["error"] != null || TempData["exito"] != null)
+    {
+        <script>
+        @if (TempData["notice"] != null) {
+            @:var messageInfo = "@TempData["notice"]";
+        }
+        @if (TempData["error"] != null) {
+            @:var messageError = "@TempData["error"]";
+        }
+        @if (TempData["exito"] != null) {
+            @:var messageSuccess = "@TempData["exito"]";
+        }
+            var showMessage = function () {
+                toastr.options = {
+                    "positionClass": "toast-bottom-right",
+                    "closeButton": true,
+                    "showDuration": 600,
+                    "hideDuration": 300,
+                    };
+                if (typeof messageError != 'undefined')
+                    window.setTimeout(function () { toastr.error(messageError); }, 300);
+                if (typeof messageInfo != 'undefined')
+                    window.setTimeout(function () { toastr.info(messageInfo); }, 300);
+
+                if (typeof messageSuccess != 'undefined')
+                    window.setTimeout(function () { toastr.success(messageSuccess); }, 300);
+                //window.hideDuration(function () { toastr.success(messageSuccess) }, 3000);
+            };
+            showMessage();
+        </script>
+    }
+
+
+
+
     <!-- END JAVASCRIPTS -->
     @RenderSection("Scripts", required: false)
+
 </body>
 <!-- END BODY -->
 </html>

@@ -19,14 +19,18 @@ namespace MateriasPrimasApp.Controllers
 
         public HomeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _context = context;
         }
 
         public IActionResult Index()
         {
-           
-            ViewData["entradas"] = _context.Entrada.Count(e => !e.Confirmada);
-            ViewData["transferencias"] = _context.Transferencias.Count(t => !t.Confirmada);
+            var user = _context.Users.Find(_userManager.GetUserId(User));
+
+            ViewData["entradas"] = _context.Entrada.Where(e=>e.UnidadOrganizativaId == user.UnidadOrganizativaId).Count(e => !e.Confirmada);
+            ViewData["transferencias"] = _context.Transferencias.Where(e => e.OrigenId == user.UnidadOrganizativaId || e.DestinoId == user.UnidadOrganizativaId).Count(t => !t.Confirmada);
+            ViewData["ventas"] = _context.Venta.Where(e => e.UnidadOrganizativaId == user.UnidadOrganizativaId).Count(t => !t.Confirmada);
+            ViewData["Procesamientos"] = _context.Procesamientos.Where(p => p.UnidadOrganizativaId == user.UnidadOrganizativaId).Count(p=> !p.Confirmado);
 
             return View();
         }      

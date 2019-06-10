@@ -1,4 +1,4 @@
-﻿@model MateriasPrimaApp.Models.Transferencia
+﻿@model MateriasPrimasApp.Models.Transferencia
 
 @{
     ViewData["Title"] = "Details";
@@ -6,14 +6,12 @@
 }
 
 
-<hr />
 <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
+    <div class="col-md-8 col-md-offset-2">
         <div class="portlet box blue">
             <div class="portlet-title">
                 <div class="caption">
-                    <i class="fa fa-eye"></i>Detalles Transferencia
+                    <i class="fa fa-eye"></i>Detalles de Transferencia
                 </div>
             </div>
             <div class="portlet-body">
@@ -85,30 +83,15 @@
             </div>
         </div>
     </div>
-    <div class="col-md-2"></div>
 </div>
 <dl class="dl-horizontal"></dl>
 <div class="text-center">
-    <div class="btn-group btn-group-solid">
-        @if (User.IsInRole("Consultor"))
-        {
-            <a asp-action="TodasLasTransferencias" class="btn btn-info">Atrás</a>
-        }
-        @if (User.IsInRole("Comercial"))
-        {
-            <a asp-action="Index" class="btn btn-info">Atrás</a>
-            @if (!Model.Confirmada)
-            {
-                <a asp-action="Edit" class="btn yellow" asp-route-id="@Model.Id">Editar</a>
-            }
-        }
-    </div>
+    @if (User.IsInRole("Consultor"))
+    {
+        <a asp-action="TodasLasTransferencias" class="btn btn-info">Atrás</a>
+    }
+    @if (User.IsInRole("Comercial"))
+    {
+        <a asp-action="Index" class="btn btn-info">Atrás</a>
+    }
 </div>
-@section Scripts{
-    <script>
-        $(document).ready(function () {
-            $('#operaciones').addClass("open");
-            $('#transferencias').addClass("active");
-        });
-    </script>
-}

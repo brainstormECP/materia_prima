@@ -1,4 +1,4 @@
-namespace MateriasPrimaApp.Models
+namespace MateriasPrimasApp.Models
 {
     public class CasaCompra:UnidadOrganizativa
     {

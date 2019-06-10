@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MateriasPrimaApp.Models.DetalleDeVenta>
+﻿@model IEnumerable<MateriasPrimasApp.Models.DetalleDeVenta>
 
 <table class="table table-striped">
     <thead>
@@ -10,7 +10,7 @@
                 Cantidad
             </th>
             <th>
-                Precio
+                Precio de Venta
             </th>
             <th></th>
         </tr>
@@ -26,25 +26,22 @@
                     @item.Cantidad
                 </td>
                 <td>
-                    @item.PrecioMn
+                    @item.PrecioVentaMn
                 </td>
                 <td>
-                <form asp-action="EliminarDetalle" asp-controller="Transferencias"  data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#result" data-ajax-success="onSuccess" data-ajax-failure="onFailed">
-                       <input type="hidden" value="@item.Id" name="id"/>
-                    <button type="submit" class="btn red"><span class="fa fa-trash"></span></button>
-                </form>
+                    <form asp-action="EliminarDetalle" asp-controller="Ventas" data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#result" data-ajax-success="DeleteSuccess" data-ajax-failure="DeleteFail">
+                        <input type="hidden" value="@item.Id" name="id" />
+                        <button type="submit" class="btn red hint--top" aria-label="Eliminar producto"><span class="fa fa-trash"></span></button>
+                    </form>
             </tr>
         }
             <tr>
-                <td>
-                </td>
-                <td>
-                </td>
-                <td>                 
-                </td>
+                <td></td>
+                <td></td>
                 <td class="text-left">
-                    <strong>Total:</strong> @ViewBag.Total
+                    <strong>Total: </strong> @ViewBag.Total
                 </td>
+                <td></td>
             </tr>
     </tbody>
 </table>

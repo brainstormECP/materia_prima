@@ -1,0 +1,49 @@
+@model IEnumerable<MateriasPrimasApp.ViewModels.ExistenciaVM>
+@{
+    ViewData["Title"] = "Existencias";
+    Layout = "~/Views/Shared/_Backend.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-edit"></i>Existencias en @ViewBag.UEB
+                </div>
+            </div>
+            <div class="portlet-body">
+                <button class="btn btn-primary hidden-print" onclick="window.print();" style="margin-bottom:15px;">Imprimir</button>
+                
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Proucto</th>
+                            <th>TOTAL</th>
+                            <th>En UEB</th>
+                            <th>En Casas de compra</th>
+                            <th>En Procesamiento</th>
+                            <th>Listo Para la Venta</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <th>@item.Producto</th>
+                                <th>@item.Total</th>
+                                <th>@item.EnUEB</th>
+                                <th>@item.EnCasaDeCompra</th>
+                                <th>@item.EnProceso</th>
+                                <th>@item.ListoParaLaVenta</th>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

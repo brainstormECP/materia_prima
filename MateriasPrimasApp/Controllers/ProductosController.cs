@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MateriasPrimaApp.Models;
+using MateriasPrimasApp.Models;
 using MateriasPrimasApp.Data;
 using Microsoft.VisualStudio.Web.CodeGeneration;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace MateriasPrimasApp.Controllers
 {
@@ -16,9 +17,11 @@ namespace MateriasPrimasApp.Controllers
     public class ProductosController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<ProductosController> _logger;
 
-        public ProductosController(ApplicationDbContext context)
+        public ProductosController(ApplicationDbContext context, ILogger<ProductosController>logger)
         {
+            _logger = logger;
             _context = context;
         }
 
@@ -70,13 +73,20 @@ namespace MateriasPrimasApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Codigo,Nombre,Descripcion,UnidadId,CategoriaId,TipoId,PrecioCompraMn,PrecioVentaMn,PrecioCompraMlc,PrecioVentaMlc")] Producto producto)
         {
-            if(await _context.Producto.AnyAsync(p=>p.Codigo == producto.Codigo))
+            if (await _context.Producto.AnyAsync(p => p.Codigo == producto.Codigo))
             {
                 ModelState.AddModelError("Codigo", "ya existe un Producto con este código");
             }
             if (ModelState.IsValid)
             {
                 _context.Add(producto);
+                //creando un Submayor de este producto en cada Unidad
+                var unidades = _context.UnidadesOrganizativas;
+                foreach (var unidad in unidades)
+                {
+                    var submayor = new Submayor() { AlmacenId = unidad.Id, ProductoId = producto.Id, Cantidad = 0, UnidadId = producto.UnidadId };
+                    _context.Add(submayor);                      
+                }
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -181,8 +191,16 @@ namespace MateriasPrimasApp.Controllers
         [AllowAnonymous]
         public ActionResult um(int id)
         {
-            var producto = _context.Producto.Include(p=>p.Unidad).FirstOrDefault(p=>p.Id == id);
-            ViewData["Um"] = producto.Unidad.Unidad;
+            if(id != 0)
+            {
+                var producto = _context.Producto.Include(p => p.Unidad).FirstOrDefault(p => p.Id == id);
+                ViewData["Um"] = producto.Unidad.Unidad;
+            }
+            else
+            {
+                ViewData["Um"] = "";
+            }
+
             return PartialView("_UMProductoPartial");
         }
 

@@ -1,4 +1,4 @@
-﻿@model MateriasPrimaApp.Models.Entrada
+﻿@model MateriasPrimasApp.Models.Entrada
 
 @{
     ViewData["Title"] = "DetallesDeEntrada";
@@ -86,9 +86,9 @@
                     </div>
                 </div>
             </div>
-           
-        </div>       
-    </div>    
+
+        </div>
+    </div>
 </div>
 
 
@@ -138,39 +138,5 @@
 </div>
 
 @section Scripts {
-    <script>
-        $(document).ready(function () {
-            $('#operaciones').addClass("open");
-            $('#entradas').addClass("active");
-        });
-        var buscarum = function (id) {
-            $('#umresult').load("/productos/um/" + id);
-        };
-        $('#agregar').on("click", function () {
-            $('.modal').modal();
-        });
-        var id = $('#producto').val()
-        buscarum(id);
-        $('#producto').on("change", function () {
-            var id = $(this).val();
-            buscarum(id);
-        });
-        var onSuccess = function (context) {
-            $('.modal').modal('hide');
-            $('#nuevo_detalle_form').trigger('reset');
-        };
-        var onFailed = function (context) {
-            var errors = context.responseJSON
-            var s = ""
-            $.each(errors, function (index, value) {
-                s += "<li>" + value + "</li>";
-            });
-            $('#error_msg').show(250);
-            $('.errors').html($.parseHTML(s));
-        };
-        $('.message .close')
-            .on('click', function () {
-                $('#error_msg').hide("350");
-            });
-    </script>
+    <script src="~/js/site.js"></script>
 }

@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MateriasPrimaApp.Models;
+using MateriasPrimasApp.Models;
 using MateriasPrimasApp.Data;
+using MateriasPrimasApp.Models;
 
 namespace MateriasPrimasApp.Controllers
 {

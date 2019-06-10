@@ -16,352 +16,6 @@ namespace MateriasPrimasApp.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.4-rtm-31024");
 
-            modelBuilder.Entity("MateriasPrimaApp.Models.Categoria", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Descripcion");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categoria");
-
-                    b.HasData(
-                        new { Id = 1, Descripcion = "Metales ferrosos tales como Hierro y Acero", Nombre = "Ferroso" },
-                        new { Id = 2, Descripcion = "Metales no ferrosos tales como Aluminio y Cobre", Nombre = "No Ferroso" },
-                        new { Id = 3, Descripcion = "Envases de cristal como Botellas de cerveza y otros productos reciclables como el cartón", Nombre = "Envases y varios" }
-                    );
-                });
-
-            modelBuilder.Entity("MateriasPrimaApp.Models.Cliente", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Codigo")
-                        .IsRequired();
-
-                    b.Property<string>("Nombre")
-                        .IsRequired();
-
-                    b.Property<string>("Organismo");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Cliente");
-
-                    b.HasData(
-                        new { Id = 1, Codigo = "C001", Nombre = "CTEAG", Organismo = "UNE" }
-                    );
-                });
-
-            modelBuilder.Entity("MateriasPrimaApp.Models.DetalleDeEntrada", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<decimal>("Cantidad");
-
-                    b.Property<int>("EntradaId");
-
-                    b.Property<decimal>("PrecioMlc")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<decimal>("PrecioMn")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<int>("ProductoId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EntradaId");
-
-                    b.HasIndex("ProductoId");
-
-                    b.ToTable("DetallesDeEntradas");
-                });
-
-            modelBuilder.Entity("MateriasPrimaApp.Models.DetalleDeTransferencia", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<decimal>("Cantidad");
-
-                    b.Property<decimal>("PrecioMlc")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<decimal>("PrecioMn")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<int>("ProductoId");
-
-                    b.Property<int>("TransferenciaId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductoId");
-
-                    b.HasIndex("TransferenciaId");
-
-                    b.ToTable("DetallesDeTransferencia");
-                });
-
-            modelBuilder.Entity("MateriasPrimaApp.Models.DetalleDeVenta", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<decimal>("Cantidad");
-
-                    b.Property<decimal>("PrecioMlc")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<decimal>("PrecioMn")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<int>("ProductoId");
-
-                    b.Property<int>("UnidadId");
-
-                    b.Property<int>("VentaId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductoId");
-
-                    b.HasIndex("UnidadId");
-
-                    b.HasIndex("VentaId");
-
-                    b.ToTable("DetallesDeVenta");
-                });
-
-            modelBuilder.Entity("MateriasPrimaApp.Models.Entrada", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("ClienteId");
-
-                    b.Property<bool>("Confirmada");
-
-                    b.Property<DateTime>("Fecha");
-
-                    b.Property<int>("UnidadOrganizativaId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClienteId");
-
-                    b.HasIndex("UnidadOrganizativaId");
-
-                    b.ToTable("Entrada");
-                });
-
-            modelBuilder.Entity("MateriasPrimaApp.Models.Procesamiento", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<decimal>("CantidadOrigen");
-
-                    b.Property<decimal>("CantidadSalida");
-
-                    b.Property<bool>("Confirmada");
-
-                    b.Property<int>("ProductoOrigenId");
-
-                    b.Property<int>("ProductoSalidaId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductoOrigenId");
-
-                    b.HasIndex("ProductoSalidaId");
-
-                    b.ToTable("Procesamientos");
-                });
-
-            modelBuilder.Entity("MateriasPrimaApp.Models.Producto", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("CategoriaId");
-
-                    b.Property<string>("Codigo")
-                        .IsRequired();
-
-                    b.Property<string>("Descripcion");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired();
-
-                    b.Property<decimal>("PrecioCompraMlc")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<decimal>("PrecioCompraMn")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<decimal>("PrecioVentaMlc")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<decimal>("PrecioVentaMn")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<int>("TipoId");
-
-                    b.Property<int>("UnidadId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoriaId");
-
-                    b.HasIndex("TipoId");
-
-                    b.HasIndex("UnidadId");
-
-                    b.ToTable("Producto");
-
-                    b.HasData(
-                        new { Id = 1, CategoriaId = 1, Codigo = "1abcc345", Descripcion = "Hierro Fundido", Nombre = "Hierro", PrecioCompraMlc = 4m, PrecioCompraMn = 100m, PrecioVentaMlc = 0m, PrecioVentaMn = 0m, TipoId = 1, UnidadId = 1 },
-                        new { Id = 2, CategoriaId = 3, Codigo = "2def678", Descripcion = "Botella de Ron", Nombre = "Botella de Ron", PrecioCompraMlc = 0.05m, PrecioCompraMn = 1m, PrecioVentaMlc = 0m, PrecioVentaMn = 0m, TipoId = 2, UnidadId = 3 }
-                    );
-                });
-
-            modelBuilder.Entity("MateriasPrimaApp.Models.Submayor", b =>
-                {
-                    b.Property<int>("AlmacenId");
-
-                    b.Property<int>("ProductoId");
-
-                    b.Property<decimal>("Cantidad");
-
-                    b.Property<int>("UnidadId");
-
-                    b.HasKey("AlmacenId", "ProductoId");
-
-                    b.HasIndex("ProductoId");
-
-                    b.HasIndex("UnidadId");
-
-                    b.ToTable("Submayor");
-
-                    b.HasData(
-                        new { AlmacenId = 1, ProductoId = 1, Cantidad = 1300m, UnidadId = 1 }
-                    );
-                });
-
-            modelBuilder.Entity("MateriasPrimaApp.Models.TipoDeProducto", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Descripcion");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TipoDeProducto");
-
-                    b.HasData(
-                        new { Id = 1, Descripcion = "Metales", Nombre = "Metálico" },
-                        new { Id = 2, Descripcion = "Otros Materiales no metálicos", Nombre = "No Metálico" }
-                    );
-                });
-
-            modelBuilder.Entity("MateriasPrimaApp.Models.Transferencia", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("Confirmada");
-
-                    b.Property<int>("DestinoId");
-
-                    b.Property<DateTime>("Fecha");
-
-                    b.Property<int>("OrigenId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DestinoId");
-
-                    b.HasIndex("OrigenId");
-
-                    b.ToTable("Transferencias");
-                });
-
-            modelBuilder.Entity("MateriasPrimaApp.Models.UnidadDeMedida", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Descripcion");
-
-                    b.Property<string>("Unidad")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UM");
-
-                    b.HasData(
-                        new { Id = 1, Descripcion = "Tonelada", Unidad = "Ton" },
-                        new { Id = 2, Descripcion = "KiloGramo", Unidad = "Kg" },
-                        new { Id = 3, Descripcion = "Unidad", Unidad = "U" }
-                    );
-                });
-
-            modelBuilder.Entity("MateriasPrimaApp.Models.UnidadOrganizativa", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
-
-                    b.Property<string>("Nombre")
-                        .IsRequired();
-
-                    b.Property<string>("Telefono");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UnidadesOrganizativas");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("UnidadOrganizativa");
-                });
-
-            modelBuilder.Entity("MateriasPrimaApp.Models.Venta", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("ClienteId");
-
-                    b.Property<bool>("Confirmada");
-
-                    b.Property<DateTime>("Fecha");
-
-                    b.Property<int>("UnidadOrganizativaId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClienteId");
-
-                    b.HasIndex("UnidadOrganizativaId");
-
-                    b.ToTable("Venta");
-                });
-
             modelBuilder.Entity("MateriasPrimasApp.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -424,6 +78,383 @@ namespace MateriasPrimasApp.Migrations
                     );
                 });
 
+            modelBuilder.Entity("MateriasPrimasApp.Models.Categoria", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Descripcion");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categoria");
+
+                    b.HasData(
+                        new { Id = 1, Descripcion = "Metales ferrosos tales como Hierro y Acero", Nombre = "Ferroso" },
+                        new { Id = 2, Descripcion = "Metales no ferrosos tales como Aluminio y Cobre", Nombre = "No Ferroso" },
+                        new { Id = 3, Descripcion = "Envases de cristal como Botellas de cerveza y otros productos reciclables como el cartón", Nombre = "Envases y varios" }
+                    );
+                });
+
+            modelBuilder.Entity("MateriasPrimasApp.Models.Cliente", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Codigo")
+                        .IsRequired();
+
+                    b.Property<string>("Nombre")
+                        .IsRequired();
+
+                    b.Property<string>("Organismo");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cliente");
+
+                    b.HasData(
+                        new { Id = 1, Codigo = "C001", Nombre = "CTEAG", Organismo = "UNE" }
+                    );
+                });
+
+            modelBuilder.Entity("MateriasPrimasApp.Models.DetalleDeEntrada", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("Cantidad");
+
+                    b.Property<int>("EntradaId");
+
+                    b.Property<decimal>("PrecioMlc")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal>("PrecioMn")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int>("ProductoId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EntradaId");
+
+                    b.HasIndex("ProductoId");
+
+                    b.ToTable("DetallesDeEntradas");
+                });
+
+            modelBuilder.Entity("MateriasPrimasApp.Models.DetalleDeProcesamiento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("Cantidad");
+
+                    b.Property<int>("DerivadoId");
+
+                    b.Property<int>("ProcesamientoId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DerivadoId");
+
+                    b.HasIndex("ProcesamientoId");
+
+                    b.ToTable("DetallesDeProcesamiento");
+                });
+
+            modelBuilder.Entity("MateriasPrimasApp.Models.DetalleDeTransferencia", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("Cantidad");
+
+                    b.Property<decimal>("PrecioMlc")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal>("PrecioMn")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int>("ProductoId");
+
+                    b.Property<int>("TransferenciaId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductoId");
+
+                    b.HasIndex("TransferenciaId");
+
+                    b.ToTable("DetallesDeTransferencia");
+                });
+
+            modelBuilder.Entity("MateriasPrimasApp.Models.DetalleDeVenta", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("Cantidad");
+
+                    b.Property<decimal>("PrecioVentaMlc")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal>("PrecioVentaMn")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int>("ProductoId");
+
+                    b.Property<int>("VentaId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductoId");
+
+                    b.HasIndex("VentaId");
+
+                    b.ToTable("DetallesDeVenta");
+                });
+
+            modelBuilder.Entity("MateriasPrimasApp.Models.Entrada", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ClienteId");
+
+                    b.Property<bool>("Confirmada");
+
+                    b.Property<DateTime>("Fecha");
+
+                    b.Property<int>("UnidadOrganizativaId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("UnidadOrganizativaId");
+
+                    b.ToTable("Entrada");
+                });
+
+            modelBuilder.Entity("MateriasPrimasApp.Models.Procesamiento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("Cantidad");
+
+                    b.Property<bool>("Confirmado");
+
+                    b.Property<DateTime>("Fecha");
+
+                    b.Property<decimal>("Merma");
+
+                    b.Property<int>("ProductoId");
+
+                    b.Property<int>("UnidadOrganizativaId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductoId");
+
+                    b.HasIndex("UnidadOrganizativaId");
+
+                    b.ToTable("Procesamientos");
+                });
+
+            modelBuilder.Entity("MateriasPrimasApp.Models.Producto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CategoriaId");
+
+                    b.Property<string>("Codigo")
+                        .IsRequired();
+
+                    b.Property<string>("Descripcion");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
+                    b.Property<string>("Nombre")
+                        .IsRequired();
+
+                    b.Property<decimal>("PrecioCompraMlc")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal>("PrecioCompraMn")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal>("PrecioVentaMlc")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal>("PrecioVentaMn")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int>("TipoId");
+
+                    b.Property<int>("UnidadId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoriaId");
+
+                    b.HasIndex("TipoId");
+
+                    b.HasIndex("UnidadId");
+
+                    b.ToTable("Producto");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Producto");
+
+                    b.HasData(
+                        new { Id = 1, CategoriaId = 1, Codigo = "1abcc345", Descripcion = "Hierro Fundido", Nombre = "Hierro", PrecioCompraMlc = 4m, PrecioCompraMn = 100m, PrecioVentaMlc = 6m, PrecioVentaMn = 150m, TipoId = 1, UnidadId = 1 },
+                        new { Id = 2, CategoriaId = 3, Codigo = "2def678", Descripcion = "Botella de Ron", Nombre = "Botella de Ron", PrecioCompraMlc = 0.05m, PrecioCompraMn = 1m, PrecioVentaMlc = 0.10m, PrecioVentaMn = 2m, TipoId = 2, UnidadId = 3 },
+                        new { Id = 3, CategoriaId = 2, Codigo = "aldef678", Descripcion = "Aluminio", Nombre = "Aluminio", PrecioCompraMlc = 20m, PrecioCompraMn = 500m, PrecioVentaMlc = 32m, PrecioVentaMn = 800m, TipoId = 1, UnidadId = 1 }
+                    );
+                });
+
+            modelBuilder.Entity("MateriasPrimasApp.Models.Submayor", b =>
+                {
+                    b.Property<int>("AlmacenId");
+
+                    b.Property<int>("ProductoId");
+
+                    b.Property<decimal>("Cantidad");
+
+                    b.Property<int>("UnidadId");
+
+                    b.HasKey("AlmacenId", "ProductoId");
+
+                    b.HasIndex("ProductoId");
+
+                    b.HasIndex("UnidadId");
+
+                    b.ToTable("Submayor");
+
+                    b.HasData(
+                        new { AlmacenId = 1, ProductoId = 1, Cantidad = 100m, UnidadId = 1 },
+                        new { AlmacenId = 2, ProductoId = 1, Cantidad = 100m, UnidadId = 1 },
+                        new { AlmacenId = 3, ProductoId = 1, Cantidad = 20m, UnidadId = 1 },
+                        new { AlmacenId = 4, ProductoId = 1, Cantidad = 30m, UnidadId = 1 },
+                        new { AlmacenId = 1, ProductoId = 2, Cantidad = 1000m, UnidadId = 3 },
+                        new { AlmacenId = 2, ProductoId = 2, Cantidad = 750m, UnidadId = 3 },
+                        new { AlmacenId = 3, ProductoId = 2, Cantidad = 400m, UnidadId = 3 },
+                        new { AlmacenId = 4, ProductoId = 2, Cantidad = 350m, UnidadId = 3 }
+                    );
+                });
+
+            modelBuilder.Entity("MateriasPrimasApp.Models.TipoDeProducto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Descripcion");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TipoDeProducto");
+
+                    b.HasData(
+                        new { Id = 1, Descripcion = "Metales", Nombre = "Metálico" },
+                        new { Id = 2, Descripcion = "Otros Materiales no metálicos", Nombre = "No Metálico" }
+                    );
+                });
+
+            modelBuilder.Entity("MateriasPrimasApp.Models.Transferencia", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("Confirmada");
+
+                    b.Property<int>("DestinoId");
+
+                    b.Property<DateTime>("Fecha");
+
+                    b.Property<int>("OrigenId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DestinoId");
+
+                    b.HasIndex("OrigenId");
+
+                    b.ToTable("Transferencias");
+                });
+
+            modelBuilder.Entity("MateriasPrimasApp.Models.UnidadDeMedida", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Descripcion");
+
+                    b.Property<string>("Unidad")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UM");
+
+                    b.HasData(
+                        new { Id = 1, Descripcion = "Tonelada", Unidad = "Ton" },
+                        new { Id = 2, Descripcion = "KiloGramo", Unidad = "Kg" },
+                        new { Id = 3, Descripcion = "Unidad", Unidad = "U" }
+                    );
+                });
+
+            modelBuilder.Entity("MateriasPrimasApp.Models.UnidadOrganizativa", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
+                    b.Property<string>("Nombre")
+                        .IsRequired();
+
+                    b.Property<string>("Telefono");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UnidadesOrganizativas");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("UnidadOrganizativa");
+                });
+
+            modelBuilder.Entity("MateriasPrimasApp.Models.Venta", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ClienteId");
+
+                    b.Property<bool>("Confirmada");
+
+                    b.Property<DateTime>("Fecha");
+
+                    b.Property<int>("UnidadOrganizativaId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("UnidadOrganizativaId");
+
+                    b.ToTable("Venta");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -447,9 +478,9 @@ namespace MateriasPrimasApp.Migrations
                     b.ToTable("AspNetRoles");
 
                     b.HasData(
-                        new { Id = "1", ConcurrencyStamp = "03425ba7-c050-498a-9c66-bef5b2c9f09f", Name = "Administrador", NormalizedName = "ADMINISTRADOR" },
-                        new { Id = "2", ConcurrencyStamp = "828ec017-261c-4021-bec1-f2198fec1166", Name = "Comercial", NormalizedName = "COMERCIAL" },
-                        new { Id = "3", ConcurrencyStamp = "df0c2be7-0cad-4919-bdc9-a41a36a0f4e3", Name = "Consultor", NormalizedName = "CONSULTOR" }
+                        new { Id = "1", ConcurrencyStamp = "250e7fbb-ff6d-4093-8b05-fa7c7b9bf554", Name = "Administrador", NormalizedName = "ADMINISTRADOR" },
+                        new { Id = "2", ConcurrencyStamp = "c0d7adbb-312a-4b28-8372-0b21b9443f1d", Name = "Comercial", NormalizedName = "COMERCIAL" },
+                        new { Id = "3", ConcurrencyStamp = "4ce94ff9-f09d-4cd2-b270-7df6b4cca3ff", Name = "Consultor", NormalizedName = "CONSULTOR" }
                     );
                 });
 
@@ -543,9 +574,29 @@ namespace MateriasPrimasApp.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("MateriasPrimaApp.Models.CasaCompra", b =>
+            modelBuilder.Entity("MateriasPrimasApp.Models.Derivado", b =>
                 {
-                    b.HasBaseType("MateriasPrimaApp.Models.UnidadOrganizativa");
+                    b.HasBaseType("MateriasPrimasApp.Models.Producto");
+
+                    b.Property<int>("ProductoOrigenId");
+
+                    b.HasIndex("ProductoOrigenId");
+
+                    b.ToTable("Derivado");
+
+                    b.HasDiscriminator().HasValue("Derivado");
+
+                    b.HasData(
+                        new { Id = 4, CategoriaId = 2, Codigo = "f678", Descripcion = "Aluminio Laminado", Nombre = "Aluminio Laminado", PrecioCompraMlc = 20m, PrecioCompraMn = 500m, PrecioVentaMlc = 48m, PrecioVentaMn = 1200m, TipoId = 1, UnidadId = 1, ProductoOrigenId = 3 },
+                        new { Id = 5, CategoriaId = 2, Codigo = "f679", Descripcion = "Aluminio Perfilado", Nombre = "Aluminio Perfilado", PrecioCompraMlc = 20m, PrecioCompraMn = 500m, PrecioVentaMlc = 48m, PrecioVentaMn = 1200m, TipoId = 1, UnidadId = 1, ProductoOrigenId = 3 },
+                        new { Id = 6, CategoriaId = 2, Codigo = "f680", Descripcion = "Aluminio Fundido", Nombre = "Aluminio Fundido", PrecioCompraMlc = 20m, PrecioCompraMn = 500m, PrecioVentaMlc = 48m, PrecioVentaMn = 1200m, TipoId = 1, UnidadId = 1, ProductoOrigenId = 3 },
+                        new { Id = 7, CategoriaId = 1, Codigo = "f681", Descripcion = "Hierro Fundido", Nombre = "Hierro Fundido", PrecioCompraMlc = 4m, PrecioCompraMn = 100m, PrecioVentaMlc = 10m, PrecioVentaMn = 250m, TipoId = 1, UnidadId = 1, ProductoOrigenId = 1 }
+                    );
+                });
+
+            modelBuilder.Entity("MateriasPrimasApp.Models.CasaCompra", b =>
+                {
+                    b.HasBaseType("MateriasPrimasApp.Models.UnidadOrganizativa");
 
                     b.Property<int>("UebId");
 
@@ -561,9 +612,9 @@ namespace MateriasPrimasApp.Migrations
                     );
                 });
 
-            modelBuilder.Entity("MateriasPrimaApp.Models.UEB", b =>
+            modelBuilder.Entity("MateriasPrimasApp.Models.UEB", b =>
                 {
-                    b.HasBaseType("MateriasPrimaApp.Models.UnidadOrganizativa");
+                    b.HasBaseType("MateriasPrimasApp.Models.UnidadOrganizativa");
 
                     b.Property<string>("Municipio");
 
@@ -577,143 +628,151 @@ namespace MateriasPrimasApp.Migrations
                     );
                 });
 
-            modelBuilder.Entity("MateriasPrimaApp.Models.DetalleDeEntrada", b =>
+            modelBuilder.Entity("MateriasPrimasApp.Models.ApplicationUser", b =>
                 {
-                    b.HasOne("MateriasPrimaApp.Models.Entrada", "Entrada")
+                    b.HasOne("MateriasPrimasApp.Models.UnidadOrganizativa", "UnidadOrganizativa")
+                        .WithMany()
+                        .HasForeignKey("UnidadOrganizativaId");
+                });
+
+            modelBuilder.Entity("MateriasPrimasApp.Models.DetalleDeEntrada", b =>
+                {
+                    b.HasOne("MateriasPrimasApp.Models.Entrada", "Entrada")
                         .WithMany("DetallesDeEntrada")
                         .HasForeignKey("EntradaId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MateriasPrimaApp.Models.Producto", "Producto")
+                    b.HasOne("MateriasPrimasApp.Models.Producto", "Producto")
                         .WithMany()
                         .HasForeignKey("ProductoId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MateriasPrimaApp.Models.DetalleDeTransferencia", b =>
+            modelBuilder.Entity("MateriasPrimasApp.Models.DetalleDeProcesamiento", b =>
                 {
-                    b.HasOne("MateriasPrimaApp.Models.Producto", "Producto")
+                    b.HasOne("MateriasPrimasApp.Models.Derivado", "Derivado")
+                        .WithMany()
+                        .HasForeignKey("DerivadoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MateriasPrimasApp.Models.Procesamiento", "Procesamiento")
+                        .WithMany("DetallesDeProcesamiento")
+                        .HasForeignKey("ProcesamientoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MateriasPrimasApp.Models.DetalleDeTransferencia", b =>
+                {
+                    b.HasOne("MateriasPrimasApp.Models.Producto", "Producto")
                         .WithMany()
                         .HasForeignKey("ProductoId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MateriasPrimaApp.Models.Transferencia", "Transferencia")
+                    b.HasOne("MateriasPrimasApp.Models.Transferencia", "Transferencia")
                         .WithMany("DetallesDeTransferencia")
                         .HasForeignKey("TransferenciaId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MateriasPrimaApp.Models.DetalleDeVenta", b =>
+            modelBuilder.Entity("MateriasPrimasApp.Models.DetalleDeVenta", b =>
                 {
-                    b.HasOne("MateriasPrimaApp.Models.Producto", "Producto")
+                    b.HasOne("MateriasPrimasApp.Models.Producto", "Producto")
                         .WithMany()
                         .HasForeignKey("ProductoId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MateriasPrimaApp.Models.UnidadDeMedida", "Unidad")
-                        .WithMany()
-                        .HasForeignKey("UnidadId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MateriasPrimaApp.Models.Venta", "Venta")
-                        .WithMany()
+                    b.HasOne("MateriasPrimasApp.Models.Venta", "Venta")
+                        .WithMany("DetallesDeVenta")
                         .HasForeignKey("VentaId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MateriasPrimaApp.Models.Entrada", b =>
+            modelBuilder.Entity("MateriasPrimasApp.Models.Entrada", b =>
                 {
-                    b.HasOne("MateriasPrimaApp.Models.Cliente", "Cliente")
+                    b.HasOne("MateriasPrimasApp.Models.Cliente", "Cliente")
                         .WithMany()
                         .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MateriasPrimaApp.Models.UnidadOrganizativa", "UnidadOrganizativa")
+                    b.HasOne("MateriasPrimasApp.Models.UnidadOrganizativa", "UnidadOrganizativa")
                         .WithMany()
                         .HasForeignKey("UnidadOrganizativaId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MateriasPrimaApp.Models.Procesamiento", b =>
+            modelBuilder.Entity("MateriasPrimasApp.Models.Procesamiento", b =>
                 {
-                    b.HasOne("MateriasPrimaApp.Models.Producto", "ProductoOrigen")
-                        .WithMany()
-                        .HasForeignKey("ProductoOrigenId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MateriasPrimaApp.Models.Producto", "ProductoSalida")
-                        .WithMany()
-                        .HasForeignKey("ProductoSalidaId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MateriasPrimaApp.Models.Producto", b =>
-                {
-                    b.HasOne("MateriasPrimaApp.Models.Categoria", "Categoria")
-                        .WithMany()
-                        .HasForeignKey("CategoriaId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MateriasPrimaApp.Models.TipoDeProducto", "Tipo")
-                        .WithMany()
-                        .HasForeignKey("TipoId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MateriasPrimaApp.Models.UnidadDeMedida", "Unidad")
-                        .WithMany()
-                        .HasForeignKey("UnidadId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MateriasPrimaApp.Models.Submayor", b =>
-                {
-                    b.HasOne("MateriasPrimaApp.Models.UnidadOrganizativa", "Almacen")
-                        .WithMany()
-                        .HasForeignKey("AlmacenId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MateriasPrimaApp.Models.Producto", "Producto")
+                    b.HasOne("MateriasPrimasApp.Models.Producto", "Producto")
                         .WithMany()
                         .HasForeignKey("ProductoId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MateriasPrimaApp.Models.UnidadDeMedida", "Unidad")
+                    b.HasOne("MateriasPrimasApp.Models.UnidadOrganizativa", "UnidadOrganizativa")
+                        .WithMany()
+                        .HasForeignKey("UnidadOrganizativaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MateriasPrimasApp.Models.Producto", b =>
+                {
+                    b.HasOne("MateriasPrimasApp.Models.Categoria", "Categoria")
+                        .WithMany()
+                        .HasForeignKey("CategoriaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MateriasPrimasApp.Models.TipoDeProducto", "Tipo")
+                        .WithMany()
+                        .HasForeignKey("TipoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MateriasPrimasApp.Models.UnidadDeMedida", "Unidad")
                         .WithMany()
                         .HasForeignKey("UnidadId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MateriasPrimaApp.Models.Transferencia", b =>
+            modelBuilder.Entity("MateriasPrimasApp.Models.Submayor", b =>
                 {
-                    b.HasOne("MateriasPrimaApp.Models.UnidadOrganizativa", "Destino")
+                    b.HasOne("MateriasPrimasApp.Models.UnidadOrganizativa", "Almacen")
+                        .WithMany()
+                        .HasForeignKey("AlmacenId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MateriasPrimasApp.Models.Producto", "Producto")
+                        .WithMany()
+                        .HasForeignKey("ProductoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MateriasPrimasApp.Models.UnidadDeMedida", "Unidad")
+                        .WithMany()
+                        .HasForeignKey("UnidadId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MateriasPrimasApp.Models.Transferencia", b =>
+                {
+                    b.HasOne("MateriasPrimasApp.Models.UnidadOrganizativa", "Destino")
                         .WithMany()
                         .HasForeignKey("DestinoId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MateriasPrimaApp.Models.UnidadOrganizativa", "Origen")
+                    b.HasOne("MateriasPrimasApp.Models.UnidadOrganizativa", "Origen")
                         .WithMany()
                         .HasForeignKey("OrigenId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MateriasPrimaApp.Models.Venta", b =>
+            modelBuilder.Entity("MateriasPrimasApp.Models.Venta", b =>
                 {
-                    b.HasOne("MateriasPrimaApp.Models.Cliente", "Cliente")
+                    b.HasOne("MateriasPrimasApp.Models.Cliente", "Cliente")
                         .WithMany()
                         .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MateriasPrimaApp.Models.UnidadOrganizativa", "UnidadOrganizativa")
+                    b.HasOne("MateriasPrimasApp.Models.UnidadOrganizativa", "UnidadOrganizativa")
                         .WithMany()
                         .HasForeignKey("UnidadOrganizativaId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MateriasPrimasApp.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("MateriasPrimaApp.Models.UnidadOrganizativa", "UnidadOrganizativa")
-                        .WithMany()
-                        .HasForeignKey("UnidadOrganizativaId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -761,9 +820,17 @@ namespace MateriasPrimasApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MateriasPrimaApp.Models.CasaCompra", b =>
+            modelBuilder.Entity("MateriasPrimasApp.Models.Derivado", b =>
                 {
-                    b.HasOne("MateriasPrimaApp.Models.UEB", "Ueb")
+                    b.HasOne("MateriasPrimasApp.Models.Producto", "ProductoOrigen")
+                        .WithMany("Derivados")
+                        .HasForeignKey("ProductoOrigenId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MateriasPrimasApp.Models.CasaCompra", b =>
+                {
+                    b.HasOne("MateriasPrimasApp.Models.UEB", "Ueb")
                         .WithMany()
                         .HasForeignKey("UebId")
                         .OnDelete(DeleteBehavior.Cascade);

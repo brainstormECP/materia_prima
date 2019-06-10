@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MateriasPrimaApp.Models;
+using MateriasPrimasApp.Models;
 using MateriasPrimasApp.Data;
 using Microsoft.AspNetCore.Identity;
-using MateriasPrimasApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using MateriasPrimasApp.HelperClass;
 
@@ -32,7 +31,7 @@ namespace MateriasPrimasApp.Controllers
         public async Task<IActionResult> Index()
         {
             var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
-            var transferencias = _context.Transferencias.Where(t => t.OrigenId == user.UnidadOrganizativaId || t.DestinoId == t.DestinoId).Include(t => t.Destino).Include(t => t.Origen).Include(t => t.DetallesDeTransferencia);
+            var transferencias = _context.Transferencias.Where(t => t.OrigenId == user.UnidadOrganizativaId || t.DestinoId == user.UnidadOrganizativaId).Include(t => t.Destino).Include(t => t.Origen).Include(t => t.DetallesDeTransferencia);
             return View(await transferencias.ToListAsync());
         }
 
@@ -72,9 +71,11 @@ namespace MateriasPrimasApp.Controllers
         [Authorize(Roles = "Comercial")]
         public IActionResult Create()
         {
-            ViewData["ClienteId"] = new SelectList(_context.Cliente, "Id", "Nombre");
-            ViewData["DestinoId"] = new SelectList(_context.Set<UnidadOrganizativa>(), "Id", "Nombre");
-            ViewData["OrigenId"] = new SelectList(_context.Set<UnidadOrganizativa>(), "Id", "Nombre");
+            var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            var unidad = _context.UnidadesOrganizativas.Find(user.UnidadOrganizativaId);
+
+            ViewData["DestinoId"] = new SelectList(_context.UnidadesOrganizativas.Where(u=>!(u is CasaCompra) && u.Id != unidad.Id), "Id", "Nombre");
+            ViewData["Origen"] = unidad.Nombre ;
             return View();
         }
 
@@ -84,16 +85,22 @@ namespace MateriasPrimasApp.Controllers
         [Authorize(Roles = "Comercial")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Fecha,ClienteId,OrigenId,DestinoId")] Transferencia transferencia)
+        public async Task<IActionResult> Create([Bind("Id,Fecha,DestinoId")] Transferencia transferencia)
         {
+            var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            var unidad = _context.UnidadesOrganizativas.Find(user.UnidadOrganizativaId);
+            transferencia.OrigenId = unidad.Id;
             if (ModelState.IsValid)
             {
                 _context.Add(transferencia);
                 await _context.SaveChangesAsync();
+                TempData["exito"] = "Transeferencia creada satisfactoriamente";
                 return RedirectToAction("DetallesDeTransferencia", new { id = transferencia.Id });
             }
-            ViewData["DestinoId"] = new SelectList(_context.Set<UnidadOrganizativa>(), "Id", "Nombre", transferencia.DestinoId);
-            ViewData["OrigenId"] = new SelectList(_context.Set<UnidadOrganizativa>(), "Id", "Nombre", transferencia.OrigenId);
+
+            ViewData["ClienteId"] = new SelectList(_context.Cliente, "Id", "Nombre");
+            ViewData["DestinoId"] = new SelectList(_context.UnidadesOrganizativas.Where(u => !(u is CasaCompra) && u.Id != unidad.Id), "Id", "Nombre");
+            ViewData["Origen"] = unidad.Nombre;
             return View(transferencia);
         }
 
@@ -105,8 +112,16 @@ namespace MateriasPrimasApp.Controllers
             {
                 return NotFound();
             }
+            var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            var unidad = _context.UnidadesOrganizativas.Find(user.UnidadOrganizativaId);
 
-            ViewData["Productos"] = new SelectList(_context.Producto.ToList(), "Id", "Nombre");
+
+            ViewData["Productos"] = new SelectList(_context.Submayor.Include(s => s.Producto)
+                .Include(s => s.Almacen)
+                .Where(s=>s.AlmacenId == user.UnidadOrganizativaId )
+                .Select(s=>s.Producto)
+                .Include(p=>p.Unidad)
+                .Include(p=>p.Categoria).ToList(), "Id", "Nombre");
             ViewData["UnidadesDeMedidas"] = new SelectList(_context.UM.ToList(), "Id", "Unidad");
             return View(transferencia);
         }
@@ -123,6 +138,15 @@ namespace MateriasPrimasApp.Controllers
                 ModelState.AddModelError("ProductoId", "El producto selecionado ya se encuentra en esta transferencia");
             }
 
+            //Controlar excepción en caso de que la cantidad a vender sea mayor a la existente en el almacén
+            var transferencia = _context.Transferencias.Find(detalle.TransferenciaId);
+            var sub = await _context.Submayor.FirstOrDefaultAsync(s => s.AlmacenId == transferencia.OrigenId && s.ProductoId == detalle.ProductoId);
+
+
+            if (detalle.Cantidad > sub.Cantidad)
+            {
+                ModelState.AddModelError("Cantidad", "No existe esa cantidad en el almacén de orígen");
+            }
             if (ModelState.IsValid)
             {
                 await _context.DetallesDeTransferencia.AddAsync(detalle);
@@ -150,7 +174,7 @@ namespace MateriasPrimasApp.Controllers
             _context.DetallesDeTransferencia.Remove(detalle);
 
             await _context.SaveChangesAsync();
-            return ViewComponent("DetallesDeTransferencia", new { TrasladoId = detalle.TransferenciaId });
+            return ViewComponent("DetallesDeTransferencia", new { TransferenciaId = detalle.TransferenciaId });
 
 
         }
@@ -160,6 +184,9 @@ namespace MateriasPrimasApp.Controllers
         // GET: Trasladoes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            var unidad = _context.UnidadesOrganizativas.Find(user.UnidadOrganizativaId);
+
             if (id == null)
             {
                 return NotFound();
@@ -170,8 +197,9 @@ namespace MateriasPrimasApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["DestinoId"] = new SelectList(_context.Set<UnidadOrganizativa>(), "Id", "Nombre", transferencia.DestinoId);
-            ViewData["OrigenId"] = new SelectList(_context.Set<UnidadOrganizativa>(), "Id", "Nombre", transferencia.OrigenId);
+            ViewData["ClienteId"] = new SelectList(_context.Cliente, "Id", "Nombre");
+            ViewData["DestinoId"] = new SelectList(_context.UnidadesOrganizativas.Where(u => !(u is CasaCompra) && u.Id != unidad.Id), "Id", "Nombre");
+            ViewData["Origen"] = unidad.Nombre;
             return View(transferencia);
         }
 
@@ -181,8 +209,11 @@ namespace MateriasPrimasApp.Controllers
         [Authorize(Roles = "Comercial")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Fecha,ClienteId,OrigenId,DestinoId")] Transferencia transferencia)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Fecha,OrigenId,DestinoId")] Transferencia transferencia)
         {
+            var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            var unidad = _context.UnidadesOrganizativas.Find(user.UnidadOrganizativaId);
+            transferencia.OrigenId = unidad.Id;
             if (id != transferencia.Id)
             {
                 return NotFound();
@@ -194,6 +225,7 @@ namespace MateriasPrimasApp.Controllers
                 {
                     _context.Update(transferencia);
                     await _context.SaveChangesAsync();
+                    TempData["exito"] = "Transferencia editada satisfactoriamente";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -208,8 +240,9 @@ namespace MateriasPrimasApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DestinoId"] = new SelectList(_context.Set<UnidadOrganizativa>(), "Id", "Nombre", transferencia.DestinoId);
-            ViewData["OrigenId"] = new SelectList(_context.Set<UnidadOrganizativa>(), "Id", "Nombre", transferencia.OrigenId);
+            TempData["error"] = "Se ha producido un error al crear la Transferencia";
+            ViewData["DestinoId"] = new SelectList(_context.UnidadesOrganizativas.Where(u => !(u is CasaCompra) && u.Id != unidad.Id), "Id", "Nombre");
+            ViewData["Origen"] = unidad.Nombre;
             return View(transferencia);
         }
 
@@ -243,6 +276,7 @@ namespace MateriasPrimasApp.Controllers
             var transferencia = await _context.Transferencias.FindAsync(id);
             _context.Transferencias.Remove(transferencia);
             await _context.SaveChangesAsync();
+            TempData["exito"] = "Transferencia eliminada satisfactoriamente";
             return RedirectToAction(nameof(Index));
         }
 
@@ -281,8 +315,12 @@ namespace MateriasPrimasApp.Controllers
                 transferencia.Confirmada = true;
                 _context.Transferencias.Update(transferencia);
                 await _context.SaveChangesAsync();
+                TempData["exito"] = "Transeferencia confirmada satisfactoriamente";
+
                 return RedirectToAction(nameof(Index));
             }
+            TempData["error"] = "Error confirmando la transferencia";
+
             return View();
         }
 

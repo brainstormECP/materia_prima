@@ -1,4 +1,4 @@
-﻿@model MateriasPrimaApp.Models.Venta
+﻿@model MateriasPrimasApp.Models.Venta
 
 @{
     ViewData["Title"] = "Detalles de Venta";
@@ -6,103 +6,108 @@
 }
 
 
-    <hr />
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            <div class="portlet box green">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="fa fa-lock"></i>Confirmar Venta
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="portlet box green">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-shopping-cart" style="font-size:20px;"></i>Confirmar Venta
+                </div>
+            </div>
+            <div class="portlet-body">
+                <h3 class="text-center">¿Desea confirmar esta venta?</h3>
+                <br />
+                <div class="row static-info">
+                </div>
+                <div class="row static-info">
+                    <div class="col-md-6 text-center">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Fecha)
+                        </dt>
+                    </div>
+                    <div class="col-md-6 text-left">
+                        <dd>
+                            @Html.DisplayFor(model => model.Fecha)
+                        </dd>
                     </div>
                 </div>
-                <div class="portlet-body">
-                    <h3 class="text-center">¿Desea confirmar esta venta?</h3>
-                    <div class="row static-info">
+                <div class="row static-info">
+                </div>
+                <div class="row static-info">
+                    <div class="col-md-6 text-center">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Cliente)
+                        </dt>
                     </div>
-                    <div class="row static-info">
-                        <div class="col-md-6 text-center">
-                            <dt>
-                                @Html.DisplayNameFor(model => model.Fecha)
-                            </dt>
-                        </div>
-                        <div class="col-md-6 text-left">
-                            <dd>
-                                @Html.DisplayFor(model => model.Fecha)
-                            </dd>
-                        </div>
+                    <div class="col-md-6 text-left">
+                        <dd>
+                            @Html.DisplayFor(model => model.Cliente.Nombre)
+                        </dd>
                     </div>
-                    <div class="row static-info">
+                </div>
+                <div class="row static-info">
+                </div>
+                <div class="row static-info">
+                    <div class="col-md-6 text-center">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.UnidadOrganizativa)
+                        </dt>
                     </div>
-                    <div class="row static-info">
-                        <div class="col-md-6 text-center">
-                            <dt>
-                                @Html.DisplayNameFor(model => model.Cliente)
-                            </dt>
-                        </div>
-                        <div class="col-md-6 text-left">
-                            <dd>
-                                @Html.DisplayFor(model => model.Cliente.Nombre)
-                            </dd>
-                        </div>
+                    <div class="col-md-6 text-left">
+                        <dd>
+                            @Html.DisplayFor(model => model.UnidadOrganizativa.Nombre)
+                        </dd>
                     </div>
-                    <div class="row static-info">
-                    </div>
-                    <div class="row static-info">
-                        <div class="col-md-6 text-center">
-                            <dt>
-                                @Html.DisplayNameFor(model => model.UnidadOrganizativa)
-                            </dt>
-                        </div>
-                        <div class="col-md-6 text-left">
-                            <dd>
-                                @Html.DisplayFor(model => model.UnidadOrganizativa.Nombre)
-                            </dd>
-                        </div>
-                    </div>
-                    <table class="table table-responsive">
-                        <thead>
-                            <tr>
-                                <th>Nombre del Producto</th>
-                                <th>Cantidad</th>
-                                <th>Unidad de Medida</th>
-                                <th>Precio MN</th>
-                                <th>Precio MLC</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                          
-                            @foreach (var item in ViewBag.Detalles)
-                            {
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <table class="table table-responsive">
+                            <thead>
                                 <tr>
-                                    <th>@item.Producto.Nombre</th>
-                                    <th>@item.Cantidad</th>
-                                    <th>@item.PrecioMn</th>
-                                    <th>@item.PrecioMlc</th>
+                                    <th>Nombre del Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Unidad de Medida</th>
+                                    <th>Precio MN</th>
+                                    <th>Precio MLC</th>
                                 </tr>
-                            }
-                        </tbody>
+                            </thead>
+                            <tbody>
 
-                    </table>
-                    <br />
-                    <br />
-                    <div class="text-center">
-                        <form asp-action="Confirmar" method="post">
-                            <input type="hidden" asp-for="Id" value="@Model.Id" />
-                            <div class="form-group">
-                                <input type="submit" value="Confirmar" class="btn btn-success" />
-                            </div>
-                        </form>
+                                @foreach (var item in ViewBag.Detalles)
+                                {
+                                    <tr>
+                                        <td>@item.Producto.Nombre</td>
+                                        <td>@item.Cantidad</td>
+                                        <td>@item.Producto.Unidad.Unidad</td>
+                                        <td>@String.Format("{0:0.00}", item.PrecioVentaMn)</td>
+                                        <td>@item.PrecioVentaMlc</td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-right"> <strong>Total:</strong></td>
+                                    <td class="text-left"><strong>@String.Format("{0:C2} ", ViewBag.TotalMn)</strong></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+
+                        </table>
                     </div>
+                </div>
+                <br />
+                <br />
+                <div class="text-center">
+                    <form asp-action="Confirmar" method="post">
+                        <input type="hidden" asp-for="Id" value="@Model.Id" />
+                        <div class="form-group">
+                            <input type="submit" value="Confirmar" class="btn btn-success" />
+                            <a asp-action="Index" class="btn btn-default">Atrás</a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-       <div class="col-md-2"></div>
     </div>
-    <dl class="dl-horizontal">
-  </dl>
-<div class="text-center">
-   <div class="btn-group btn-group-solid">
-        <a asp-action="Index" class="btn btn-info">Atrás</a>
-</div>
 </div>

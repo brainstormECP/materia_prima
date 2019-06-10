@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MateriasPrimaApp.Models;
+using MateriasPrimasApp.Models;
 using MateriasPrimasApp.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +24,7 @@ namespace MateriasPrimasApp.ViewComponents
             decimal total = 0;
             foreach(var i in items)
             {
-                total += i.PrecioMn;
+                total += i.PrecioVentaMn;
             }
             ViewData["Total"] = total;
             return View(items);

@@ -1,4 +1,4 @@
-﻿@model MateriasPrimaApp.Models.Procesamiento
+﻿@model MateriasPrimasApp.Models.Procesamiento
 
         @{
         ViewData["Title"] = "Delete";
@@ -21,42 +21,32 @@
                     <div class="row">
                                 <div class="col-md-6 text-right">
                                     <dt>
-                                        @Html.DisplayNameFor(model => model.ProductoOrigen)
+                                        @Html.DisplayNameFor(model => model.Fecha)
                                     </dt>
                                 </div>
                                 <div class="col-md-6 text-left">
                                     <dd>
-                                        @Html.DisplayFor(model => model.ProductoOrigen.Codigo)
+                                        @Html.DisplayFor(model => model.Fecha)
                                     </dd>
                                 </div>
                                 <div class="col-md-6 text-right">
                                     <dt>
-                                        @Html.DisplayNameFor(model => model.CantidadOrigen)
+                                        @Html.DisplayNameFor(model => model.UnidadOrganizativa)
                                     </dt>
                                 </div>
                                 <div class="col-md-6 text-left">
                                     <dd>
-                                        @Html.DisplayFor(model => model.CantidadOrigen)
+                                       @Model.UnidadOrganizativa.Nombre
                                     </dd>
                                 </div>
                                 <div class="col-md-6 text-right">
                                     <dt>
-                                        @Html.DisplayNameFor(model => model.ProductoSalida)
+                                        @Html.DisplayNameFor(model => model.Confirmado)
                                     </dt>
                                 </div>
                                 <div class="col-md-6 text-left">
                                     <dd>
-                                        @Html.DisplayFor(model => model.ProductoSalida.Codigo)
-                                    </dd>
-                                </div>
-                                <div class="col-md-6 text-right">
-                                    <dt>
-                                        @Html.DisplayNameFor(model => model.CantidadSalida)
-                                    </dt>
-                                </div>
-                                <div class="col-md-6 text-left">
-                                    <dd>
-                                        @Html.DisplayFor(model => model.CantidadSalida)
+                                        @Html.DisplayFor(model => model.Confirmado)
                                     </dd>
                                 </div>
                     </div>
