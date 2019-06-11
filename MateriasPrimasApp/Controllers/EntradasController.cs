@@ -291,6 +291,7 @@ namespace MateriasPrimasApp.Controllers
             controlSubMayor.DarEntrada(entrada);
 
             await _context.SaveChangesAsync();
+            _logger.LogInformation("Crear: " + entrada.ToString());
             TempData["exito"] = "Entrada confirmada. Submayores de productos Actualizados";
 
             return RedirectToAction(nameof(Index));

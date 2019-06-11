@@ -95,19 +95,17 @@
                 responsive: true,
                 buttons: [
                     {
-                        extend: 'print',
-                        text: 'Imprimir'
-                    },
-                    'excelHtml5',
-                    'pdf',
-                    'csv',
-                    {
-                        extend: 'copy',
-                        text: 'Copiar',
+                        extend: 'pdf',
                         exportOptions: {
-                            orthogonal: 'copy'
+                            columns: [0, 1, 2]
                         }
-                    }
+                    },
+                    {
+                        extend: 'csv',
+                        exportOptions: {
+                            columns: [0, 1, 2,]
+                        }
+                    },
                 ]
             });
         });

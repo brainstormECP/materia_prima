@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace MateriasPrimasApp.Models
 {
@@ -19,5 +20,10 @@ namespace MateriasPrimasApp.Models
         public bool Confirmada { get; set; }
 
         public virtual ICollection<DetalleDeTransferencia> DetallesDeTransferencia { get; set; }
+        public override string ToString()
+        {
+            return $"Transferencia Fecha:{Fecha.ToShortDateString()}, UnidadOrganizativaOrigenId:{OrigenId}, UnidadOrganizativaDestinoId: {DestinoId}, Detalles: " + String.Join(",", DetallesDeTransferencia.Select(d => "ProductoId: " + d.ProductoId + " Cantidad: " + d.Cantidad));
+        }
+
     }
 }
