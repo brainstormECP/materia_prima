@@ -51,7 +51,7 @@ namespace MateriasPrimasApp.Controllers
 
         public async Task<IActionResult> ConciliacionVentas()
         {
-            ViewBag.Ueb = new SelectList(_context.Set<UEB>(), "Id", "Nombre");
+            ViewBag.Ueb = new SelectList(await _context.UEB.ToListAsync(), "Id", "Nombre");
             return View();
         }
 
@@ -61,7 +61,7 @@ namespace MateriasPrimasApp.Controllers
             if (ModelState.IsValid)
             {
 
-                var transeferencias = await _context.Transferencias.Include(t => t.DetallesDeTransferencia).ThenInclude(t => t.Producto).Include(t => t.Origen).Include(t => t.Destino).ToListAsync();
+                var transeferencias = await _context.Transferencias.Include(t => t.DetallesDeTransferencia).ThenInclude(t=>t.Producto).ThenInclude(p=>p.Unidad).Include(t=>t.Origen).Include(t=>t.Destino).ToListAsync();
                 if (viewModel.FechaInicio != null)
                 {
                     transeferencias = transeferencias.Where(t => t.Fecha >= viewModel.FechaInicio).ToList();
@@ -96,9 +96,10 @@ namespace MateriasPrimasApp.Controllers
             ViewData["ProductoId"] = new SelectList(await _context.Producto.ToListAsync(), "Id", "Nombre", viewModel.ProductoId);
             ViewData["OrigenId"] = new SelectList(await _context.UnidadesOrganizativas.ToListAsync(), "Id", "Nombre", viewModel.OrigenId);
             ViewData["Destino"] = new SelectList(await _context.UEB.ToListAsync(), "Id", "Nombre", viewModel.DestinoId);
-            return View();
+            return View(viewModel);
         }
 
+        [HttpPost]
         public async Task<IActionResult> ConciliacionVentas(ParametroVentasVM parametros)
         {
             var result = new List<ConciliacionVentasVM>();
