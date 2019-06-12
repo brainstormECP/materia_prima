@@ -36,7 +36,7 @@ namespace MateriasPrimasApp.Controllers
             var user = _context.Users.Find(_userManager.GetUserId(User));
             if (user.UnidadOrganizativaId != null)
             {
-                var entradas = await _context.Entrada.Where(e => e.UnidadOrganizativaId == user.UnidadOrganizativaId).Include(e=>e.Cliente).Include(e=>e.UnidadOrganizativa).Include(e=>e.DetallesDeEntrada).ToListAsync();
+                var entradas = await _context.Entrada.Where(e => e.UnidadOrganizativaId == user.UnidadOrganizativaId).Include(e=>e.Cliente).Include(e=>e.UnidadOrganizativa).Include(e=>e.DetallesDeEntrada).OrderByDescending(e=>e.Fecha).ToListAsync();
                 return View(entradas);
             }
             return RedirectToAction("TodasLasEntradas");
@@ -45,7 +45,7 @@ namespace MateriasPrimasApp.Controllers
         [Authorize(Roles = "Consultor, Comercial")]
         public async Task<IActionResult> TodasLasEntradas()
         {
-            var entradas = await _context.Entrada.Include(e => e.Cliente).Include(e => e.UnidadOrganizativa).Include(e => e.DetallesDeEntrada).ToListAsync();
+            var entradas = await _context.Entrada.Where(e=>e.Confirmada).Include(e => e.Cliente).Include(e => e.UnidadOrganizativa).Include(e => e.DetallesDeEntrada).ToListAsync();
             return View(entradas);
         }
 

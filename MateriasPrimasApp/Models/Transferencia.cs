@@ -8,7 +8,6 @@ namespace MateriasPrimasApp.Models
     public class Transferencia
     {
         public int Id { get; set; }
-        [Display(Name = "Fecha")]
         [DataType(DataType.Date)]
         [Required(ErrorMessage = "El campo Fecha es obligatorio")]
         public DateTime Fecha { get; set; }

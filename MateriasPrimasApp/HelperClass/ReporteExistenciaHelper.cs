@@ -18,7 +18,7 @@ namespace MateriasPrimasApp.HelperClass
         public List<ExistenciaVM> GetExistencias(int uebId)
         {
             var existencias = new List<ExistenciaVM>();
-            var enUeb = _db.Set<Submayor>().Where(s => s.AlmacenId == uebId);
+            var enUeb = _db.Set<Submayor>().Include(s=>s.Producto).Where(s => s.AlmacenId == uebId).ToList();
             existencias.AddRange(enUeb.GroupBy(s => s.Producto).Select(s => new ExistenciaVM
             {
                 Producto = s.Key.Nombre,
@@ -26,7 +26,7 @@ namespace MateriasPrimasApp.HelperClass
             }));
             var casasDeCompra = _db.Set<CasaCompra>().Where(u => u.UebId == uebId).Select(u => u.Id);
             var enCasaDeCompra = _db.Set<Submayor>()
-                .Where(s => casasDeCompra.Contains(s.AlmacenId))
+                .Where(s => casasDeCompra.Contains(s.AlmacenId)).ToList()
                 .GroupBy(s => s.Producto)
                 .Select(s => new ExistenciaVM { Producto = s.Key.Nombre, EnCasaDeCompra = s.Sum(e => e.Cantidad) });
             foreach (var item in enCasaDeCompra)

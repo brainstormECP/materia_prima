@@ -29,7 +29,7 @@ namespace MateriasPrimasApp.Controllers
         public async Task<IActionResult> Index()
         {
             var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
-            var ventas = _context.Venta.Where(v=>v.UnidadOrganizativaId == user.UnidadOrganizativaId).Include(v => v.Cliente).Include(v => v.UnidadOrganizativa).Include(v=>v.DetallesDeVenta);
+            var ventas = _context.Venta.Where(v=>v.UnidadOrganizativaId == user.UnidadOrganizativaId).Include(v => v.Cliente).Include(v => v.UnidadOrganizativa).Include(v=>v.DetallesDeVenta).OrderByDescending(v=>v.Fecha);
             return View(await ventas.ToListAsync());
         }
 

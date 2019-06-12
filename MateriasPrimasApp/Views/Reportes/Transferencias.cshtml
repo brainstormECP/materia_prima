@@ -1,0 +1,53 @@
+﻿@model MateriasPrimasApp.ViewModels.FiltroReporteTransferenciaViewModel
+@{
+    ViewData["Title"] = "Reporte de Transferencias";
+    Layout = "~/Views/Shared/_Backend.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Transferencias" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label>Desde</label>
+                <input asp-for="FechaInicio" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Hasta</label>
+                <input asp-for="FechaFin" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Origen</label>
+                <select asp-for="OrigenId" id="origen" data-placeholder="Seleccione" class="form-control chosen-select" asp-items="@ViewBag.OrigenId"><option value=""></option></select>
+            </div>
+            <div class="form-group" id="destino">
+                <label>Destino</label>
+                <select asp-for="DestinoId" data-placeholder="Seleccione" class="form-control chosen-select" asp-items="@ViewBag.DestinoId"><option value=""></option></select>
+            </div>
+
+            <div class="form-group">
+                <label>Origen</label>
+                <select asp-for="ProductoId" id="origen" data-placeholder="Seleccione" class="form-control chosen-select" asp-items="@ViewBag.ProductoId"><option value=""></option></select>
+            </div>
+
+            <input type="submit" class="btn btn-success" value="Generar Reporte" />
+        </form>
+    </div>
+</div>
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $('#Reportes').removeClass("active");
+            $('#Transferencias').addClass("active");
+
+            $('#origen').on("change", function () {
+                var id = $('#origen').val();
+                $('#destino').load("/transferencias/origen/" + id, function () {
+                    $('.chosen-select').chosen();
+                });
+            });
+        });
+    </script>
+
+}

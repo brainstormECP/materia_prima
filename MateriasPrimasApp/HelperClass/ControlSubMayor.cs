@@ -19,7 +19,7 @@ namespace MateriasPrimasApp.HelperClass
         public void DarEntrada(int entradaId)
         {
             Entrada entrada = _context.Entrada.First(e => e.Id == entradaId);
-            DarEntrada(entrada);
+            DarEntrada(entrada); 
         }
 
         public void DarEntrada(Entrada entrada)

@@ -34,14 +34,14 @@ namespace MateriasPrimasApp.Controllers
         public async Task<IActionResult> Index()
         {
             var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
-            var transferencias = _context.Transferencias.Where(t => t.OrigenId == user.UnidadOrganizativaId || t.DestinoId == user.UnidadOrganizativaId).Include(t => t.Destino).Include(t => t.Origen).Include(t => t.DetallesDeTransferencia);
+            var transferencias = _context.Transferencias.Where(t => t.OrigenId == user.UnidadOrganizativaId || t.DestinoId == user.UnidadOrganizativaId).Include(t => t.Destino).Include(t => t.Origen).Include(t => t.DetallesDeTransferencia).OrderByDescending(s=>s.Fecha);
             return View(await transferencias.ToListAsync());
         }
 
         [Authorize(Roles = "Consultor, Comercial")]
         public async Task<IActionResult> TodasLasTransferencias()
         {
-            var transferencias = _context.Transferencias.Include(t => t.Destino).Include(t => t.Origen).Include(t => t.DetallesDeTransferencia);
+            var transferencias = _context.Transferencias.Where(t=>t.Confirmada).Include(t => t.Destino).Include(t => t.Origen).Include(t => t.DetallesDeTransferencia);
             return View(await transferencias.ToListAsync());
         }
 
@@ -331,7 +331,7 @@ namespace MateriasPrimasApp.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Comercial")]
+        [Authorize]
         [HttpGet]
         public ActionResult origen(int id)
         {
