@@ -19,7 +19,7 @@ namespace MateriasPrimasApp.HelperClass
         public void DarEntrada(int entradaId)
         {
             Entrada entrada = _context.Entrada.First(e => e.Id == entradaId);
-            DarEntrada(entrada); 
+            DarEntrada(entrada);
         }
 
         public void DarEntrada(Entrada entrada)
@@ -62,7 +62,7 @@ namespace MateriasPrimasApp.HelperClass
                 {
                     //generar error, no se puede vender algo que no está en almacén
                 }
-                else if(sub.Cantidad >= item.Cantidad)
+                else if (sub.Cantidad >= item.Cantidad)
                 {
                     sub.Cantidad -= item.Cantidad;
                     _context.Update(sub);
@@ -179,6 +179,13 @@ namespace MateriasPrimasApp.HelperClass
                 _context.Update(sub);
             }
             _context.SaveChanges();
+        }
+
+        public decimal GetExistenciaPorUO(int productoId, int unidadOrganizativaId)
+        {
+            var submayor = _context.Set<Submayor>().Where(s => s.ProductoId == productoId && s.AlmacenId == unidadOrganizativaId).Sum(s => s.Cantidad);
+            var enProcesamiento = _context.Set<Procesamiento>().Where(s => s.ProductoId == productoId && s.UnidadOrganizativaId == unidadOrganizativaId).Sum(s => s.Cantidad);
+            return submayor - enProcesamiento;
         }
     }
 }

@@ -34,14 +34,14 @@ namespace MateriasPrimasApp.Controllers
         public async Task<IActionResult> Index()
         {
             var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
-            var transferencias = _context.Transferencias.Where(t => t.OrigenId == user.UnidadOrganizativaId || t.DestinoId == user.UnidadOrganizativaId).Include(t => t.Destino).Include(t => t.Origen).Include(t => t.DetallesDeTransferencia).OrderByDescending(s=>s.Fecha);
+            var transferencias = _context.Transferencias.Where(t => t.OrigenId == user.UnidadOrganizativaId || t.DestinoId == user.UnidadOrganizativaId).Include(t => t.Destino).Include(t => t.Origen).Include(t => t.DetallesDeTransferencia).OrderByDescending(s => s.Fecha);
             return View(await transferencias.ToListAsync());
         }
 
         [Authorize(Roles = "Consultor, Comercial")]
         public async Task<IActionResult> TodasLasTransferencias()
         {
-            var transferencias = _context.Transferencias.Where(t=>t.Confirmada).Include(t => t.Destino).Include(t => t.Origen).Include(t => t.DetallesDeTransferencia);
+            var transferencias = _context.Transferencias.Where(t => t.Confirmada).Include(t => t.Destino).Include(t => t.Origen).Include(t => t.DetallesDeTransferencia);
             return View(await transferencias.ToListAsync());
         }
 
@@ -77,8 +77,8 @@ namespace MateriasPrimasApp.Controllers
             var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
             var unidad = _context.UnidadesOrganizativas.Find(user.UnidadOrganizativaId);
 
-            ViewData["DestinoId"] = new SelectList(_context.UnidadesOrganizativas.Where(u=>!(u is CasaCompra) && u.Id != unidad.Id), "Id", "Nombre");
-            ViewData["Origen"] = unidad.Nombre ;
+            ViewData["DestinoId"] = new SelectList(_context.UnidadesOrganizativas.Where(u => !(u is CasaCompra) && u.Id != unidad.Id), "Id", "Nombre");
+            ViewData["Origen"] = unidad.Nombre;
             return View();
         }
 
@@ -120,11 +120,11 @@ namespace MateriasPrimasApp.Controllers
             var unidad = _context.UnidadesOrganizativas.Find(user.UnidadOrganizativaId);
 
 
-            ViewData["Productos"] = new SelectList(_context.Submayor.Include(s => s.Producto)                
-                .Where(s=>s.AlmacenId == user.UnidadOrganizativaId && s.Cantidad >0 )
-                .Select(s=>s.Producto)
-                .Include(p=>p.Unidad)
-                .Include(p=>p.Categoria).ToList(), "Id", "Nombre"); 
+            ViewData["Productos"] = new SelectList(_context.Submayor.Include(s => s.Producto)
+                .Where(s => s.AlmacenId == user.UnidadOrganizativaId && s.Cantidad > 0)
+                .Select(s => s.Producto)
+                .Include(p => p.Unidad)
+                .Include(p => p.Categoria).ToList(), "Id", "Nombre");
             ViewData["UnidadesDeMedidas"] = new SelectList(_context.UM.ToList(), "Id", "Unidad");
             return View(transferencia);
         }
@@ -143,10 +143,8 @@ namespace MateriasPrimasApp.Controllers
 
             //Controlar excepción en caso de que la cantidad a vender sea mayor a la existente en el almacén
             var transferencia = _context.Transferencias.Find(detalle.TransferenciaId);
-            var sub = await _context.Submayor.FirstOrDefaultAsync(s => s.AlmacenId == transferencia.OrigenId && s.ProductoId == detalle.ProductoId);
 
-
-            if (detalle.Cantidad > sub.Cantidad)
+            if (detalle.Cantidad >= controlSubMayor.GetExistenciaPorUO(detalle.ProductoId, transferencia.OrigenId))
             {
                 ModelState.AddModelError("Cantidad", "No existe esa cantidad en el almacén de orígen");
             }

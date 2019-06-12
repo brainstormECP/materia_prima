@@ -29,14 +29,14 @@ namespace MateriasPrimasApp.Controllers
         public async Task<IActionResult> Index()
         {
             var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
-            var ventas = _context.Venta.Where(v=>v.UnidadOrganizativaId == user.UnidadOrganizativaId).Include(v => v.Cliente).Include(v => v.UnidadOrganizativa).Include(v=>v.DetallesDeVenta).OrderByDescending(v=>v.Fecha);
+            var ventas = _context.Venta.Where(v => v.UnidadOrganizativaId == user.UnidadOrganizativaId).Include(v => v.Cliente).Include(v => v.UnidadOrganizativa).Include(v => v.DetallesDeVenta).OrderByDescending(v => v.Fecha);
             return View(await ventas.ToListAsync());
         }
 
         public async Task<IActionResult> TodasLasVentas()
         {
             var ventas = _context.Venta.Where(v => !v.Confirmada).Include(v => v.Cliente).Include(v => v.UnidadOrganizativa).Include(v => v.DetallesDeVenta);
-            return View( await ventas.ToListAsync());
+            return View(await ventas.ToListAsync());
         }
 
 
@@ -88,7 +88,7 @@ namespace MateriasPrimasApp.Controllers
                 _context.Add(venta);
                 await _context.SaveChangesAsync();
                 TempData["exito"] = "Venta creada satisfactoriamente";
-                return RedirectToAction("DetallesDeVenta", new { id = venta.Id});
+                return RedirectToAction("DetallesDeVenta", new { id = venta.Id });
             }
             TempData["error"] = "Se ha producido un error al crear la venta";
             ViewData["ClienteId"] = new SelectList(_context.Cliente, "Id", "Nombre", venta.ClienteId);
@@ -147,7 +147,7 @@ namespace MateriasPrimasApp.Controllers
                         throw;
                     }
                 }
-                
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ClienteId"] = new SelectList(_context.Cliente, "Id", "Nombre", venta.ClienteId);
@@ -214,7 +214,7 @@ namespace MateriasPrimasApp.Controllers
             var sub = await _context.Submayor.FirstOrDefaultAsync(s => s.AlmacenId == venta.UnidadOrganizativaId && s.ProductoId == detalle.ProductoId);
 
 
-            if (detalle.Cantidad > sub.Cantidad)
+            if (detalle.Cantidad >= controlSubMayor.GetExistenciaPorUO(detalle.ProductoId, venta.UnidadOrganizativaId))
             {
                 ModelState.AddModelError("Cantidad", "No existe esa cantidad en el almacén de orígen");
             }
@@ -257,9 +257,9 @@ namespace MateriasPrimasApp.Controllers
                 return NotFound();
             }
 
-            ViewData["Productos"] = new SelectList(_context.Submayor.Include(s=>s.Producto)
-                .Include(s=>s.AlmacenId).Where(s=>s.AlmacenId == venta.UnidadOrganizativaId && s.Cantidad >0)
-                .Select(s=>s.Producto).ToList(), "Id", "Nombre");
+            ViewData["Productos"] = new SelectList(_context.Submayor.Include(s => s.Producto)
+                .Include(s => s.AlmacenId).Where(s => s.AlmacenId == venta.UnidadOrganizativaId && s.Cantidad > 0)
+                .Select(s => s.Producto).ToList(), "Id", "Nombre");
             return View(venta);
         }
 
@@ -281,7 +281,7 @@ namespace MateriasPrimasApp.Controllers
             }
             var detallesdeventa = _context.DetallesDeVenta
                                                       .Where(d => d.VentaId == id)
-                                                      .Include(p => p.Producto).ThenInclude(p=>p.Unidad)
+                                                      .Include(p => p.Producto).ThenInclude(p => p.Unidad)
                                                       .ToList();
             decimal total = 0;
             foreach (var i in detallesdeventa)
