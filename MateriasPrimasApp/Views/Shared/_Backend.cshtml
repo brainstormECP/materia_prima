@@ -148,7 +148,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <script src="~/layout5/scripts/index.js" type="text/javascript"></script>
     <script src="~/pages/scripts/tasks.js" type="text/javascript"></script>
     <script src="~/js/toastr.min.js"></script>
-    <link href="~/css/chosen.min.css" rel="stylesheet" />
+    <script src="~/js/chosen.jquery.min.js"></script>
 
     <!-- END PAGE LEVEL SCRIPTS -->
     <script>
@@ -157,10 +157,12 @@ License: You must have a valid license purchased only from themeforest(the above
                 .on('click', function () {
                     $('#error_msg').hide("350");
                 });
+            $('.chosen-select').chosen();
         });
         var controller = window.location.href.split("/");
         var url = '#' + controller[3];
         $(url).addClass('active');
+        console.log(url);
         $(url).parent().parent().addClass("open");
     </script>
 

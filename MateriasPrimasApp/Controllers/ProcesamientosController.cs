@@ -32,7 +32,7 @@ namespace MateriasPrimasApp.Controllers
         public async Task<IActionResult> Index()
         {
             var user = _context.Users.Find(_userManager.GetUserId(User));
-            var applicationDbContext = _context.Procesamientos.Where(p => p.UnidadOrganizativaId == user.UnidadOrganizativaId).Include(p => p.UnidadOrganizativa).Include(p => p.Producto).ThenInclude(p => p.Unidad).Include(p => p.DetallesDeProcesamiento);
+            var applicationDbContext = _context.Procesamientos.Where(p => p.UnidadOrganizativaId == user.UnidadOrganizativaId).Include(p => p.UnidadOrganizativa).Include(p => p.Producto).ThenInclude(p => p.Unidad).Include(p => p.DetallesDeProcesamiento).OrderByDescending(p=>p.Fecha);
             return View(await applicationDbContext.ToListAsync());
         }
 

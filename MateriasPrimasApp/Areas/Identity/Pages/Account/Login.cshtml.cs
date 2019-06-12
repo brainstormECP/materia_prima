@@ -89,7 +89,7 @@ namespace MateriasPrimasApp.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Usuario o Contraseña incorrectos");
                     return Page();
                 }
             }

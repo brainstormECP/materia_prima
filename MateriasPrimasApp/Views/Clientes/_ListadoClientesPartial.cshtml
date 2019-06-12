@@ -1,4 +1,8 @@
 ﻿@model MateriasPrimasApp.Models.Entrada
-    <a class="btn btn-primary pull-right btn-sm" data-toggle="modal" href="#draggable"><i class="fa fa-plus-square"></i></a>
-    <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId"><option value="">Seleccione</option></select>
-
+<label asp-for="ClienteId" class="control-label col-md-3">Cliente</label>
+<div class="col-md-7">
+    <select asp-for="ClienteId" class="form-control input-inline input-medium chosen-select" asp-items="ViewBag.ClienteId"></select>
+    <span class="help-inline">
+        <a class="btn btn-success btn-sm hint--top" aria-label="Agregar nuevo Cliente" data-toggle="modal" href="#draggable"><i class="fa fa-plus"></i></a>
+    </span>
+</div>
