@@ -19,6 +19,12 @@ namespace MateriasPrimasApp.Models
         public bool Confirmada { get; set; }
 
         public virtual ICollection<DetalleDeTransferencia> DetallesDeTransferencia { get; set; }
+
+        public Transferencia()
+        {
+            DetallesDeTransferencia = new HashSet<DetalleDeTransferencia>();
+        }
+
         public override string ToString()
         {
             return $"Transferencia Fecha:{Fecha.ToShortDateString()}, UnidadOrganizativaOrigenId:{OrigenId}, UnidadOrganizativaDestinoId: {DestinoId}, Detalles: " + String.Join(",", DetallesDeTransferencia.Select(d => "ProductoId: " + d.ProductoId + " Cantidad: " + d.Cantidad));

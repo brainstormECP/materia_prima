@@ -32,7 +32,7 @@ namespace MateriasPrimasApp.Controllers
         public async Task<IActionResult> Index()
         {
             var user = _context.Users.Find(_userManager.GetUserId(User));
-            var applicationDbContext = _context.Procesamientos.Where(p => p.UnidadOrganizativaId == user.UnidadOrganizativaId).Include(p => p.UnidadOrganizativa).Include(p => p.Producto).ThenInclude(p => p.Unidad).Include(p => p.DetallesDeProcesamiento).OrderByDescending(p=>p.Fecha);
+            var applicationDbContext = _context.Procesamientos.Where(p => p.UnidadOrganizativaId == user.UnidadOrganizativaId).Include(p => p.UnidadOrganizativa).Include(p => p.Producto).ThenInclude(p => p.Unidad).Include(p => p.DetallesDeProcesamiento).OrderByDescending(p => p.Fecha);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -48,7 +48,7 @@ namespace MateriasPrimasApp.Controllers
      .Include(p => p.Producto).ThenInclude(p => p.Unidad)
      .Include(p => p.UnidadOrganizativa)
      .FirstOrDefaultAsync(p => p.Id == id);
-           
+
             var detallesdeprocesamiento = _context.DetallesDeProcesamiento
                                                       .Where(d => d.ProcesamientoId == id)
                                                       .Include(p => p.Derivado).ThenInclude(p => p.Unidad)
@@ -167,7 +167,9 @@ namespace MateriasPrimasApp.Controllers
 
             if (ModelState.IsValid)
             {
-                _context.Update(procesamiento);
+                proc.Cantidad = procesamiento.Cantidad;
+                proc.ProductoId = procesamiento.ProductoId;
+                _context.Update(proc);
                 TempData["exito"] = "Procesamiento editado satisfactoriamente";
 
                 await _context.SaveChangesAsync();
