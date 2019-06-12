@@ -106,16 +106,14 @@ namespace MateriasPrimasApp.Data
                 );
 
             modelBuilder.Entity<UEB>().HasData(
-                new UEB { Id = 1, Municipio = "Matanzas", Nombre = "UEB Matanzar", Telefono = "262100" },
+                new UEB { Id = 1, Municipio = "Matanzas", Nombre = "UEB Matanzas", Telefono = "262100" },
                 new UEB { Id = 2, Municipio = "Colón", Nombre = "UEB Colón", Telefono = "371304" },
                 new UEB { Id = 3, Municipio = "Jovellanos", Nombre = "UEB Jovellanos", Telefono = "312008" },
                 new UEB { Id = 4, Municipio = "Jagüey Grande", Nombre = "UEB Jagüey Grande", Telefono = "572487" },
                 new UEB { Id = 5, Municipio = "Cárdenas", Nombre = "UEB Colón", Telefono = "371304" }
-
-
-                );
+               );
             modelBuilder.Entity<CasaCompra>().HasData(
-                new CasaCompra { Id = 6, Nombre = "Casa de compra1 Matanzar", UebId = 1 },
+                new CasaCompra { Id = 6, Nombre = "Casa de compra1 Matanzas", UebId = 1 },
                 new CasaCompra { Id = 7, Nombre = "Casa de compra2 Matanzas", UebId = 1 },
                 new CasaCompra { Id = 8, Nombre = "Casa de Limonar", UebId = 1 },
                 new CasaCompra { Id = 9, Nombre = "Casa de compra Unión de Reyes", UebId = 1 },
