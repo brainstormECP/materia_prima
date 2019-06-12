@@ -10,6 +10,7 @@ using MateriasPrimasApp.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using MateriasPrimasApp.HelperClass;
+using Microsoft.Extensions.Logging;
 
 namespace MateriasPrimasApp.Controllers
 {
@@ -18,11 +19,13 @@ namespace MateriasPrimasApp.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ControlSubMayor controlSubMayor;
+        private readonly ILogger<TransferenciasController> _logger;
 
 
-        public TransferenciasController(ApplicationDbContext context)
+        public TransferenciasController(ApplicationDbContext context, ILogger<TransferenciasController> logger)
         {
             _context = context;
+            _logger = logger;
             controlSubMayor = new ControlSubMayor(context);
         }
 
@@ -94,6 +97,7 @@ namespace MateriasPrimasApp.Controllers
             {
                 _context.Add(transferencia);
                 await _context.SaveChangesAsync();
+
                 TempData["exito"] = "Transeferencia creada satisfactoriamente";
                 return RedirectToAction("DetallesDeTransferencia", new { id = transferencia.Id });
             }
@@ -116,12 +120,11 @@ namespace MateriasPrimasApp.Controllers
             var unidad = _context.UnidadesOrganizativas.Find(user.UnidadOrganizativaId);
 
 
-            ViewData["Productos"] = new SelectList(_context.Submayor.Include(s => s.Producto)
-                .Include(s => s.Almacen)
-                .Where(s=>s.AlmacenId == user.UnidadOrganizativaId )
+            ViewData["Productos"] = new SelectList(_context.Submayor.Include(s => s.Producto)                
+                .Where(s=>s.AlmacenId == user.UnidadOrganizativaId && s.Cantidad >0 )
                 .Select(s=>s.Producto)
                 .Include(p=>p.Unidad)
-                .Include(p=>p.Categoria).ToList(), "Id", "Nombre");
+                .Include(p=>p.Categoria).ToList(), "Id", "Nombre"); 
             ViewData["UnidadesDeMedidas"] = new SelectList(_context.UM.ToList(), "Id", "Unidad");
             return View(transferencia);
         }
@@ -225,6 +228,8 @@ namespace MateriasPrimasApp.Controllers
                 {
                     _context.Update(transferencia);
                     await _context.SaveChangesAsync();
+                    _logger.LogInformation("Editar: " + transferencia.ToString());
+
                     TempData["exito"] = "Transferencia editada satisfactoriamente";
                 }
                 catch (DbUpdateConcurrencyException)
@@ -315,6 +320,8 @@ namespace MateriasPrimasApp.Controllers
                 transferencia.Confirmada = true;
                 _context.Transferencias.Update(transferencia);
                 await _context.SaveChangesAsync();
+                _logger.LogInformation("Crear: " + transferencia.ToString());
+
                 TempData["exito"] = "Transeferencia confirmada satisfactoriamente";
 
                 return RedirectToAction(nameof(Index));

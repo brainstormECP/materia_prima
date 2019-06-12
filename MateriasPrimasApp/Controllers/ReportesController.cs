@@ -26,14 +26,19 @@ namespace MateriasPrimasApp.Controllers
             _context = context;
         }
 
-        // GET: Procesamientos
-        public async Task<IActionResult> ExistenciasPorUeb()
+        public async Task<IActionResult> Index()
         {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            ViewData["UebId"] = new SelectList(await _context.UEB.ToListAsync(), "Id", "Nombre");
+            return View();
+        }
+
+        // GET: Procesamientos
+        public async Task<IActionResult> ExistenciasPorUeb(int Id)
+        {
             var helper = new ReporteExistenciaHelper(_context);
-            var ueb = await _context.UEB.FindAsync(user.UnidadOrganizativaId);
+            var ueb = await _context.UEB.FindAsync(Id);
             ViewBag.UEB = ueb.Nombre;
-            return View(helper.GetExistencias((int)user.UnidadOrganizativaId));
+            return View(helper.GetExistencias(Id));
         }
 
         public async Task<IActionResult> ConciliacionVentas()

@@ -62,12 +62,12 @@ namespace MateriasPrimasApp.HelperClass
                 {
                     //generar error, no se puede vender algo que no está en almacén
                 }
-                else
+                else if(sub.Cantidad >= item.Cantidad)
                 {
                     sub.Cantidad -= item.Cantidad;
                     _context.Update(sub);
+                    _context.SaveChanges();
                 }
-                _context.SaveChanges();
             }
 
         }
@@ -82,7 +82,7 @@ namespace MateriasPrimasApp.HelperClass
                 Submayor sub = _context.Submayor.FirstOrDefault(s => s.AlmacenId == transferencia.OrigenId && s.ProductoId == item.ProductoId);
                 if (sub != null)
                 {
-                    if (sub.Cantidad > item.Cantidad)
+                    if (sub.Cantidad >= item.Cantidad)
                     {
                         sub.Cantidad -= item.Cantidad;
                         _context.Update(sub);

@@ -65,7 +65,7 @@ namespace MateriasPrimasApp.Controllers
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
             var productos = await _context.Submayor.Include(s => s.Producto)
-                .Include(s => s.AlmacenId).Where(s => s.AlmacenId == user.UnidadOrganizativaId)
+                .Where(s => s.AlmacenId == user.UnidadOrganizativaId)
                 .Select(s => s.Producto).Where(p => !(p is Derivado)).Include(p => p.Derivados)
                 .Where(p => p.Derivados.Count > 0).ToListAsync();
 
