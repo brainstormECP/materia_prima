@@ -46,6 +46,8 @@ namespace MateriasPrimasApp.Controllers
             ViewData["ProductoId"] = new SelectList(await _context.Producto.ToListAsync(), "Id", "Nombre");
             ViewData["OrigenId"] = new SelectList(await _context.UnidadesOrganizativas.ToListAsync(), "Id", "Nombre");
             ViewData["DestinoId"] = new SelectList(await _context.UEB.ToListAsync(), "Id", "Nombre");
+            return View();
+        }
 
         public async Task<IActionResult> ConciliacionVentas()
         {
@@ -59,14 +61,14 @@ namespace MateriasPrimasApp.Controllers
             if (ModelState.IsValid)
             {
 
-                var transeferencias = await _context.Transferencias.Include(t => t.DetallesDeTransferencia).ThenInclude(t=>t.Producto).Include(t=>t.Origen).Include(t=>t.Destino).ToListAsync();
+                var transeferencias = await _context.Transferencias.Include(t => t.DetallesDeTransferencia).ThenInclude(t => t.Producto).Include(t => t.Origen).Include(t => t.Destino).ToListAsync();
                 if (viewModel.FechaInicio != null)
                 {
                     transeferencias = transeferencias.Where(t => t.Fecha >= viewModel.FechaInicio).ToList();
                 }
                 if (viewModel.FechaFin != null)
                 {
-                    if(viewModel.FechaInicio !=null && viewModel.FechaFin < viewModel.FechaInicio)
+                    if (viewModel.FechaInicio != null && viewModel.FechaFin < viewModel.FechaInicio)
                     {
                         ModelState.AddModelError("FechaFin", "la fecha de fin debe ser mayor a la de inicio.");
                         ViewData["ProductoId"] = new SelectList(await _context.Producto.ToListAsync(), "Id", "Nombre", viewModel.ProductoId);
@@ -84,11 +86,11 @@ namespace MateriasPrimasApp.Controllers
                 {
                     transeferencias = transeferencias.Where(t => t.DestinoId == viewModel.DestinoId).ToList();
                 }
-                if(viewModel.ProductoId != null)
+                if (viewModel.ProductoId != null)
                 {
                     transeferencias = transeferencias.Where(t => t.DetallesDeTransferencia.Any(d => d.ProductoId == viewModel.ProductoId)).ToList();
                 }
-                return View("ReporteTransferencias", transeferencias.OrderByDescending(t=>t.Fecha));
+                return View("ReporteTransferencias", transeferencias.OrderByDescending(t => t.Fecha));
             };
 
             ViewData["ProductoId"] = new SelectList(await _context.Producto.ToListAsync(), "Id", "Nombre", viewModel.ProductoId);
@@ -164,25 +166,22 @@ namespace MateriasPrimasApp.Controllers
                 Labels = labels,
             };
             var index = 0;
-            foreach (var item in labels)
+            datosVentas.Datasets.Add(new Dataset
             {
-                datosVentas.Datasets.Add(new Dataset
-                {
-                    Label = "Ventas",
-                    BackgroundColor = "#f3f3f3",
-                    BorderColor = "#f3f3f3",
-                    Fill = false,
-                    Data = labels.Select(c => ventas.Any(d => d.Mes + "/" + parametros.Año == c) ? ventas.Where(d => d.Mes + "/" + parametros.Año == c).Sum(s => s.Ventas) : 0).ToList()
-                });
-                datosVentas.Datasets.Add(new Dataset
-                {
-                    Label = "Compras",
-                    BackgroundColor = "#b4b4b4",
-                    BorderColor = "#b4b4b4",
-                    Fill = false,
-                    Data = labels.Select(c => compras.Any(d => d.Mes + "/" + parametros.Año == c) ? compras.Where(d => d.Mes + "/" + parametros.Año == c).Sum(s => s.Compras) : 0).ToList()
-                });
-            }
+                Label = "Ventas",
+                BackgroundColor = "#177ed8",
+                BorderColor = "#177ed8",
+                Fill = false,
+                Data = labels.Select(c => ventas.Any(d => d.Mes + "/" + parametros.Año == c) ? ventas.Where(d => d.Mes + "/" + parametros.Año == c).Sum(s => s.Ventas) : 0).ToList()
+            });
+            datosVentas.Datasets.Add(new Dataset
+            {
+                Label = "Compras",
+                BackgroundColor = "#d8174c",
+                BorderColor = "#d8174c",
+                Fill = false,
+                Data = labels.Select(c => compras.Any(d => d.Mes + "/" + parametros.Año == c) ? compras.Where(d => d.Mes + "/" + parametros.Año == c).Sum(s => s.Compras) : 0).ToList()
+            });
             ViewBag.Ueb = new SelectList(_context.Set<UEB>(), "Id", "Nombre");
             ViewBag.Ventas = datosVentas;
             return View();
