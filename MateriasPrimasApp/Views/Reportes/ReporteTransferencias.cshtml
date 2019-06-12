@@ -6,6 +6,8 @@
 
 <div class="row">
     <div class="col-md-12">
+        <button class="btn btn-primary hidden-print" onclick="window.print();" style="margin-bottom:15px;">Imprimir</button>
+
         <table class="table table-striped table-bordered table-hover" id="sample_1">
             <thead>
                 <tr>
@@ -28,7 +30,7 @@
                 {
                     <tr>
                         <td>
-                            @item.Fecha
+                            @string.Format("{0:dd/MM/yyyy}",item.Fecha)
                         </td>
                         <td>
                             @item.Origen.Nombre
@@ -37,15 +39,31 @@
                             @item.Destino.Nombre
                         </td>
                         <td>
-                            <ul>
-
-                                @foreach (var detalle in item.DetallesDeTransferencia)
-                                {
-                                    <li>
-                                        @detalle.ProductoId
-                                    </li>
-                                }
-                            </ul>
+                            <table class="table table-responsive table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Cantidad</th>
+                                        <th>UM</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var detalle in item.DetallesDeTransferencia)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @detalle.Producto.Nombre
+                                            </td>
+                                            <td>
+                                                @detalle.Cantidad
+                                            </td>
+                                            <td>
+                                                @detalle.Producto.Unidad.Unidad
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
                         </td>
 
                     </tr>
