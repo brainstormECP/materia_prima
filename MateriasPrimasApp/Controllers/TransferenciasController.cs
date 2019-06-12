@@ -144,7 +144,7 @@ namespace MateriasPrimasApp.Controllers
             //Controlar excepción en caso de que la cantidad a vender sea mayor a la existente en el almacén
             var transferencia = _context.Transferencias.Find(detalle.TransferenciaId);
 
-            if (detalle.Cantidad >= controlSubMayor.GetExistenciaPorUO(detalle.ProductoId, transferencia.OrigenId))
+            if (detalle.Cantidad > controlSubMayor.GetExistenciaPorUO(detalle.ProductoId, transferencia.OrigenId))
             {
                 ModelState.AddModelError("Cantidad", "No existe esa cantidad en el almacén de orígen");
             }

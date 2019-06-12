@@ -106,13 +106,32 @@ namespace MateriasPrimasApp.Data
                 );
 
             modelBuilder.Entity<UEB>().HasData(
-                new UEB { Id = 1, Municipio = "Matanzas", Nombre = "UEBMtz", Telefono = "262100" },
-                new UEB { Id = 2, Municipio = "Colón", Nombre = "UEBCol", Telefono = "371304" }
+                new UEB { Id = 1, Municipio = "Matanzas", Nombre = "UEB Matanzar", Telefono = "262100" },
+                new UEB { Id = 2, Municipio = "Colón", Nombre = "UEB Colón", Telefono = "371304" },
+                new UEB { Id = 3, Municipio = "Jovellanos", Nombre = "UEB Jovellanos", Telefono = "312008" },
+                new UEB { Id = 4, Municipio = "Jagüey Grande", Nombre = "UEB Jagüey Grande", Telefono = "572487" },
+                new UEB { Id = 5, Municipio = "Cárdenas", Nombre = "UEB Colón", Telefono = "371304" }
+
+
                 );
             modelBuilder.Entity<CasaCompra>().HasData(
-                new CasaCompra { Id = 3, Nombre = "Casa de compras Versalles", UebId = 1 },
-                new CasaCompra { Id = 4, Nombre = "Casa de compras Playa", UebId = 1 }
-            );
+                new CasaCompra { Id = 6, Nombre = "Casa de compra1 Matanzar", UebId = 1 },
+                new CasaCompra { Id = 7, Nombre = "Casa de compra2 Matanzas", UebId = 1 },
+                new CasaCompra { Id = 8, Nombre = "Casa de Limonar", UebId = 1 },
+                new CasaCompra { Id = 9, Nombre = "Casa de compra Unión de Reyes", UebId = 1 },
+                new CasaCompra { Id = 10, Nombre = "Casa de compra Jovellanos", UebId = 3 },
+                new CasaCompra { Id = 11, Nombre = "Casa de compra Betancourt", UebId = 3 },
+                new CasaCompra { Id = 12, Nombre = "Casa de compra Colón", UebId = 2 },
+                new CasaCompra { Id = 13, Nombre = "Casa de compra Perico", UebId = 2 },
+                new CasaCompra { Id = 14, Nombre = "Casa de compra Calimete", UebId = 2 },
+                new CasaCompra { Id = 15, Nombre = "Casa de compra Los Arabos", UebId = 2 },
+                new CasaCompra { Id = 16, Nombre = "Casa de compra Martí", UebId = 2 },
+                new CasaCompra { Id = 17, Nombre = "Casa de compra Jagüey", UebId = 4 },
+                new CasaCompra { Id = 18, Nombre = "Casa de compra Ciénaga de Zapata", UebId = 4 },
+                new CasaCompra { Id = 19, Nombre = "Casa de compra1 Cárdenas", UebId = 5 },
+                new CasaCompra { Id = 20, Nombre = "Casa de compra2 Cárdenas", UebId = 5 },
+                new CasaCompra { Id = 21, Nombre = "Casa de compra Varadero", UebId = 5 }
+                );
             modelBuilder.Entity<Cliente>().HasData(
                 new Cliente { Id = 1, Codigo = "C001", Nombre = "CTEAG", Organismo = "UNE" });
 
@@ -165,7 +184,5 @@ namespace MateriasPrimasApp.Data
         public DbSet<UnidadOrganizativa> UnidadesOrganizativas { get; set; }
 
         public DbSet<Derivado> Derivados { get; set; }
-
-
     }
 }

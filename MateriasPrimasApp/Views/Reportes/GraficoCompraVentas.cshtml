@@ -13,13 +13,13 @@
                 </div>
             </div>
             <div class="portlet-body">
-                <form asp-action="GraficoVentas">
+                <form asp-action="GraficoCompraVentas">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="Ueb" class="control-label"></label>
-                        <select asp-for="Ueb" class="form-control" asp-items="@ViewBag.Ueb" ></select>
+                        <select asp-for="Ueb" class="form-control" asp-items="@ViewBag.Ueb"></select>
                         <span asp-validation-for="Ueb" class="text-danger"></span>
-                    </div>                    
+                    </div>
                     <div class="form-group">
                         <label asp-for="Año" class="control-label"></label>
                         <input asp-for="Año" class="form-control" />
@@ -28,21 +28,22 @@
                     <div class="form-group text-center">
                         <button id="ver-grafico" class="btn btn-primary">Ver</button>
                     </div>
-                </form>                
+                </form>
             </div>
-        </div>        
+        </div>
     </div>
     <div class="row">
-                     <div class="col-md-8 col-md-offset-2">
-                        <canvas id="grafica"></canvas>
-                    </div>
-                </div>
+        <div class="col-md-8 col-md-offset-2">
+            <canvas id="grafica"></canvas>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="/lib/chart.js/Chart.min.js"></script>
-    <script>        
+    <script>
+
         var ventas = {
 			type: 'line',
 			data: @Html.Raw(Json.Serialize(@ViewBag.Ventas)) ,
@@ -50,7 +51,7 @@
 				responsive: true,
 				title: {
 					display: true,
-					text: 'Grafica de Costos'
+					text: 'Comportamiento de las Entradas y Ventas en el año'
 				},
 				tooltips: {
 					mode: 'index',

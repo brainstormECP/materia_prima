@@ -14,7 +14,7 @@
             </div>
             <div class="portlet-body">
                 <button class="btn btn-primary hidden-print" onclick="window.print();" style="margin-bottom:15px;">Imprimir</button>
-                
+
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -29,7 +29,7 @@
                             <th>MP</th>
                             <th>MN</th>
                             <th>CUC</th>
-                            <th>MP</th>                            
+                            <th>MP</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,4 +54,9 @@
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    $(document).ready(function () {
+    $('#Reportes').removeClass("active");
+    $('#vent').addClass("active");
+    });
+
 }

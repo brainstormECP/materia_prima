@@ -184,7 +184,7 @@ namespace MateriasPrimasApp.HelperClass
         public decimal GetExistenciaPorUO(int productoId, int unidadOrganizativaId)
         {
             var submayor = _context.Set<Submayor>().Where(s => s.ProductoId == productoId && s.AlmacenId == unidadOrganizativaId).Sum(s => s.Cantidad);
-            var enProcesamiento = _context.Set<Procesamiento>().Where(s => s.ProductoId == productoId && s.UnidadOrganizativaId == unidadOrganizativaId).Sum(s => s.Cantidad);
+            var enProcesamiento = _context.Set<Procesamiento>().Where(s => s.ProductoId == productoId && s.UnidadOrganizativaId == unidadOrganizativaId && !s.Confirmado).Sum(s => s.Cantidad);
             return submayor - enProcesamiento;
         }
     }

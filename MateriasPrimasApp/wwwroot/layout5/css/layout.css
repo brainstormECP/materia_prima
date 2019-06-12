@@ -245,21 +245,24 @@
       color: #fff;
       background: #009dc7; }
     .page-header .navbar .navbar-nav li.open > a {
-      background: #f9f9f9;
-      color: #2a3239; }
+        background: #ddedf0;
+        color: #2a3239;
+    }
     .page-header .navbar .navbar-nav li.open:hover > a {
-      background: #f9f9f9;
-      color: #2a3239; }
+        background: #ddedf0;
+        color: #2a3239;
+    }
     .page-header .navbar .navbar-nav li.selected > a {
       color: #fff; }
     .page-header .navbar .navbar-nav li.open.selected > a {
       color: #2a3239; }
     .page-header .navbar .navbar-nav .dropdown-menu {
-      border: none;
-      box-shadow: none;
-      margin-top: -4px;
-      border-radius: 0;
-      background: #f9f9f9; }
+        border: none;
+        box-shadow: none;
+        margin-top: -4px;
+        border-radius: 0;
+        background: #ddedf0;
+    }
       .page-header .navbar .navbar-nav .dropdown-menu:before, .page-header .navbar .navbar-nav .dropdown-menu:after {
         display: none !important; }
       .page-header .navbar .navbar-nav .dropdown-menu > li {
@@ -276,7 +279,9 @@
             color: #009dc7; }
       .page-header .navbar .navbar-nav .dropdown-menu li.active > a {
         background: inherit;
-        color: #009dc7; }
+        color: #009dc7;
+        text-decoration: underline;
+      }
 
 /* Page Portflet Fullscreen leaves everything behind the window */
 .page-portlet-fullscreen .page-header {

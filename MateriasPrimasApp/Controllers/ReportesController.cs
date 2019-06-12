@@ -121,14 +121,14 @@ namespace MateriasPrimasApp.Controllers
             return View("ConciliacionVentasData", result);
         }
 
-        public async Task<IActionResult> GraficoVentas()
+        public async Task<IActionResult> GraficoCompraVentas()
         {
             ViewBag.Ueb = new SelectList(_context.Set<UEB>(), "Id", "Nombre");
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> GraficoVentas(ParametroVentasVM parametros)
+        public async Task<IActionResult> GraficoCompraVentas(ParametroVentasVM parametros)
         {
             var ventas = _context.Set<Venta>()
                 .Include(v => v.DetallesDeVenta)
@@ -137,7 +137,7 @@ namespace MateriasPrimasApp.Controllers
                 .Select(v => new
                 {
                     Mes = v.Key,
-                    Ventas = v.Sum(d => d.DetallesDeVenta.Sum(e => e.Cantidad * e.PrecioVentaMlc)) + v.Sum(d => d.DetallesDeVenta.Sum(e => e.Cantidad * e.PrecioVentaMn)),
+                    Ventas = v.Sum(d => d.DetallesDeVenta.Sum(e => e.PrecioVentaMlc)) + v.Sum(d => d.DetallesDeVenta.Sum(e => e.PrecioVentaMn)),
                 }).ToList();
             var compras = _context.Set<Entrada>()
                 .Include(c => c.DetallesDeEntrada)
@@ -146,7 +146,7 @@ namespace MateriasPrimasApp.Controllers
                 .Select(v => new
                 {
                     Mes = v.Key,
-                    Compras = v.Sum(d => d.DetallesDeEntrada.Sum(e => e.Cantidad * e.PrecioMlc)) + v.Sum(d => d.DetallesDeEntrada.Sum(e => e.Cantidad * e.PrecioMn)),
+                    Compras = v.Sum(d => d.DetallesDeEntrada.Sum(e => e.PrecioMlc)) + v.Sum(d => d.DetallesDeEntrada.Sum(e => e.PrecioMn)),
                 }).ToList();
 
             var result = ventas.Join(compras, v => v.Mes, c => c.Mes, (v, c) => new

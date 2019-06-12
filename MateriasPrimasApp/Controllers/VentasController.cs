@@ -214,7 +214,7 @@ namespace MateriasPrimasApp.Controllers
             var sub = await _context.Submayor.FirstOrDefaultAsync(s => s.AlmacenId == venta.UnidadOrganizativaId && s.ProductoId == detalle.ProductoId);
 
 
-            if (detalle.Cantidad >= controlSubMayor.GetExistenciaPorUO(detalle.ProductoId, venta.UnidadOrganizativaId))
+            if (detalle.Cantidad > controlSubMayor.GetExistenciaPorUO(detalle.ProductoId, venta.UnidadOrganizativaId))
             {
                 ModelState.AddModelError("Cantidad", "No existe esa cantidad en el almacén de orígen");
             }
