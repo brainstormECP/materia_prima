@@ -10,6 +10,7 @@ using MateriasPrimasApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using MateriasPrimasApp.HelperClass;
+using MateriasPrimasApp.ViewModels;
 
 namespace MateriasPrimasApp.Controllers
 {
@@ -33,6 +34,34 @@ namespace MateriasPrimasApp.Controllers
             var ueb = await _context.UEB.FindAsync(user.UnidadOrganizativaId);
             ViewBag.UEB = ueb.Nombre;
             return View(helper.GetExistencias((int)user.UnidadOrganizativaId));
+        }
+
+        public async Task<IActionResult> ConciliacionVentas()
+        {
+            ViewBag.Ueb = new SelectList(_context.Set<UEB>(), "Id", "Nombre");
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ConciliacionVentas(ParametroVentasVM parametros)
+        {
+            var result = new List<ConciliacionVentasVM>();
+            var ventas = _context.Set<DetalleDeVenta>()
+                .Include(v => v.Producto.Unidad)
+                .Include(v => v.Venta)
+                .Where(v => v.Venta.Fecha.Year == parametros.Año);
+            result = ventas.GroupBy(v => v.Producto).Select(v => new ConciliacionVentasVM
+            {
+                Producto = v.Key.Nombre,
+                Um = v.Key.Unidad.Descripcion,
+                VentaMn = v.Where(d => d.Venta.Fecha.Month == parametros.Mes).Sum(d => d.PrecioVentaMn * d.Cantidad),
+                VentaCuc = v.Where(d => d.Venta.Fecha.Month == parametros.Mes).Sum(d => d.PrecioVentaMlc * d.Cantidad),
+                AcumuladoMn = v.Sum(d => d.PrecioVentaMn * d.Cantidad),
+                AcumuladoCuc = v.Sum(d => d.PrecioVentaMlc * d.Cantidad),
+            }).ToList();
+            ViewBag.Ueb = _context.Set<UEB>().SingleOrDefault(u => u.Id == parametros.Ueb).Nombre;
+            ViewBag.Mes = $"{parametros.Mes}/{parametros.Año}";
+            return View("ConciliacionVentasData", result);
         }
     }
 }
