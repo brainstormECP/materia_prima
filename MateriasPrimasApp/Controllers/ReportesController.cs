@@ -68,5 +68,75 @@ namespace MateriasPrimasApp.Controllers
             ViewBag.Mes = $"{parametros.Mes}/{parametros.Año}";
             return View("ConciliacionVentasData", result);
         }
+
+        public async Task<IActionResult> GraficoVentas()
+        {
+            ViewBag.Ueb = new SelectList(_context.Set<UEB>(), "Id", "Nombre");
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GraficoVentas(ParametroVentasVM parametros)
+        {
+            var ventas = _context.Set<Venta>()
+                .Include(v => v.DetallesDeVenta)
+                .Where(v => v.Fecha.Year == parametros.Año)
+                .GroupBy(v => v.Fecha.Month)
+                .Select(v => new
+                {
+                    Mes = v.Key,
+                    Ventas = v.Sum(d => d.DetallesDeVenta.Sum(e => e.Cantidad * e.PrecioVentaMlc)) + v.Sum(d => d.DetallesDeVenta.Sum(e => e.Cantidad * e.PrecioVentaMn)),
+                }).ToList();
+            var compras = _context.Set<Entrada>()
+                .Include(c => c.DetallesDeEntrada)
+                .Where(c => c.Fecha.Year == parametros.Año)
+                .GroupBy(v => v.Fecha.Month)
+                .Select(v => new
+                {
+                    Mes = v.Key,
+                    Compras = v.Sum(d => d.DetallesDeEntrada.Sum(e => e.Cantidad * e.PrecioMlc)) + v.Sum(d => d.DetallesDeEntrada.Sum(e => e.Cantidad * e.PrecioMn)),
+                }).ToList();
+
+            var result = ventas.Join(compras, v => v.Mes, c => c.Mes, (v, c) => new
+            {
+                Mes = v.Mes,
+                Ventas = v.Ventas,
+                Compras = c.Compras,
+            }).ToList();
+
+
+            var labels = result.OrderBy(r => r.Mes).Select(r => r.Mes + "/" + parametros.Año).ToList();
+            var datosCosto = new DatosGraficas()
+            {
+                Labels = labels,
+            };
+            var datosVentas = new DatosGraficas()
+            {
+                Labels = labels,
+            };
+            var index = 0;
+            foreach (var item in labels)
+            {
+                datosVentas.Datasets.Add(new Dataset
+                {
+                    Label = "Ventas",
+                    BackgroundColor = "#f3f3f3",
+                    BorderColor = "#f3f3f3",
+                    Fill = false,
+                    Data = labels.Select(c => ventas.Any(d => d.Mes + "/" + parametros.Año == c) ? ventas.Where(d => d.Mes + "/" + parametros.Año == c).Sum(s => s.Ventas) : 0).ToList()
+                });
+                datosVentas.Datasets.Add(new Dataset
+                {
+                    Label = "Compras",
+                    BackgroundColor = "#b4b4b4",
+                    BorderColor = "#b4b4b4",
+                    Fill = false,
+                    Data = labels.Select(c => compras.Any(d => d.Mes + "/" + parametros.Año == c) ? compras.Where(d => d.Mes + "/" + parametros.Año == c).Sum(s => s.Compras) : 0).ToList()
+                });
+            }
+            ViewBag.Ueb = new SelectList(_context.Set<UEB>(), "Id", "Nombre");
+            ViewBag.Ventas = datosVentas;
+            return View();
+        }
     }
 }
