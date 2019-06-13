@@ -48,10 +48,26 @@ namespace MateriasPrimasApp.Controllers
         // GET: Procesamientos
         public async Task<IActionResult> ExistenciasPorUeb(int Id)
         {
-            var helper = new ReporteExistenciaHelper(_context);
+            int UOId = 0;
             var ueb = await _context.UEB.FindAsync(Id);
-            ViewBag.UEB = ueb.Nombre;
-            return View(helper.GetExistencias(Id));
+            var helper = new ReporteExistenciaHelper(_context);
+
+            if (ueb != null)
+            {
+                ViewBag.UEB = ueb.Nombre;
+                UOId = Id;
+            }
+            else
+            {
+                var casacompra = await _context.CasaCompra.Include(c=>c.Ueb).FirstOrDefaultAsync(c=>c.Id == Id);
+                if(casacompra != null)
+                {
+                    ViewBag.UEB = casacompra.Ueb.Nombre;
+                    UOId = casacompra.UebId;
+                    TempData["notice"] = "Lo sentimos. Este usuario pertenece a una Casa de Compra y aún no se ha implementado este tipo de reporte.";
+                }
+            }
+            return View(helper.GetExistencias(UOId));
         }
 
         public async Task<IActionResult> Transferencias()
