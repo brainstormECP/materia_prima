@@ -28,8 +28,21 @@ namespace MateriasPrimasApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ViewData["UebId"] = new SelectList(await _context.UEB.ToListAsync(), "Id", "Nombre");
-            return View();
+            if (User.IsInRole("Consultor"))
+            {
+                ViewData["UebId"] = new SelectList(await _context.UEB.ToListAsync(), "Id", "Nombre");
+                return View();
+            }
+            else
+            {
+                ApplicationUser usuario = await _userManager.FindByNameAsync(User.Identity.Name);
+                if (User.IsInRole("Comercial") && usuario.UnidadOrganizativaId !=null )
+                {
+                    return RedirectToAction("ExistenciasPorUeb", new { id = usuario.UnidadOrganizativaId });
+                }
+                ViewData["UebId"] = new SelectList(await _context.UEB.ToListAsync(), "Id", "Nombre");
+                return View();
+            }
         }
 
         // GET: Procesamientos
