@@ -43,6 +43,12 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="/lib/chart.js/Chart.min.js"></script>
     <script>
+        $(document).ready(function () {
+            $('#Reportes').removeClass("active");
+            $('#chart').addClass("active");
+        });
+    </script>
+    <script>
 
         var ventas = {
 			type: 'line',

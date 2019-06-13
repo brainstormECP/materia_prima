@@ -18,6 +18,7 @@ namespace MateriasPrimasApp.Models
         public string ConfirmPassword { get; set; }
 
         public List<string> Roles { get; set; }
-        public int UnidadOrganizativaId { get; set; }
+        [Display(Name = "Unidad Organizativa")]
+        public int? UnidadOrganizativaId { get; set; }
     }
 }

@@ -40,7 +40,7 @@
 
             <div class="form-group">
                 <label asp-for="UnidadOrganizativaId" class="control-label">Unidad Organizativa</label>
-                <select asp-for="UnidadOrganizativaId" asp-items="ViewBag.UO" class="form-control"></select>
+                <select asp-for="UnidadOrganizativaId" asp-items="ViewBag.UO" class="form-control chosen-select"><option value=""></option></select>
                 <span asp-validation-for="UnidadOrganizativaId" class="text-danger"></span>
             </div>
 
@@ -50,4 +50,8 @@
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
 

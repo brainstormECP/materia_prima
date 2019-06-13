@@ -36,6 +36,13 @@ namespace MateriasPrimasApp.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        //GET: Todos Los Procesamientos
+        public async Task<IActionResult> TodosLosProcesamientos()
+        {
+            var procesamientos = _context.Procesamientos.Where(p=>!p.Confirmado).Include(p => p.UnidadOrganizativa).Include(p => p.Producto).ThenInclude(p => p.Unidad).Include(p => p.DetallesDeProcesamiento).OrderByDescending(p => p.Fecha);
+            return View(await procesamientos.ToListAsync());
+        }
+
         // GET: Procesamientos/Details/5
         public async Task<IActionResult> Details(int? id)
         {

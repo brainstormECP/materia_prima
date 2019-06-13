@@ -39,24 +39,56 @@ namespace MateriasPrimasApp.Controllers
             return RedirectToAction("Index", "Home", new { area = "" });
         }
 
-       
+
 
         [HttpGet]
         public async Task<IActionResult> BloquearUsuario(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            await _userManager.SetLockoutEnabledAsync(user, true);
-            int forDays = 36500;
-            if (forDays > 0)
+            var administradores = await _userManager.GetUsersInRoleAsync("Administrador");
+            if (await _userManager.IsInRoleAsync(user, "Administrador"))
             {
-                await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow.AddDays(forDays));
+                if (administradores.Any(u => u.Id != user.Id && u.LockoutEnabled != true))
+                {
+                    await _userManager.SetLockoutEnabledAsync(user, true);
+                    int forDays = 36500;
+                    if (forDays > 0)
+                    {
+                        await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow.AddDays(forDays));
+                    }
+                    else
+                    {
+                        await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.MaxValue);
+                    }
+                    var block = await _userManager.IsLockedOutAsync(user);
+                    TempData["exito"] = "Usuario bloqueado satisfactoriamente";
+                    return RedirectToAction("Usuarios");
+
+                }
+                else
+                {
+                    TempData["error"] = "Error al bloquear el Usuario: " + user.UserName + ". Debe existir almenos un usuario Administrador activo";
+                    return RedirectToAction("Usuarios");
+
+                }
+
             }
             else
             {
-                await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.MaxValue);
+                await _userManager.SetLockoutEnabledAsync(user, true);
+                int forDays = 36500;
+                if (forDays > 0)
+                {
+                    await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow.AddDays(forDays));
+                }
+                else
+                {
+                    await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.MaxValue);
+                }
+                var block = await _userManager.IsLockedOutAsync(user);
+                TempData["exito"] = "Usuario bloqueado satisfactoriamente";
+                return RedirectToAction("Usuarios");
             }
-            var block = await _userManager.IsLockedOutAsync(user);
-            return RedirectToAction("Usuarios");
         }
 
         [HttpPost]
@@ -67,10 +99,12 @@ namespace MateriasPrimasApp.Controllers
             {
                 await _userManager.RemovePasswordAsync(user);
                 await _userManager.AddPasswordAsync(user, vewModel.Password);
-                return Ok(user);
+                TempData["error"] = "Error al cambiar la contraseña al usuario: " + user.UserName;
+                return RedirectToAction("Usuarios", user);
             }
+            TempData["exito"] = "Contraseña cambiada satisfactoriamente para el usuario: " + user.UserName;
             return BadRequest(ModelState);
-        } 
+        }
 
         [HttpGet]
         public async Task<IActionResult> DesbloquearUsuario(string id)
@@ -80,8 +114,9 @@ namespace MateriasPrimasApp.Controllers
             if (result.Succeeded)
             {
                 await _userManager.ResetAccessFailedCountAsync(user);
-            }            
+            }
             var block = await _userManager.IsLockedOutAsync(user);
+            TempData["exito"] = "Usuario desbloqueado satisfactoriamente";
             return RedirectToAction("Usuarios");
         }
 
@@ -98,13 +133,13 @@ namespace MateriasPrimasApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CrearUsuario(UsuarioViewModel viewModel)
         {
-            if(_context.Users.Any(u=>u.UserName == viewModel.UserName))
+            if (_context.Users.Any(u => u.UserName == viewModel.UserName))
             {
                 ModelState.AddModelError("UserName", "Ya existe un usuario con este nombre");
             }
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { Email = viewModel.Email, UserName = viewModel.UserName, UnidadOrganizativaId = viewModel.UnidadOrganizativaId};
+                var user = new ApplicationUser() { Email = viewModel.Email, UserName = viewModel.UserName, UnidadOrganizativaId = viewModel.UnidadOrganizativaId };
                 var result = await _userManager.CreateAsync(user, viewModel.Password);
 
                 if (result.Succeeded)
@@ -126,30 +161,48 @@ namespace MateriasPrimasApp.Controllers
         public async Task<IActionResult> EditarUsuario(string id)
         {
             ApplicationUser user = await _userManager.FindByIdAsync(id);
-            UserEditViewModel viewmodel = new UserEditViewModel() { Id = user.Id, Roles = await _userManager.GetRolesAsync(user) as List<string> };
+            if (user.UnidadOrganizativaId != null)
+            {
+                UserEditViewModel viewmodel = new UserEditViewModel() { Id = user.Id, Roles = await _userManager.GetRolesAsync(user) as List<string>, UnidadOrganizativaId = (int)user.UnidadOrganizativaId };
+                ViewBag.Usuario = user.UserName;
+                ViewBag.Roles = new MultiSelectList(_roleManager.Roles.ToList(), "Name", "Name", viewmodel.Roles);
+                ViewBag.UnidadOrganizativaId = new SelectList(_context.UnidadesOrganizativas.ToList(), "Id", "Nombre");
+                return View(viewmodel);
 
-            ViewBag.Usuario = user.UserName;
-            ViewBag.Roles = new MultiSelectList(_roleManager.Roles.ToList(), "Name", "Name", viewmodel.Roles);
+            }
+            else
+            {
+                UserEditViewModel viewmodel = new UserEditViewModel() { Id = user.Id, Roles = await _userManager.GetRolesAsync(user) as List<string> };
+                ViewBag.Usuario = user.UserName;
+                ViewBag.Roles = new MultiSelectList(_roleManager.Roles.ToList(), "Name", "Name", viewmodel.Roles);
+                ViewBag.UnidadOrganizativaId = new SelectList(_context.UnidadesOrganizativas.ToList(), "Id", "Nombre");
+                return View(viewmodel);
 
-            return View(viewmodel);
+            }
+
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditarUsuario(string id, [Bind("Id,Roles")] UserEditViewModel viewModel)
+        public async Task<IActionResult> EditarUsuario(string id, [Bind("Id,Roles, UnidadOrganizativaId")] UserEditViewModel viewModel)
         {
             ApplicationUser user = await _userManager.FindByIdAsync(viewModel.Id);
             var roles_to_remove = await _userManager.GetRolesAsync(user);
 
             if (ModelState.IsValid)
             {
-                if(viewModel.Roles != null)
+                user.UnidadOrganizativaId = viewModel.UnidadOrganizativaId;
+                if (viewModel.Roles != null)
                 {
                     //limpiar la lista de Roles del usuario para volver a crearla 
-                    await _userManager.RemoveFromRolesAsync(user, roles_to_remove );
+                    await _userManager.RemoveFromRolesAsync(user, roles_to_remove);
                     await _userManager.AddToRolesAsync(user, viewModel.Roles);
                 }
+                TempData["exito"] = "Usuario editado correctamente";
                 return RedirectToAction("Usuarios");
             }
+            ViewBag.Roles = new MultiSelectList(_roleManager.Roles.ToList(), "Name", "Name", viewModel.Roles);
+            ViewBag.UnidadOrganizativaId = new SelectList(_context.UnidadesOrganizativas.ToList(), "Id", "Nombre");
+
             return View();
         }
 

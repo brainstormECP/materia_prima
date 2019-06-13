@@ -74,14 +74,16 @@
                                 }
                                 else
                                 {
-                                    @if(!await userManager.IsInRoleAsync(item,"Administrador"))
-                                    {
-                                        <a asp-action="BloquearUsuario" asp-route-id="@item.Id" class="btn btn-warning hint--top" aria-label="Bloquear Usuario"><i class="fa fa-lock"></i></a>
-                                    }
-                                    else
-                                    {
-                                        <a class="btn btn-warning hint--top disabled" aria-label="No se puede bloquear un usuario Administrador"><i class="fa fa-lock"></i></a>
-                                    }
+                                    @*@if(!await userManager.IsInRoleAsync(item,"Administrador"))
+                                        {
+                                            <a asp-action="BloquearUsuario" asp-route-id="@item.Id" class="btn btn-warning hint--top" aria-label="Bloquear Usuario"><i class="fa fa-lock"></i></a>
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-warning hint--top disabled" aria-label="No se puede bloquear un usuario Administrador"><i class="fa fa-lock"></i></a>
+                                        }*@
+                                    <a asp-action="BloquearUsuario" asp-route-id="@item.Id" class="btn btn-warning hint--top" aria-label="Bloquear Usuario"><i class="fa fa-lock"></i></a>
+
                                 }
                                 <a asp-action="EditarUsuario" asp-route-id="@item.Id" class="btn btn-warning hint--top" aria-label="Editar Usuario"><i class="fa fa-edit"></i></a>
                                 <a id="@item.Id" class="btn btn-primary hint--top change_password" aria-label="Cambiar Contraseña"><i class="fa fa-key"></i></a>
