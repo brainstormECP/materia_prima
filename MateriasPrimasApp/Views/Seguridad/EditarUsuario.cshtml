@@ -1,4 +1,4 @@
-﻿@model MateriasPrimasApp.Models.UserEditViewModel
+﻿@model MateriasPrimasApp.ViewModels.UserEditViewModel
 @{
     ViewData["Title"] = "Editar Usuario";
     Layout = "~/Views/Shared/_Backend.cshtml";
@@ -14,9 +14,9 @@
             <input type="hidden" asp-for="Id" />
 
             <div class="form-group">
-                <label asp-for="Roles" class="control-label"></label>
-                <select asp-for="Roles" asp-items="ViewBag.Roles" class="form-control" multiple></select>
-                <span asp-validation-for="Roles" class="text-danger"></span>
+                <label asp-for="RoleId" class="control-label">Rol</label>
+                <select asp-for="RoleId" asp-items="ViewBag.Roles" class="form-control"></select>
+                <span asp-validation-for="RoleId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="UnidadOrganizativaId" class="control-label"></label>
@@ -26,7 +26,7 @@
 
             <div class="form-group">
                 <input type="submit" value="Guardar" class="btn btn-success" />
-                <a asp-action="Index" class="btn btn-default">Atrás</a>
+                <a asp-action="Usuarios" class="btn btn-default">Atrás</a>
             </div>
         </form>
     </div>

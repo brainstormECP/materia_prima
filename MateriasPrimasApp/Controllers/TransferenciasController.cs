@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 
 namespace MateriasPrimasApp.Controllers
 {
-    [Authorize(Roles = "Comercial, Consultor")]
+    [Authorize(Roles = "Comercial, Consultor, Comercial_General")]
     public class TransferenciasController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -38,14 +38,14 @@ namespace MateriasPrimasApp.Controllers
             return View(await transferencias.ToListAsync());
         }
 
-        [Authorize(Roles = "Consultor, Comercial")]
+        [Authorize(Roles = "Consultor, Comercial, Comercial_General")]
         public async Task<IActionResult> TodasLasTransferencias()
         {
             var transferencias = _context.Transferencias.Where(t => t.Confirmada).Include(t => t.Destino).Include(t => t.Origen).Include(t => t.DetallesDeTransferencia);
             return View(await transferencias.ToListAsync());
         }
 
-        [Authorize(Roles = "Consultor, Comercial")]
+        [Authorize(Roles = "Consultor, Comercial, Comercial_General")]
         // GET: Trasladoes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -143,6 +143,10 @@ namespace MateriasPrimasApp.Controllers
 
             //Controlar excepción en caso de que la cantidad a vender sea mayor a la existente en el almacén
             var transferencia = _context.Transferencias.Find(detalle.TransferenciaId);
+            if (detalle.Cantidad == 0)
+            {
+                ModelState.AddModelError("Cantidad", "Debe especificar una cantidad para este Producto");
+            }
 
             if (detalle.Cantidad > controlSubMayor.GetExistenciaPorUO(detalle.ProductoId, transferencia.OrigenId))
             {

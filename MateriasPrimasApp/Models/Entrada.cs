@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +11,7 @@ namespace MateriasPrimasApp.Models
         public int Id { get; set; }
         [DataType(DataType.Date)]
         [Required(ErrorMessage = "El campo Fecha es obligatorio")]
+        [Remote("CheckFecha", "Remote", AdditionalFields = "Id")]
         public DateTime Fecha { get; set; }
         [Display(Name="Cliente")]
         [Required(ErrorMessage = "El campo Cliente es obligatorio")]

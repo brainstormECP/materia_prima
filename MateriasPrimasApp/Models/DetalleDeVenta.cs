@@ -13,7 +13,7 @@ namespace MateriasPrimasApp.Models
         [Display(Name = "Producto")]
         public int ProductoId { get; set; }
         public virtual Producto Producto { get; set; }
-        [Required]
+        [Required(ErrorMessage = "El campo Cantidad es requerido")]
         public decimal Cantidad { get; set; }
         [Required]
         [Column(TypeName = "decimal(18, 2)")]

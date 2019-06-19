@@ -11,7 +11,6 @@
                         <i class="fa fa-dashboard"></i> Cuadro de Mando
                     </a>
                 </li>
-
             }
             <li class="dropdown dropdown-fw">
                 <a href="javascript:;">
@@ -47,14 +46,14 @@
                 </ul>
             </li>
         }
-        @if (User.IsInRole("Administrador") || User.IsInRole("Consultor"))
+        @if (User.IsInRole("Comercial_General") || User.IsInRole("Consultor") || (User.IsInRole("Administrador")))
         {
             <li class="dropdown dropdown-fw">
                 <a href="javascript:;">
                     <i class="fa fa-gears"></i> Nomencladores
                 </a>
                 <ul class="dropdown-menu dropdown-menu-fw">
-                    @if (User.IsInRole("Administrador"))
+                    @if (User.IsInRole("Comercial_General"))
                     {
                         <li id="UnidadDeMedidas"><a asp-action="Index" asp-controller="UnidadDeMedidas">Unidades de Medidas</a></li>
                         <li id="Clientes"><a asp-action="Index" asp-controller="Clientes">Clientes</a></li>
@@ -90,52 +89,9 @@
                     @if (User.IsInRole("Consultor"))
                     {
                         <li id="Seguridad"><a asp-action="Usuarios" asp-controller="Seguridad">Usuarios</a></li>
-
                     }
                 </ul>
             </li>
         }
-        @*@if (User.IsInRole("Consultor"))
-            {
-                <li id="cuadrodemando" class="dropdown dropdown-fw ">
-                    <a asp-action="Index" asp-controller="Home">
-                        <i class="fa fa-dashboard"></i> Cuadro de Mando
-                    </a>
-                </li>
-                <li class="dropdown dropdown-fw">
-                    <a href="javascript:;">
-                        <span class="fa fa-line-chart fa-3x"></span> Reportes
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-fw">
-                        <li><a href="inner.html">Marketplace</a></li>
-                    </ul>
-                </li>
-                <li id="operaciones" class="dropdown dropdown-fw">
-                    <a href="javascript:;">
-                        <span class="fa fa-steam"></span> Operaciones
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-fw">
-                        <li id="Entradas"><a asp-action="TodasLasEntradas" asp-controller="Entradas">Entradas</a></li>
-                        <li id="Transferencias"><a asp-action="TodasLasTransferencias" asp-controller="Transferencias">Transferencias</a></li>
-                        <li id="Ventas"><a asp-action="Index" asp-controller="Ventas">Ventas</a></li>
-                        <li id="Procesamientos"><a asp-action="Index" asp-controller="Procesamientos">Procesamientos</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown dropdown-fw">
-                    <a href="javascript:;">
-                        <i class="fa fa-gears"></i> Nomencladores
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-fw">
-                    </ul>
-                </li>
-                <li class="dropdown dropdown-fw">
-                    <a href="javascript:;">
-                        <span class="fa fa-users"></span> Seguridad
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-fw">
-                        <li id="Seguridad"><a asp-action="Usuarios" asp-controller="Seguridad">Usuarios</a></li>
-                    </ul>
-                </li>
-            }*@
     </ul>
 </div>

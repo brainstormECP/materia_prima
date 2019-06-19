@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MateriasPrimasApp.Data;
 using MateriasPrimasApp.Models;
-using MateriasPrimasApp.Data;
-using MateriasPrimasApp.Models;
+using MateriasPrimasApp.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MateriasPrimasApp.Controllers
 {
@@ -124,7 +123,7 @@ namespace MateriasPrimasApp.Controllers
         [HttpGet]
         public IActionResult CrearUsuario()
         {
-            ViewBag.Roles = new MultiSelectList(_roleManager.Roles.ToList(), "Name", "Name");
+            ViewBag.RoleId = new SelectList(_roleManager.Roles.ToList(), "Name", "Name");
             ViewBag.UO = new SelectList(_context.Set<UnidadOrganizativa>().Select(n => new { Id = n.Id, Nombre = n.Nombre }).ToList(), "Id", "Nombre");
             return View();
         }
@@ -137,6 +136,10 @@ namespace MateriasPrimasApp.Controllers
             {
                 ModelState.AddModelError("UserName", "Ya existe un usuario con este nombre");
             }
+            if(viewModel.RoleId == "Administrador" && _userManager.GetUsersInRoleAsync("Administrador").Result.Count == 2)
+            {
+                ModelState.AddModelError("RoleId", "Ya existen 2 usuarios con el rol Administrador");
+            }
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser() { Email = viewModel.Email, UserName = viewModel.UserName, UnidadOrganizativaId = viewModel.UnidadOrganizativaId };
@@ -144,16 +147,16 @@ namespace MateriasPrimasApp.Controllers
 
                 if (result.Succeeded)
                 {
-                    if (viewModel.Roles != null)
+                    if (viewModel.RoleId != null)
                     {
-                        await _userManager.AddToRolesAsync(user, viewModel.Roles);
+                        await _userManager.AddToRoleAsync(user, viewModel.RoleId);
                     }
                     return RedirectToAction("Usuarios");
                 }
                 AddErrors(result);
             }
-            ViewBag.Roles = new MultiSelectList(_roleManager.Roles.ToList(), "Name", "Name", viewModel.Roles);
-
+            ViewBag.RoleId = new SelectList(_roleManager.Roles.ToList(), "Name", "Name", viewModel.RoleId);
+            ViewBag.UO = new SelectList(_context.Set<UnidadOrganizativa>().Select(n => new { Id = n.Id, Nombre = n.Nombre }).ToList(), "Id", "Nombre", viewModel.UnidadOrganizativaId);
             return View();
         }
 
@@ -161,29 +164,29 @@ namespace MateriasPrimasApp.Controllers
         public async Task<IActionResult> EditarUsuario(string id)
         {
             ApplicationUser user = await _userManager.FindByIdAsync(id);
+            var roles = await _userManager.GetRolesAsync(user);
+
             if (user.UnidadOrganizativaId != null)
             {
-                UserEditViewModel viewmodel = new UserEditViewModel() { Id = user.Id, Roles = await _userManager.GetRolesAsync(user) as List<string>, UnidadOrganizativaId = (int)user.UnidadOrganizativaId };
+                UserEditViewModel viewmodel = new UserEditViewModel() { Id = user.Id, RoleId = roles.First(), UnidadOrganizativaId = user.UnidadOrganizativaId };
                 ViewBag.Usuario = user.UserName;
-                ViewBag.Roles = new MultiSelectList(_roleManager.Roles.ToList(), "Name", "Name", viewmodel.Roles);
-                ViewBag.UnidadOrganizativaId = new SelectList(_context.UnidadesOrganizativas.ToList(), "Id", "Nombre");
+                ViewBag.Roles = new SelectList(_roleManager.Roles.ToList(), "Name", "Name", viewmodel.RoleId);
+                ViewBag.UnidadOrganizativaId = new SelectList(_context.UnidadesOrganizativas.ToList(), "Id", "Nombre", viewmodel.UnidadOrganizativaId);
                 return View(viewmodel);
-
             }
             else
             {
-                UserEditViewModel viewmodel = new UserEditViewModel() { Id = user.Id, Roles = await _userManager.GetRolesAsync(user) as List<string> };
+                UserEditViewModel viewmodel = new UserEditViewModel() { Id = user.Id, RoleId = roles.First() };
                 ViewBag.Usuario = user.UserName;
-                ViewBag.Roles = new MultiSelectList(_roleManager.Roles.ToList(), "Name", "Name", viewmodel.Roles);
+                ViewBag.Roles = new MultiSelectList(_roleManager.Roles.ToList(), "Name", "Name", viewmodel.RoleId);
                 ViewBag.UnidadOrganizativaId = new SelectList(_context.UnidadesOrganizativas.ToList(), "Id", "Nombre");
                 return View(viewmodel);
-
             }
 
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditarUsuario(string id, [Bind("Id,Roles, UnidadOrganizativaId")] UserEditViewModel viewModel)
+        public async Task<IActionResult> EditarUsuario(string id, [Bind("Id,RoleId, UnidadOrganizativaId")] UserEditViewModel viewModel)
         {
             ApplicationUser user = await _userManager.FindByIdAsync(viewModel.Id);
             var roles_to_remove = await _userManager.GetRolesAsync(user);
@@ -191,17 +194,17 @@ namespace MateriasPrimasApp.Controllers
             if (ModelState.IsValid)
             {
                 user.UnidadOrganizativaId = viewModel.UnidadOrganizativaId;
-                if (viewModel.Roles != null)
+                if (viewModel.RoleId != null)
                 {
                     //limpiar la lista de Roles del usuario para volver a crearla 
                     await _userManager.RemoveFromRolesAsync(user, roles_to_remove);
-                    await _userManager.AddToRolesAsync(user, viewModel.Roles);
+                    await _userManager.AddToRoleAsync(user, viewModel.RoleId);
                 }
                 TempData["exito"] = "Usuario editado correctamente";
                 return RedirectToAction("Usuarios");
             }
-            ViewBag.Roles = new MultiSelectList(_roleManager.Roles.ToList(), "Name", "Name", viewModel.Roles);
-            ViewBag.UnidadOrganizativaId = new SelectList(_context.UnidadesOrganizativas.ToList(), "Id", "Nombre");
+            ViewBag.Roles = new SelectList(_roleManager.Roles.ToList(), "Name", "Name", viewModel.RoleId);
+            ViewBag.UnidadOrganizativaId = new SelectList(_context.UnidadesOrganizativas.ToList(), "Id", "Nombre", viewModel.UnidadOrganizativaId);
 
             return View();
         }

@@ -1,5 +1,5 @@
 ﻿<div class="nav-collapse collapse navbar-collapse navbar-responsive-collapse">
-    <ul id="navbar" class="nav navbar-nav text-uppercase">      
+    <ul id="navbar" class="nav navbar-nav text-uppercase">
         <li id="cuadrodemando" class="dropdown dropdown-fw ">
             <a asp-action="Index" asp-controller="Home">
                 <i class="fa fa-dashboard"></i> Cuadro de Mando
@@ -9,6 +9,12 @@
             <a href="javascript:;">
                 <span class="fa fa-line-chart fa-3x"></span> Reportes
             </a>
+            <ul class="dropdown-menu dropdown-menu-fw">
+                <li id="Reportes"><a asp-action="Index" asp-controller="Reportes">Inventario</a></li>
+                <li id="trans"><a asp-action="Transferencias" asp-controller="Reportes">Transferencias</a></li>
+                <li id="vent"><a asp-action="ConciliacionVentas" asp-controller="Reportes">Ventas</a></li>
+                <li id="chart"><a asp-action="GraficoCompraVentas" asp-controller="Reportes">Gráfico</a></li>
+            </ul>
         </li>
         <li id="operaciones" class="dropdown dropdown-fw">
             <a href="javascript:;">
@@ -20,6 +26,6 @@
                 <li id="Ventas"><a asp-action="Index" asp-controller="Ventas">Ventas</a></li>
                 <li id="Procesamientos"><a asp-action="Index" asp-controller="Procesamientos">Procesamientos</a></li>
             </ul>
-        </li>   
+        </li>
     </ul>
 </div>

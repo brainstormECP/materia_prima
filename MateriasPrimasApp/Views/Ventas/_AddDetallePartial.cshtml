@@ -1,0 +1,37 @@
+﻿@model MateriasPrimasApp.Models.DetalleDeVenta
+
+<form asp-controller="Ventas" asp-action="AddDetalle" class="form form-horizontal" data-ajax="true" dat-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#result" data-ajax-success="onSuccess" data-ajax-failure="onFailed" id="nuevo_detalle_form">
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div id="error_msg" class="alert alert-danger" style="display:none">
+                    <i class="close icon error_close"></i>
+                    <h4>Hay errores en el formulario</h4>
+                    <ul class="errors"></ul>
+                </div>
+                <div asp-validation-summary="All" class="text-danger hidden"></div>
+
+                <input type="hidden" asp-for="VentaId" />
+                <div class="form-group">
+                    <label for="codigo">Producto</label>
+                    <select asp-for="ProductoId" id="producto" asp-items="ViewBag.Productos" class="form-control"></select>
+                </div>
+                <div class="form-group">
+                    <label>Cantidad</label>
+                    <div class="input-group">
+                        <input asp-for="Cantidad" class="form-control" data-val-number="El campo Cantidad debe ser un número.">
+                        <span class="input-group-addon" id="umresult">
+                            <samp class="hint--top um" aria-label="Unidad de Medida">UM</samp>
+                        </span>
+                    </div>
+                    <span asp-validation-for="Cantidad" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="col-md-10 col-md-offset-1">
+            <input type="submit" class="btn btn-success" value="Agregar" />
+        </div>
+    </div>
+</form>

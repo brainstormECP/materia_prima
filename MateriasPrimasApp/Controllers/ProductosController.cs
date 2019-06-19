@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 
 namespace MateriasPrimasApp.Controllers
 {
-    [Authorize(Roles = "Administrador, Consultor")]
+    [Authorize(Roles = "Comercial_General, Consultor")]
     public class ProductosController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -25,7 +25,7 @@ namespace MateriasPrimasApp.Controllers
             _context = context;
         }
 
-        [Authorize(Roles = "Administrador, Consultor")]
+        [Authorize(Roles = "Comercial_General, Consultor")]
         // GET: Productoes
         public async Task<IActionResult> Index()
         {
@@ -33,7 +33,7 @@ namespace MateriasPrimasApp.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-        [Authorize(Roles = "Administrador, Consultor")]
+        [Authorize(Roles = "Comercial_General, Consultor")]
         // GET: Productoes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -55,7 +55,7 @@ namespace MateriasPrimasApp.Controllers
             return View(producto);
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Comercial_General")]
         // GET: Productoes/Create
         public IActionResult Create()
         {
@@ -68,7 +68,7 @@ namespace MateriasPrimasApp.Controllers
         // POST: Productoes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Comercial_General")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Codigo,Nombre,Descripcion,UnidadId,CategoriaId,TipoId,PrecioCompraMn,PrecioVentaMn,PrecioCompraMlc,PrecioVentaMlc")] Producto producto)
@@ -96,7 +96,7 @@ namespace MateriasPrimasApp.Controllers
             return View(producto);
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Comercial_General")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -118,7 +118,7 @@ namespace MateriasPrimasApp.Controllers
         // POST: Productoes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Comercial_General")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Codigo,Nombre,Descripcion,UnidadId,CategoriaId,TipoId,PrecioCompraMn,PrecioVentaMn,PrecioCompraMlc,PrecioVentaMlc")] Producto producto)
@@ -155,7 +155,7 @@ namespace MateriasPrimasApp.Controllers
         }
 
         // GET: Productoes/Delete/5
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Comercial_General")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -177,7 +177,7 @@ namespace MateriasPrimasApp.Controllers
         }
 
         // POST: Productoes/Delete/5
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Comercial_General")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

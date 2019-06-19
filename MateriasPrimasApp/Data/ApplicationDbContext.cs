@@ -21,7 +21,8 @@ namespace MateriasPrimasApp.Data
                     new IdentityRole {Id = "1", Name = "Administrador", NormalizedName = "ADMINISTRADOR" },
                     new IdentityRole {Id = "2", Name = "Comercial", NormalizedName = "COMERCIAL" },
                     new IdentityRole {Id = "3", Name = "Consultor", NormalizedName = "CONSULTOR" },
-             });
+                    new IdentityRole {Id = "4", Name = "Comercial_General", NormalizedName = "COMERCIAL_GENERAL" },
+            });
             modelBuilder.Entity<ApplicationUser>().HasData(
                 new ApplicationUser
                 {

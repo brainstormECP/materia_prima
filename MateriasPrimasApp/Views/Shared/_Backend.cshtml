@@ -96,10 +96,19 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
 
                     <!-- Collect the nav links, forms, and other content for toggling -->
-
-                    <partial name="_Navbar" />
-
-
+                    @if (User.IsInRole("Comercial"))
+                    {
+                        <partial name="_ComercialPartial" />
+                    }else if (User.IsInRole("Comercial_General"))
+                    {
+                        <partial name="_ComercialGeneralPartial" />
+                    }else if (User.IsInRole("Consultor"))
+                    {
+                        <partial name="_ConsultorPartial" />
+                    }else if (User.IsInRole("Administrador"))
+                    {
+                        <partial name="_AdminPartial" />
+                    }
                     <!-- END NAVBAR COLLAPSE -->
 
                 </div>

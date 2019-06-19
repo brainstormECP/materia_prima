@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace MateriasPrimasApp.Controllers
 {
-    [Authorize(Roles = "Comercial, Consultor")]
+    [Authorize(Roles = "Comercial, Consultor, Comercial_General")]
     public class EntradasController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -42,7 +42,7 @@ namespace MateriasPrimasApp.Controllers
             return RedirectToAction("TodasLasEntradas");
         }
 
-        [Authorize(Roles = "Consultor, Comercial")]
+        [Authorize(Roles = "Consultor, Comercial, Comercial_General")]
         public async Task<IActionResult> TodasLasEntradas()
         {
             var entradas = await _context.Entrada.Where(e=>e.Confirmada).Include(e => e.Cliente).Include(e => e.UnidadOrganizativa).Include(e => e.DetallesDeEntrada).ToListAsync();

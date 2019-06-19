@@ -7,7 +7,7 @@
     <link href="~/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="~/css/buttons.dataTables.min.css" rel="stylesheet" />
 }
-@if (User.IsInRole("Administrador"))
+@if (User.IsInRole("Comercial_General"))
 {
     <div class="text-right">
         <p class="hint--top-left" aria-label="Añadir Categoría">
@@ -35,7 +35,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Descripcion)
             </th>
-            @if (User.IsInRole("Administrador"))
+            @if (User.IsInRole("Comercial_General"))
             {
                 <th>Acciones</th>
             }
@@ -52,7 +52,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Descripcion)
             </td>
-            @if (User.IsInRole("Administrador"))
+            @if (User.IsInRole("Comercial_General"))
             {
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn yellow hidden-print">Editar</a>

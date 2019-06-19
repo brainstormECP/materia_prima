@@ -9,9 +9,11 @@ using MateriasPrimasApp.Models;
 using MateriasPrimasApp.Data;
 using MateriasPrimasApp.HelperClass;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MateriasPrimasApp.Controllers
 {
+    [Authorize]
     public class VentasController : Controller
     {
         private readonly ApplicationDbContext _context;

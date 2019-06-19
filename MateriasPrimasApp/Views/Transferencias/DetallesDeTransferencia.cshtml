@@ -98,41 +98,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                 <h4 class="modal-title text-center">Añadir producto a la transferencia</h4>
             </div>
-            <form asp-controller="Transferencias" asp-action="AddDetalle" role="form" data-ajax="true" dat-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#result" data-ajax-success="onSuccess" data-ajax-failure="onFailed" id="nuevo_detalle_form">
-
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
-                            <div id="error_msg" class="alert alert-danger" style="display:none">
-                                <i class="close icon"></i>
-                                <h4>
-                                    Hay errores en el formulario
-                                </h4>
-                                <ul class="errors"></ul>
-                            </div>
-                            <input type="hidden" name="TransferenciaId" value="@Model.Id" />
-                            <div class="form-group">
-                                <label for="codigo">Producto</label>
-                                <select name="ProductoId" id="producto" asp-items="ViewBag.Productos" class="form-control"></select>
-                            </div>
-                            <div class="form-group">
-                                <label>Cantidad</label>
-                                <div class="input-group">
-                                    <input type="text" name="Cantidad" class="form-control">
-                                    <span class="input-group-addon" id="umresult">
-                                        <samp class="hint--top um" aria-label="Unidad de Medida">UM</samp>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="col-md-10 col-md-offset-1">
-                        <input type="submit" class="btn btn-success" value="Agregar" />
-                    </div>
-                </div>
-            </form>
+            <partial name="_AddDetallePartial" model="new DetalleDeTransferencia() { TransferenciaId = @Model.Id}" />
 
         </div>
         <!-- /.modal-content -->
@@ -141,5 +107,6 @@
 </div>
 
 @section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/site.js"></script>
 }
