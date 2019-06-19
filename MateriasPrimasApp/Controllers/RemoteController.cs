@@ -26,6 +26,10 @@ namespace MateriasPrimasApp.Controllers
                     {
                         return Json(data: $"Solo se permite una fecha con 4 días de antelación");
                     }
+                    if (dateTime > DateTime.Now)
+                    {
+                        return Json(data: $"No se permite una fecha mayor al día actual");
+                    }
                     return Json(true);
                 }
                 return Json(true);
